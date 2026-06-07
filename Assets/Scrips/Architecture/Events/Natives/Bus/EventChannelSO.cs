@@ -9,7 +9,7 @@ namespace TicGame.Architecture
         public void Raise(TPayload payload)
         {
             MarkRaised();
-            Raised?.Invoke(payload);
+            Raised?.Invoke(obj: payload);
         }
     }
 }

@@ -12,9 +12,9 @@ namespace TicGame.Architecture
             Instance = instance;
             Request = request;
             this.targetResults = targetResults;
-            TotalAppliedAmount = targetResults.Sum(result => result.Result.AppliedAmount);
-            EffectiveHitCount = targetResults.Count(result => result.Result.Accepted && result.Result.AppliedAmount > 0f);
-            KilledTargets = targetResults.Count(result => result.Result.Killed);
+            TotalAppliedAmount = targetResults.Sum(selector: result => result.Result.AppliedAmount);
+            EffectiveHitCount = targetResults.Count(predicate: result => result.Result.Accepted && result.Result.AppliedAmount > 0f);
+            KilledTargets = targetResults.Count(predicate: result => result.Result.Killed);
         }
 
         public DamageInstance Instance { get; }

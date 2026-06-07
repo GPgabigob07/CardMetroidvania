@@ -4,16 +4,16 @@ namespace TicGame.Architecture
 {
     public sealed class SimpleHealth : MonoBehaviour, IDamageable
     {
-        [Header("Health")]
-        [Min(1f)]
-        [Tooltip("Maximum health restored when this component wakes up.")]
+        [Header(header: "Health")]
+        [Min(min: 1f)]
+        [Tooltip(tooltip: "Maximum health restored when this component wakes up.")]
         [SerializeField] private float maxHealth = 5f;
 
-        [Header("Events")]
-        [Tooltip("Raised whenever this component accepts a damage context.")]
+        [Header(header: "Events")]
+        [Tooltip(tooltip: "Raised whenever this component accepts a damage context.")]
         [SerializeField] private DamageEventChannelSO damageTakenEvent;
 
-        [Tooltip("Raised when health reaches zero.")]
+        [Tooltip(tooltip: "Raised when health reaches zero.")]
         [SerializeField] private VoidEventChannelSO deathEvent;
 
         public float CurrentHealth { get; private set; }
@@ -33,21 +33,21 @@ namespace TicGame.Architecture
         {
             if (IsDead)
             {
-                return new DamageResult(false, true, 0f, CurrentHealth);
+                return new DamageResult(accepted: false, killed: true, appliedAmount: 0f, remainingHealth: CurrentHealth);
             }
 
             float amount = context.Amount > 0f ? context.Amount : (context.Profile != null ? context.Profile.BaseDamage : 0f);
-            CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
+            CurrentHealth = Mathf.Max(a: 0f, b: CurrentHealth - amount);
             bool killed = CurrentHealth <= 0f;
 
-            damageTakenEvent?.Raise(context);
+            damageTakenEvent?.Raise(payload: context);
 
             if (killed)
             {
                 deathEvent?.Raise();
             }
 
-            return new DamageResult(true, killed, amount, CurrentHealth);
+            return new DamageResult(accepted: true, killed: killed, appliedAmount: amount, remainingHealth: CurrentHealth);
         }
     }
 }

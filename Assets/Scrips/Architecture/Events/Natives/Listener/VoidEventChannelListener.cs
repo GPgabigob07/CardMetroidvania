@@ -5,11 +5,11 @@ namespace TicGame.Architecture
 {
     public sealed class VoidEventChannelListener : MonoBehaviour
     {
-        [Header("Event Binding")]
-        [Tooltip("Void event channel listened by this component.")]
+        [Header(header: "Event Binding")]
+        [Tooltip(tooltip: "Void event channel listened by this component.")]
         [SerializeField] private VoidEventChannelSO channel;
 
-        [Tooltip("UnityEvent invoked whenever the channel is raised.")]
+        [Tooltip(tooltip: "UnityEvent invoked whenever the channel is raised.")]
         [SerializeField] private UnityEvent response;
 
         private void OnEnable()

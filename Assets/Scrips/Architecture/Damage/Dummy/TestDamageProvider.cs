@@ -21,7 +21,7 @@ namespace TicGame.Architecture.Tests
 
         public void AddModifier(IDamageModifier modifier)
         {
-            modifiers.Add(modifier);
+            modifiers.Add(item: modifier);
         }
 
         public void OnDamageResolved(DamageResolutionReport report)

@@ -17,20 +17,20 @@ namespace TicGame.Architecture
         {
             if (state == null)
             {
-                throw new ArgumentNullException(nameof(state));
+                throw new ArgumentNullException(paramName: nameof(state));
             }
 
-            states[state.Id] = state;
+            states[key: state.Id] = state;
         }
 
         public bool ContainsState(TStateId id)
         {
-            return states.ContainsKey(id);
+            return states.ContainsKey(key: id);
         }
 
         public bool TryChangeState(TStateId id)
         {
-            if (!states.TryGetValue(id, out IState<TStateId> nextState))
+            if (!states.TryGetValue(key: id, value: out IState<TStateId> nextState))
             {
                 return false;
             }
@@ -39,18 +39,18 @@ namespace TicGame.Architecture
             CurrentState?.Exit();
             CurrentState = nextState;
             CurrentState.Enter();
-            StateChanged?.Invoke(previousId, id);
+            StateChanged?.Invoke(arg1: previousId, arg2: id);
             return true;
         }
 
         public void Tick(float deltaTime)
         {
-            CurrentState?.Tick(deltaTime);
+            CurrentState?.Tick(deltaTime: deltaTime);
         }
 
         public void FixedTick(float fixedDeltaTime)
         {
-            CurrentState?.FixedTick(fixedDeltaTime);
+            CurrentState?.FixedTick(fixedDeltaTime: fixedDeltaTime);
         }
     }
 }

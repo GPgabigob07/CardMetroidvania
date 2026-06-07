@@ -31,7 +31,7 @@ namespace TicGame.Architecture
             HitPoint = hitPoint;
             Direction = direction;
             RequestTags = requestTags;
-            TargetLimit = Mathf.Max(1, targetLimit);
+            TargetLimit = Mathf.Max(a: 1, b: targetLimit);
             TargetPriorityMode = targetPriorityMode;
             AllowPartialResolution = allowPartialResolution;
         }

@@ -23,12 +23,12 @@ namespace TicGame.Architecture
             int maxTargets = 1,
             TargetPriorityMode targetPriorityMode = TargetPriorityMode.ExplicitOrder)
         {
-            InstanceId = string.IsNullOrWhiteSpace(instanceId) ? Guid.NewGuid().ToString("N") : instanceId;
+            InstanceId = string.IsNullOrWhiteSpace(value: instanceId) ? Guid.NewGuid().ToString(format: "N") : instanceId;
             SourceObject = sourceObject;
             Profile = profile;
             Formula = formula;
             Tags = tags;
-            MaxTargets = Mathf.Max(1, maxTargets);
+            MaxTargets = Mathf.Max(a: 1, b: maxTargets);
             TargetPriorityMode = targetPriorityMode;
         }
     }

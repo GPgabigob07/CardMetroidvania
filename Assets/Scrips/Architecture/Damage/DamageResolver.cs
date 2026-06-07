@@ -9,17 +9,17 @@ namespace TicGame.Architecture
         public static DamageResolutionReport Resolve(in DamageRequest request, IDamageEventSink eventSink = null)
         {
             var instance = request.Instance;
-            var sourceProvider = FindFirst<IDamageProvider>(instance.SourceObject);
-            var sourceListeners = FindAll<IDamageListener>(instance.SourceObject);
-            var modifiers = CollectModifiers(sourceProvider);
+            var sourceProvider = FindFirst<IDamageProvider>(owner: instance.SourceObject);
+            var sourceListeners = FindAll<IDamageListener>(owner: instance.SourceObject);
+            var modifiers = CollectModifiers(sourceProvider: sourceProvider);
             var targetResults = new List<DamageTargetResult>();
 
-            var targets = SelectTargets(request);
+            var targets = SelectTargets(request: request);
             var targetIndex = 0;
 
             foreach (var target in targets)
             {
-                var damageable = FindFirst<IDamageable>(target);
+                var damageable = FindFirst<IDamageable>(owner: target);
                 if (damageable == null)
                 {
                     if (!request.AllowPartialResolution)
@@ -37,68 +37,68 @@ namespace TicGame.Architecture
                     values.Attack = sourceProvider.AttackValue;
                 }
 
-                RunModifiers(modifiers, DamageModifierPhase.PreTargetResolve, ref values, instance, target, targetIndex);
+                RunModifiers(modifiers: modifiers, phase: DamageModifierPhase.PreTargetResolve, values: ref values, instance: instance, targetObject: target, targetIndex: targetIndex);
 
-                var finalAmount = Mathf.Max(0f, values.CalculateFinalDamage());
+                var finalAmount = Mathf.Max(a: 0f, b: values.CalculateFinalDamage());
                 var context = new DamageContext(
-                    instance.SourceObject,
-                    target,
-                    instance.Profile,
-                    finalAmount,
-                    request.HitPoint,
-                    request.Direction,
-                    instance.Tags);
+                    source: instance.SourceObject,
+                    target: target,
+                    profile: instance.Profile,
+                    amount: finalAmount,
+                    hitPoint: request.HitPoint,
+                    direction: request.Direction,
+                    tags: instance.Tags);
 
-                var result = damageable.ApplyDamage(context);
-                var targetResult = new DamageTargetResult(context, result);
-                targetResults.Add(targetResult);
+                var result = damageable.ApplyDamage(context: context);
+                var targetResult = new DamageTargetResult(context: context, result: result);
+                targetResults.Add(item: targetResult);
 
-                foreach (var listener in FindAll<IDamageListener>(target))
+                foreach (var listener in FindAll<IDamageListener>(owner: target))
                 {
-                    listener.OnDamageReceived(context, result);
+                    listener.OnDamageReceived(context: context, result: result);
                 }
 
                 if (result.Accepted && result.AppliedAmount > 0f)
                 {
                     foreach (var listener in sourceListeners)
                     {
-                        listener.OnDamageDealt(context, result);
+                        listener.OnDamageDealt(context: context, result: result);
                     }
                 }
 
-                eventSink?.OnTargetResolved(context, result);
+                eventSink?.OnTargetResolved(context: context, result: result);
                 targetIndex++;
             }
 
-            var report = new DamageResolutionReport(instance, request, targetResults);
-            sourceProvider?.OnDamageResolved(report);
+            var report = new DamageResolutionReport(instance: instance, request: request, targetResults: targetResults);
+            sourceProvider?.OnDamageResolved(report: report);
 
             foreach (var modifier in modifiers)
             {
-                modifier.OnDamageResolved(report);
+                modifier.OnDamageResolved(report: report);
             }
 
             foreach (var listener in sourceListeners)
             {
-                listener.OnDamageResolutionComplete(report);
+                listener.OnDamageResolutionComplete(report: report);
             }
 
-            eventSink?.OnRequestResolved(report);
+            eventSink?.OnRequestResolved(report: report);
             return report;
         }
 
         private static IReadOnlyList<GameObject> SelectTargets(in DamageRequest request)
         {
-            var limit = Mathf.Max(1, Mathf.Min(request.TargetLimit, request.Instance.MaxTargets));
-            var candidates = request.CandidateTargets.Where(target => target != null);
+            var limit = Mathf.Max(a: 1, b: Mathf.Min(a: request.TargetLimit, b: request.Instance.MaxTargets));
+            var candidates = request.CandidateTargets.Where(predicate: target => target != null);
 
             if (request.TargetPriorityMode == TargetPriorityMode.ClosestToHitPoint)
             {
                 var hitPoint = request.HitPoint;
-                candidates = candidates.OrderBy(target => Vector2.Distance(hitPoint, target.transform.position));
+                candidates = candidates.OrderBy(keySelector: target => Vector2.Distance(a: hitPoint, b: target.transform.position));
             }
 
-            return candidates.Take(limit).ToArray();
+            return candidates.Take(count: limit).ToArray();
         }
 
         private static IReadOnlyList<IDamageModifier> CollectModifiers(IDamageProvider sourceProvider)
@@ -109,8 +109,8 @@ namespace TicGame.Architecture
             }
 
             return sourceProvider.GetDamageModifiers()
-                .Where(modifier => modifier != null)
-                .OrderBy(modifier => modifier.Priority)
+                .Where(predicate: modifier => modifier != null)
+                .OrderBy(keySelector: modifier => modifier.Priority)
                 .ToArray();
         }
 
@@ -122,20 +122,20 @@ namespace TicGame.Architecture
             GameObject targetObject,
             int targetIndex)
         {
-            var context = new DamageModifierContext(phase, instance, targetObject, targetIndex);
+            var context = new DamageModifierContext(phase: phase, instance: instance, targetObject: targetObject, targetIndex: targetIndex);
 
             foreach (var modifier in modifiers)
             {
-                if (modifier.Phase == phase && modifier.AppliesTo(context))
+                if (modifier.Phase == phase && modifier.AppliesTo(context: context))
                 {
-                    modifier.Modify(ref values, context);
+                    modifier.Modify(values: ref values, context: context);
                 }
             }
         }
 
         private static T FindFirst<T>(GameObject owner) where T : class
         {
-            return FindAll<T>(owner).FirstOrDefault();
+            return FindAll<T>(owner: owner).FirstOrDefault();
         }
 
         private static IReadOnlyList<T> FindAll<T>(GameObject owner) where T : class

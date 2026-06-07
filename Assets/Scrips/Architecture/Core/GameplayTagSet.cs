@@ -7,15 +7,15 @@ namespace TicGame.Architecture
     [Serializable]
     public sealed class GameplayTagSet
     {
-        [Header("Tags")]
-        [Tooltip("Tags included in this set.")]
+        [Header(header: "Tags")]
+        [Tooltip(tooltip: "Tags included in this set.")]
         [SerializeField] private List<GameplayTagSO> tags = new List<GameplayTagSO>();
 
         public IReadOnlyList<GameplayTagSO> Tags => tags;
 
         public bool Contains(GameplayTagSO tag)
         {
-            return tag != null && tags.Contains(tag);
+            return tag != null && tags.Contains(item: tag);
         }
 
         public bool ContainsAll(GameplayTagSet requiredTags)
@@ -27,7 +27,7 @@ namespace TicGame.Architecture
 
             foreach (var requiredTag in requiredTags.tags)
             {
-                if (!Contains(requiredTag))
+                if (!Contains(tag: requiredTag))
                 {
                     return false;
                 }
@@ -45,7 +45,7 @@ namespace TicGame.Architecture
 
             foreach (var candidateTag in candidateTags.tags)
             {
-                if (Contains(candidateTag))
+                if (Contains(tag: candidateTag))
                 {
                     return true;
                 }

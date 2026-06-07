@@ -4,12 +4,12 @@ namespace TicGame.Architecture
 {
     public sealed class GameStateController : MonoBehaviour
     {
-        [Header("State")]
-        [Tooltip("State applied when this controller wakes up.")]
+        [Header(header: "State")]
+        [Tooltip(tooltip: "State applied when this controller wakes up.")]
         [SerializeField] private GameState initialState = GameState.Boot;
 
-        [Header("Events")]
-        [Tooltip("Raised whenever the current game state changes.")]
+        [Header(header: "Events")]
+        [Tooltip(tooltip: "Raised whenever the current game state changes.")]
         [SerializeField] private GameStateEventChannelSO stateChangedEvent;
 
         public GameState CurrentState { get; private set; }
@@ -17,7 +17,7 @@ namespace TicGame.Architecture
         private void Awake()
         {
             CurrentState = initialState;
-            stateChangedEvent?.Raise(CurrentState);
+            stateChangedEvent?.Raise(payload: CurrentState);
         }
 
         public void RequestState(GameState nextState)
@@ -28,27 +28,27 @@ namespace TicGame.Architecture
             }
 
             CurrentState = nextState;
-            stateChangedEvent?.Raise(CurrentState);
+            stateChangedEvent?.Raise(payload: CurrentState);
         }
 
         public void RequestGameplay()
         {
-            RequestState(GameState.Gameplay);
+            RequestState(nextState: GameState.Gameplay);
         }
 
         public void RequestPause()
         {
-            RequestState(GameState.Pause);
+            RequestState(nextState: GameState.Pause);
         }
 
         public void RequestDeath()
         {
-            RequestState(GameState.Death);
+            RequestState(nextState: GameState.Death);
         }
 
         public void RequestRespawn()
         {
-            RequestState(GameState.Respawn);
+            RequestState(nextState: GameState.Respawn);
         }
     }
 }

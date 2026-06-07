@@ -9,10 +9,10 @@ namespace TicGame.Architecture
         [Serializable]
         private sealed class RuntimeAbility
         {
-            [Tooltip("Ability definition tracked by this runtime set.")]
+            [Tooltip(tooltip: "Ability definition tracked by this runtime set.")]
             [SerializeField] private AbilityDefinitionSO definition;
 
-            [Tooltip("Forces this ability to start unlocked for prototypes or debug scenes.")]
+            [Tooltip(tooltip: "Forces this ability to start unlocked for prototypes or debug scenes.")]
             [SerializeField] private bool unlockedOverride;
 
             public AbilityDefinitionSO Definition => definition;
@@ -29,12 +29,12 @@ namespace TicGame.Architecture
             }
         }
 
-        [Header("Abilities")]
-        [Tooltip("Abilities tracked by this provider.")]
+        [Header(header: "Abilities")]
+        [Tooltip(tooltip: "Abilities tracked by this provider.")]
         [SerializeField] private List<RuntimeAbility> abilities = new List<RuntimeAbility>();
 
-        [Header("Events")]
-        [Tooltip("Raised whenever an ability changes unlocked state.")]
+        [Header(header: "Events")]
+        [Tooltip(tooltip: "Raised whenever an ability changes unlocked state.")]
         [SerializeField] private AbilityUnlockEventChannelSO abilityUnlockEvent;
 
         private void Awake()
@@ -52,7 +52,7 @@ namespace TicGame.Architecture
                 return false;
             }
 
-            RuntimeAbility runtimeAbility = FindRuntimeAbility(ability);
+            RuntimeAbility runtimeAbility = FindRuntimeAbility(ability: ability);
             return runtimeAbility != null && runtimeAbility.IsUnlocked;
         }
 
@@ -66,7 +66,7 @@ namespace TicGame.Architecture
             foreach (var runtimeAbility in abilities)
             {
                 var definition = runtimeAbility.Definition;
-                if (runtimeAbility.IsUnlocked && definition != null && definition.GatingTags.Contains(capabilityTag))
+                if (runtimeAbility.IsUnlocked && definition != null && definition.GatingTags.Contains(tag: capabilityTag))
                 {
                     return true;
                 }
@@ -84,7 +84,7 @@ namespace TicGame.Architecture
 
             foreach (var tag in requiredTags.Tags)
             {
-                if (!HasCapability(tag))
+                if (!HasCapability(capabilityTag: tag))
                 {
                     return false;
                 }
@@ -95,14 +95,14 @@ namespace TicGame.Architecture
 
         public bool TrySetUnlocked(AbilityDefinitionSO ability, bool unlocked)
         {
-            RuntimeAbility runtimeAbility = FindRuntimeAbility(ability);
+            RuntimeAbility runtimeAbility = FindRuntimeAbility(ability: ability);
             if (runtimeAbility == null)
             {
                 return false;
             }
 
-            runtimeAbility.SetUnlocked(unlocked);
-            abilityUnlockEvent?.Raise(new AbilityUnlockPayload(ability, unlocked));
+            runtimeAbility.SetUnlocked(unlocked: unlocked);
+            abilityUnlockEvent?.Raise(payload: new AbilityUnlockPayload(ability: ability, unlocked: unlocked));
             return true;
         }
 

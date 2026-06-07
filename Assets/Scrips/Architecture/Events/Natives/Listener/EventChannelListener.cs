@@ -7,11 +7,11 @@ namespace TicGame.Architecture
         where TChannel : EventChannelSO<TPayload>
         where TUnityEvent : UnityEvent<TPayload>
     {
-        [Header("Event Binding")]
-        [Tooltip("Event channel listened by this component.")]
+        [Header(header: "Event Binding")]
+        [Tooltip(tooltip: "Event channel listened by this component.")]
         [SerializeField] private TChannel channel;
 
-        [Tooltip("UnityEvent invoked whenever the channel raises a payload.")]
+        [Tooltip(tooltip: "UnityEvent invoked whenever the channel raises a payload.")]
         [SerializeField] private TUnityEvent response;
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace TicGame.Architecture
 
         private void OnRaised(TPayload payload)
         {
-            response?.Invoke(payload);
+            response?.Invoke(arg0: payload);
         }
     }
 }

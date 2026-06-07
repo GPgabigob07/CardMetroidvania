@@ -1,0 +1,433 @@
+fileFormatVersion: 2
+guid: 466dd4992568d504fa475dc590143b25
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4053966107399774289
+    second: player-skinned-animation-sheet-v1_0
+  - first:
+      213: 4548788485406467766
+    second: player-skinned-animation-sheet-v1_1
+  - first:
+      213: 5656661752817772048
+    second: player-skinned-animation-sheet-v1_2
+  - first:
+      213: -3339508463211947468
+    second: player-skinned-animation-sheet-v1_3
+  - first:
+      213: 19692326179713641
+    second: player-skinned-animation-sheet-v1_4
+  - first:
+      213: 4651422303851171841
+    second: player-skinned-animation-sheet-v1_5
+  - first:
+      213: 9073603182240069368
+    second: player-skinned-animation-sheet-v1_6
+  - first:
+      213: 1935618046060318943
+    second: player-skinned-animation-sheet-v1_7
+  - first:
+      213: -3499631229424070972
+    second: player-skinned-animation-sheet-v1_8
+  - first:
+      213: -4263789001201555659
+    second: player-skinned-animation-sheet-v1_9
+  - first:
+      213: -5295508010770062615
+    second: player-skinned-animation-sheet-v1_10
+  - first:
+      213: -8803307525912405159
+    second: player-skinned-animation-sheet-v1_11
+  - first:
+      213: 3866768267043607374
+    second: player-skinned-animation-sheet-v1_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 128
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_0
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 755
+        width: 141
+        height: 299
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: faf96fcdd4b6db7c0800000000000000
+      internalID: -4053966107399774289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_1
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 756
+        width: 204
+        height: 298
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b62a07e60b802f30800000000000000
+      internalID: 4548788485406467766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_2
+      rect:
+        serializedVersion: 2
+        x: 762
+        y: 775
+        width: 219
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 016ed37d4ef708e40800000000000000
+      internalID: 5656661752817772048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_3
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 785
+        width: 227
+        height: 244
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43a57d50fbea7a1d0800000000000000
+      internalID: -3339508463211947468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_4
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 478
+        width: 213
+        height: 239
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9623ebaf016f54000800000000000000
+      internalID: 19692326179713641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_5
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 439
+        width: 231
+        height: 251
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 100d069e0fb2d8040800000000000000
+      internalID: 4651422303851171841
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_6
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 472
+        width: 186
+        height: 263
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f6f54e250aebed70800000000000000
+      internalID: 9073603182240069368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_7
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 459
+        width: 210
+        height: 254
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd0d2488b52bcda10800000000000000
+      internalID: 1935618046060318943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 129
+        width: 272
+        height: 210
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ce805d40ffce6fc0800000000000000
+      internalID: -3499631229424070972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_9
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 109
+        width: 270
+        height: 277
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 537e9227e7af3d4c0800000000000000
+      internalID: -4263789001201555659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_10
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 107
+        width: 401
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e2a0d065839286b0800000000000000
+      internalID: -5295508010770062615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player-skinned-animation-sheet-v1_11
+      rect:
+        serializedVersion: 2
+        x: 1109
+        y: 123
+        width: 234
+        height: 174
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95bd775727e54d580800000000000000
+      internalID: -8803307525912405159
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 33c779d1c20f3d44a90cdd2c412b7e9c
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      player-skinned-animation-sheet-v1_0: -4053966107399774289
+      player-skinned-animation-sheet-v1_1: 4548788485406467766
+      player-skinned-animation-sheet-v1_10: -5295508010770062615
+      player-skinned-animation-sheet-v1_11: -8803307525912405159
+      player-skinned-animation-sheet-v1_12: 3866768267043607374
+      player-skinned-animation-sheet-v1_2: 5656661752817772048
+      player-skinned-animation-sheet-v1_3: -3339508463211947468
+      player-skinned-animation-sheet-v1_4: 19692326179713641
+      player-skinned-animation-sheet-v1_5: 4651422303851171841
+      player-skinned-animation-sheet-v1_6: 9073603182240069368
+      player-skinned-animation-sheet-v1_7: 1935618046060318943
+      player-skinned-animation-sheet-v1_8: -3499631229424070972
+      player-skinned-animation-sheet-v1_9: -4263789001201555659
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
