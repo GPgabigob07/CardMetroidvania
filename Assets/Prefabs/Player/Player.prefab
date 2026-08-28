@@ -1,0 +1,637 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1751150544501751020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3432621181721721162}
+  - component: {fileID: 6561663536484996329}
+  - component: {fileID: 1454719245246763991}
+  - component: {fileID: 1352026579056141999}
+  - component: {fileID: 3943246784269406757}
+  - component: {fileID: 6248515410033887631}
+  - component: {fileID: 3677738131348523622}
+  - component: {fileID: 2365980108658102395}
+  - component: {fileID: 7988086486144116433}
+  - component: {fileID: 3196812354320785694}
+  - component: {fileID: 3252436216368141210}
+  - component: {fileID: 8465056942987945424}
+  - component: {fileID: 2347547386394337187}
+  - component: {fileID: 4741787736900105630}
+  - component: {fileID: 6620674461630436288}
+  - component: {fileID: 7112107312921303334}
+  - component: {fileID: 3959589887960197771}
+  m_Layer: 6
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3432621181721721162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5345837133914576657}
+  - {fileID: 4493748023246133064}
+  - {fileID: 1734700959379733125}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6561663536484996329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71e4e0690fe44b5d94551ffdc87de21b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerController
+  motor: {fileID: 1454719245246763991}
+  sensors: {fileID: 1352026579056141999}
+  attackHitDetector: {fileID: 3677738131348523622}
+  cardTimePresenter: {fileID: 2365980108658102395}
+  cardSelectionHud: {fileID: 0}
+  cardSelectionInput: {fileID: 7112107312921303334}
+  cardSelectionUiConfig: {fileID: 11400000, guid: 97a2d83d9a9d58b4e81441f3e304dedd, type: 2}
+  cardControlSchemeProfile: {fileID: 11400000, guid: c1205e1700d82ce458d05781e2afbca7, type: 2}
+  selectedCardControlSchemeId: 
+  resourceWallet: {fileID: 7988086486144116433}
+  combatEffects: {fileID: 3196812354320785694}
+  cardRuntime: {fileID: 3252436216368141210}
+  cardCatalog: {fileID: 11400000, guid: 4813a2c8dc9cd874487a06545535b84e, type: 2}
+  cardInventoryProfile: {fileID: 11400000, guid: d0c088546181bed4f8a68be3860e5661, type: 2}
+  cardSnapshotSource: {fileID: 3959589887960197771}
+  extraJumpRuntime: {fileID: 8465056942987945424}
+  moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  jumpAction: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  attackAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  dashAction: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  cardTimeLeftAction: {fileID: 0}
+  cardTimeRightAction: {fileID: 0}
+  movementConfig: {fileID: 11400000, guid: ede4714dc3a2e5148adf7ac543fc9fb4, type: 2}
+  dashDefinition: {fileID: 11400000, guid: fbab667b618b3f64fac2381dfcc0d020, type: 2}
+  attackDefinition: {fileID: 11400000, guid: dc0f8700a46ca2d4b9b0f3e615663b43, type: 2}
+--- !u!114 &1454719245246763991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44fd860aac084bd099be72775e47c727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerMotor2D
+  body: {fileID: 6248515410033887631}
+  visualRoot: {fileID: 4493748023246133064}
+--- !u!114 &1352026579056141999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6342ba91caf4a449161796416341f4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerSensors2D
+  groundCheck: {fileID: 1734700959379733125}
+  groundCheckRadius: 0.12
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
+--- !u!70 &3943246784269406757
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
+--- !u!50 &6248515410033887631
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &3677738131348523622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3a723bb26342a4b2366f92b301a035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerAttackHitDetector2D
+  localOffset: {x: 1.1, y: 0.15}
+  size: {x: 1.8, y: 1.5}
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  baseDamage: 1
+  baseKnockbackForce: 1
+--- !u!114 &2365980108658102395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0313a551ff4c36a6ce6aac8f5a40df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardTimeDebugPresenter
+--- !u!114 &7988086486144116433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ab4f5553d726547b0fad77b1780b84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerResourceWallet
+  balances:
+  - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+    startingAmount: 100
+    maximumAmount: 250
+--- !u!114 &3196812354320785694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df72ce83cc0b45245bc8857b3d02eee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCombatEffects
+  wallet: {fileID: 7988086486144116433}
+  energyResource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+  hitEnergyChance: 0.3
+  hitEnergyAmount: 1
+  chainDamagePercentPerIncrement: 0.1
+  supplementalDamageProfile: {fileID: 11400000, guid: cd78942afb8ff034f9cc4139283a65a0, type: 2}
+--- !u!114 &3252436216368141210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4f15dc1542f2b4aa61495199a4c273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardRuntime
+  wallet: {fileID: 7988086486144116433}
+  combatEffects: {fileID: 3196812354320785694}
+  extraJump: {fileID: 8465056942987945424}
+  neutralCardDefinition: {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
+  chainCardDefinition: {fileID: 11400000, guid: 69b7538b5530f7243bc8c6af5b981d83, type: 2}
+  finisherCardDefinition: {fileID: 11400000, guid: d3498f7b2cab6574db03a47f7d7ec218, type: 2}
+--- !u!114 &8465056942987945424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408f3a94c64828a448859e043170a1d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerExtraJumpRuntime
+  abilityDefinition: {fileID: 11400000, guid: b1346c7e2be6b19408b0a4922af5c39b, type: 2}
+  unlockedOverride: 1
+  maximumCharges: 1
+--- !u!114 &2347547386394337187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847dcaea1954a5d43b64fdfb7fcb9a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardDebugPresenter
+  wallet: {fileID: 7988086486144116433}
+  energyResource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+  combatEffects: {fileID: 3196812354320785694}
+  cardRuntime: {fileID: 3252436216368141210}
+  extraJump: {fileID: 8465056942987945424}
+--- !u!114 &4741787736900105630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b26c0d53ac9ea41986223028dd585d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.SimpleHealth
+  maxHealth: 5
+  damageTakenEvent: {fileID: 0}
+  deathEvent: {fileID: 0}
+--- !u!114 &6620674461630436288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c1c247478c4b82a87d01f32cb44605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerDeathRespawn
+  health: {fileID: 4741787736900105630}
+  playerController: {fileID: 6561663536484996329}
+  motor: {fileID: 1454719245246763991}
+  respawnTarget: {fileID: 0}
+  fallbackRespawnPosition: {x: 0, y: 0, z: 0}
+  restoreHealthOnRespawn: 1
+--- !u!114 &7112107312921303334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f1c758ed324407bd2b3fb0100df2e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardSelectionInput
+  selectionUiConfig: {fileID: 11400000, guid: 97a2d83d9a9d58b4e81441f3e304dedd, type: 2}
+  controlSchemeProfile: {fileID: 11400000, guid: c1205e1700d82ce458d05781e2afbca7, type: 2}
+  selectedSchemeId: 
+  axisDeadZone: 0.45
+  initialRepeatDelay: 0.22
+  repeatInterval: 0.12
+--- !u!114 &3959589887960197771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34987ed44d504dcd8edc145360f9b31f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardCommitSnapshotSource
+  wallet: {fileID: 7988086486144116433}
+  health: {fileID: 4741787736900105630}
+  capturedResources:
+  - {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+--- !u!1 &2405205695851386503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1734700959379733125}
+  m_Layer: 6
+  m_Name: GroundCheckl
+  m_TagString: Untagged
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1734700959379733125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2405205695851386503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3432621181721721162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3594338355849335651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4493748023246133064}
+  - component: {fileID: 1680961593428970795}
+  - component: {fileID: 1721474715930440897}
+  - component: {fileID: 3192945769494302261}
+  m_Layer: 0
+  m_Name: Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4493748023246133064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594338355849335651}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3432621181721721162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1680961593428970795
+SpriteRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594338355849335651}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_Sprite: {fileID: -4053966107399774289, guid: 466dd4992568d504fa475dc590143b25, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.1015625, y: 2.3359375}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_SpriteSortPoint: 0
+--- !u!95 &1721474715930440897
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594338355849335651}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 831d61e46bd33c74786a934de5e5158f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3192945769494302261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3594338355849335651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a07bb7e99d47fd82fcd17209f071ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerAnimationDriver
+  animator: {fileID: 1721474715930440897}
+  playerController: {fileID: 6561663536484996329}
+  hardLandingSpeed: 14
+  crossFadeDuration: 0
+  bindings:
+  - state: 0
+    animatorStateName: Idle
+  - state: 10
+    animatorStateName: WalkBegin
+  - state: 20
+    animatorStateName: WalkLoop
+  - state: 30
+    animatorStateName: JumpUp
+  - state: 40
+    animatorStateName: Fall
+  - state: 50
+    animatorStateName: GroundedFall
+  - state: 60
+    animatorStateName: GroundedFall
+--- !u!1001 &4153294283121318193
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3432621181721721162}
+    m_Modifications:
+    - target: {fileID: 712822973015959451, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_Name
+      value: ChainStartSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 2807177388123707355, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_Name
+      value: ChainMiddleSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 3111825085445370820, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_Name
+      value: ChainEndSFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 3182768216783736365, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_Name
+      value: ChainMiddle2SFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 5417201579839584034, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_Name
+      value: PlayerAttackController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+--- !u!4 &5345837133914576657 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8328085528394681888, guid: acf10739d6d88394cb978379b0d0d316, type: 3}
+  m_PrefabInstance: {fileID: 4153294283121318193}
+  m_PrefabAsset: {fileID: 0}

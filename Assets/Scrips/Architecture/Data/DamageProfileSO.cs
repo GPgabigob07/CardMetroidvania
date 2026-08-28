@@ -22,8 +22,8 @@ namespace TicGame.Architecture
         [SerializeField] private float baseDamage = 1f;
 
         [Min(min: 0f)]
-        [Tooltip(tooltip: "Hit stop duration requested by this damage profile.")]
-        [SerializeField] private float hitStopSeconds;
+        [Tooltip(tooltip: "Hit stop duration requested by this damage profile. Set to zero to disable hitstop.")]
+        [SerializeField] private float hitStopSeconds = 0.1f;
 
         [Min(min: 0f)]
         [Tooltip(tooltip: "Knockback force requested by this damage profile.")]

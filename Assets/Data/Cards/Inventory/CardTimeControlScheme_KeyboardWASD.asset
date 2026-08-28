@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f0e1cf613b45d38e1212b85ed9271d, type: 3}
+  m_Name: CardTimeControlScheme_KeyboardWASD
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeControlSchemeSO
+  schemeId: KeyboardWASD
+  displayName: Keyboard WASD
+  deviceFamily: 0
+  description: WASD movement with nearby left-hand card slot commands.
+  layouts:
+  - category: 10
+    slotCount: 8
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotKeyboardWasd1
+      displayLabel: Q
+      defaultControlPath: <Keyboard>/q
+    - slotIndex: 1
+      actionName: CardSlotKeyboardWasd2
+      displayLabel: E
+      defaultControlPath: <Keyboard>/e
+    - slotIndex: 2
+      actionName: CardSlotKeyboardWasd3
+      displayLabel: R
+      defaultControlPath: <Keyboard>/r
+    - slotIndex: 3
+      actionName: CardSlotKeyboardWasd4
+      displayLabel: F
+      defaultControlPath: <Keyboard>/f
+    - slotIndex: 4
+      actionName: CardSlotKeyboardWasd5
+      displayLabel: Z
+      defaultControlPath: <Keyboard>/z
+    - slotIndex: 5
+      actionName: CardSlotKeyboardWasd6
+      displayLabel: X
+      defaultControlPath: <Keyboard>/x
+    - slotIndex: 6
+      actionName: CardSlotKeyboardWasd7
+      displayLabel: C
+      defaultControlPath: <Keyboard>/c
+    - slotIndex: 7
+      actionName: CardSlotKeyboardWasd8
+      displayLabel: V
+      defaultControlPath: <Keyboard>/v
+  - category: 20
+    slotCount: 6
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotKeyboardWasd1
+      displayLabel: Q
+      defaultControlPath: <Keyboard>/q
+    - slotIndex: 1
+      actionName: CardSlotKeyboardWasd2
+      displayLabel: E
+      defaultControlPath: <Keyboard>/e
+    - slotIndex: 2
+      actionName: CardSlotKeyboardWasd3
+      displayLabel: R
+      defaultControlPath: <Keyboard>/r
+    - slotIndex: 3
+      actionName: CardSlotKeyboardWasd4
+      displayLabel: F
+      defaultControlPath: <Keyboard>/f
+    - slotIndex: 4
+      actionName: CardSlotKeyboardWasd5
+      displayLabel: Z
+      defaultControlPath: <Keyboard>/z
+    - slotIndex: 5
+      actionName: CardSlotKeyboardWasd6
+      displayLabel: X
+      defaultControlPath: <Keyboard>/x
+  - category: 30
+    slotCount: 4
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotKeyboardWasd1
+      displayLabel: Q
+      defaultControlPath: <Keyboard>/q
+    - slotIndex: 1
+      actionName: CardSlotKeyboardWasd2
+      displayLabel: E
+      defaultControlPath: <Keyboard>/e
+    - slotIndex: 2
+      actionName: CardSlotKeyboardWasd3
+      displayLabel: R
+      defaultControlPath: <Keyboard>/r
+    - slotIndex: 3
+      actionName: CardSlotKeyboardWasd4
+      displayLabel: F
+      defaultControlPath: <Keyboard>/f

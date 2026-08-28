@@ -9,13 +9,15 @@ namespace TicGame.Architecture
             PlayerSensors2D sensors,
             PlayerMovementConfigSO movementConfig,
             PlayerDashDefinitionSO dashDefinition,
-            PlayerAttackDefinitionSO attackDefinition)
+            PlayerAttackDefinitionSO attackDefinition,
+            PlayerExtraJumpRuntime extraJumpRuntime = null)
         {
             Motor = motor;
             Sensors = sensors;
             MovementConfig = movementConfig;
             DashDefinition = dashDefinition;
             AttackDefinition = attackDefinition;
+            ExtraJumpRuntime = extraJumpRuntime;
             Input = PlayerInputSnapshot.None;
             ActionFrame = PlayerActionFrame.Default;
             FacingDirection = 1;
@@ -26,6 +28,7 @@ namespace TicGame.Architecture
         public PlayerMovementConfigSO MovementConfig { get; }
         public PlayerDashDefinitionSO DashDefinition { get; }
         public PlayerAttackDefinitionSO AttackDefinition { get; }
+        public PlayerExtraJumpRuntime ExtraJumpRuntime { get; }
         public PlayerLocomotionController Locomotion { get; private set; }
         public PlayerActionRunner ActionRunner { get; private set; }
         public PlayerInputSnapshot Input { get; private set; }

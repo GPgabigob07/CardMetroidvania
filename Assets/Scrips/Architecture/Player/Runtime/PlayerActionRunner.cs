@@ -28,7 +28,7 @@ namespace TicGame.Architecture
             return true;
         }
 
-        public void Tick(PlayerContext context, float deltaTime)
+        public void Tick(PlayerContext context, float deltaTime, bool clearCompleted = true)
         {
             if (CurrentAction == null)
             {
@@ -36,10 +36,16 @@ namespace TicGame.Architecture
             }
 
             CurrentAction.Tick(context: context, deltaTime: deltaTime);
-            ClearIfComplete(context: context);
+            if (clearCompleted)
+            {
+                ClearIfComplete(context: context);
+            }
         }
 
-        public void FixedTick(PlayerContext context, float fixedDeltaTime)
+        public void FixedTick(
+            PlayerContext context,
+            float fixedDeltaTime,
+            bool clearCompleted = true)
         {
             if (CurrentAction == null)
             {
@@ -47,7 +53,10 @@ namespace TicGame.Architecture
             }
 
             CurrentAction.FixedTick(context: context, fixedDeltaTime: fixedDeltaTime);
-            ClearIfComplete(context: context);
+            if (clearCompleted)
+            {
+                ClearIfComplete(context: context);
+            }
         }
 
         public void Clear(PlayerContext context)
@@ -55,6 +64,11 @@ namespace TicGame.Architecture
             CurrentAction?.Exit(context: context);
             CurrentAction = null;
             context.ClearAnimatorActionFrame();
+        }
+
+        public void ClearCompletedAction(PlayerContext context)
+        {
+            ClearIfComplete(context: context);
         }
 
         private void ClearIfComplete(PlayerContext context)

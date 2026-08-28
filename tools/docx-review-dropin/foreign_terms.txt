@@ -1,0 +1,26 @@
+# Um termo por linha. O script aplica itálico somente antes da seção REFERÊNCIAS.
+artbook
+artbooks
+asset
+assets
+briefing
+concept art
+concept artist
+concept artists
+feedback
+game design
+gameplay
+level design
+model sheet
+model sheets
+mood board
+mood boards
+pipeline
+photobashing
+pixel art
+sketch
+sketches
+survival horror
+thumbnail
+thumbnails
+workflow

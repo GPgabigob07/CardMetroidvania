@@ -2,10 +2,13 @@ using UnityEngine;
 
 namespace TicGame.Architecture
 {
-    public sealed class GameStateController : MonoBehaviour
+    public sealed class GameStateController :
+        MonoBehaviour,
+        IGameplayModule,
+        IGameStateService
     {
         [Header(header: "State")]
-        [Tooltip(tooltip: "State applied when this controller wakes up.")]
+        [Tooltip(tooltip: "State applied when this gameplay module initializes.")]
         [SerializeField] private GameState initialState = GameState.Boot;
 
         [Header(header: "Events")]
@@ -13,16 +16,28 @@ namespace TicGame.Architecture
         [SerializeField] private GameStateEventChannelSO stateChangedEvent;
 
         public GameState CurrentState { get; private set; }
+        public bool IsInitialized { get; private set; }
 
-        private void Awake()
+        public void Initialize()
         {
+            if (IsInitialized)
+            {
+                return;
+            }
+
             CurrentState = initialState;
+            IsInitialized = true;
             stateChangedEvent?.Raise(payload: CurrentState);
+        }
+
+        public void Shutdown()
+        {
+            IsInitialized = false;
         }
 
         public void RequestState(GameState nextState)
         {
-            if (CurrentState == nextState)
+            if (!IsInitialized || CurrentState == nextState)
             {
                 return;
             }

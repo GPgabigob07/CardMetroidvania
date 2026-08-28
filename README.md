@@ -34,6 +34,12 @@ Escolha o arquivo com o maior timestamp. Esse documento deve conter as decisoes 
 
 Versoes anteriores em `gdd/` devem ser tratadas como memoria do projeto, nao como fonte principal.
 
+## Cronograma Atual Da Build
+
+O plano de producao vigente para a build de 24/11/2026, incluindo o estado
+avaliado do repositorio, checklists e marcos semanais, esta em
+[`gdd/cronograma-build-novembro-20260828-1401.md`](gdd/cronograma-build-novembro-20260828-1401.md).
+
 ## Estrutura De Memoria
 
 ### `.docs/`

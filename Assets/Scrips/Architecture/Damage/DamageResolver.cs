@@ -39,7 +39,8 @@ namespace TicGame.Architecture
 
                 RunModifiers(modifiers: modifiers, phase: DamageModifierPhase.PreTargetResolve, values: ref values, instance: instance, targetObject: target, targetIndex: targetIndex);
 
-                var finalAmount = Mathf.Max(a: 0f, b: values.CalculateFinalDamage());
+                var formula = new ResolvedDamageFormula(values: values);
+                var finalAmount = Mathf.Max(a: 0f, b: formula.RequestedFinalDamage);
                 var context = new DamageContext(
                     source: instance.SourceObject,
                     target: target,
@@ -50,7 +51,10 @@ namespace TicGame.Architecture
                     tags: instance.Tags);
 
                 var result = damageable.ApplyDamage(context: context);
-                var targetResult = new DamageTargetResult(context: context, result: result);
+                var targetResult = new DamageTargetResult(
+                    context: context,
+                    result: result,
+                    formula: formula);
                 targetResults.Add(item: targetResult);
 
                 foreach (var listener in FindAll<IDamageListener>(owner: target))

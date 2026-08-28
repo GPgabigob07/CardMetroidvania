@@ -75,18 +75,26 @@ namespace TicGame.Architecture
         [SerializeField] private bool killed;
         [SerializeField] private float appliedAmount;
         [SerializeField] private float remainingHealth;
+        [SerializeField] private float hitStopSeconds;
 
-        public DamageResult(bool accepted, bool killed, float appliedAmount, float remainingHealth)
+        public DamageResult(
+            bool accepted,
+            bool killed,
+            float appliedAmount,
+            float remainingHealth,
+            float hitStopSeconds = 0.033f)
         {
             this.accepted = accepted;
             this.killed = killed;
             this.appliedAmount = appliedAmount;
             this.remainingHealth = remainingHealth;
+            this.hitStopSeconds = Mathf.Max(a: 0f, b: hitStopSeconds);
         }
 
         public bool Accepted => accepted;
         public bool Killed => killed;
         public float AppliedAmount => appliedAmount;
         public float RemainingHealth => remainingHealth;
+        public float HitStopSeconds => hitStopSeconds;
     }
 }

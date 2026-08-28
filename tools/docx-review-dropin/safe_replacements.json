@@ -1,0 +1,26 @@
+{
+  "description": "Substituições mecânicas opcionais. Mantenha enabled=false até confirmar que a troca é segura para o documento.",
+  "replacements": [
+    {
+      "enabled": false,
+      "find": "RELATORIO",
+      "replace": "RELATÓRIO",
+      "case_sensitive": true,
+      "note": "Exemplo de correção mecânica em capa/folha de rosto."
+    },
+    {
+      "enabled": false,
+      "find": "Capcon",
+      "replace": "Capcom",
+      "case_sensitive": true,
+      "note": "Exemplo específico; habilitar apenas se o documento realmente citar a publisher Capcom."
+    },
+    {
+      "enabled": false,
+      "find": "semi realista",
+      "replace": "semirrealista",
+      "case_sensitive": false,
+      "note": "Exemplo ortográfico. Conferir contexto antes de habilitar."
+    }
+  ]
+}

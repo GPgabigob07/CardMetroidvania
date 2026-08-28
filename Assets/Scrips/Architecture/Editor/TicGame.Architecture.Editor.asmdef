@@ -1,0 +1,20 @@
+{
+    "name": "TicGame.Architecture.Editor",
+    "rootNamespace": "TicGame.Architecture.EditorTools",
+    "references": [
+        "GUID:f478ac87311aea84e845e15ffcd576db",
+        "UnityEngine.UI",
+        "Unity.2D.Sprite.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

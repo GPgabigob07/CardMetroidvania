@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb67101a5464072abcf606c5a684417, type: 3}
+  m_Name: TestCardTimeSelectionUiConfig
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeSelectionUiConfigSO
+  categories:
+  - category: 10
+    slotCount: 8
+    slotCommands:
+    - slotIndex: 0
+      command: {fileID: 0}
+      actionName: Attack
+      displayLabel: ATK
+    - slotIndex: 1
+      command: {fileID: 0}
+      actionName: Jump
+      displayLabel: JMP
+    - slotIndex: 2
+      command: {fileID: 0}
+      actionName: Crouch
+      displayLabel: CR
+    - slotIndex: 3
+      command: {fileID: 0}
+      actionName: Previous
+      displayLabel: PREV
+    - slotIndex: 4
+      command: {fileID: 0}
+      actionName: Next
+      displayLabel: NEXT
+    - slotIndex: 5
+      command: {fileID: 0}
+      actionName: Sprint
+      displayLabel: SPR
+    - slotIndex: 6
+      command: {fileID: 0}
+      actionName: CardTimeLeft
+      displayLabel: L
+    - slotIndex: 7
+      command: {fileID: 0}
+      actionName: CardTimeRight
+      displayLabel: R
+  - category: 20
+    slotCount: 6
+    slotCommands:
+    - slotIndex: 0
+      command: {fileID: 0}
+      actionName: Attack
+      displayLabel: ATK
+    - slotIndex: 1
+      command: {fileID: 0}
+      actionName: Jump
+      displayLabel: JMP
+    - slotIndex: 2
+      command: {fileID: 0}
+      actionName: Crouch
+      displayLabel: CR
+    - slotIndex: 3
+      command: {fileID: 0}
+      actionName: Previous
+      displayLabel: PREV
+    - slotIndex: 4
+      command: {fileID: 0}
+      actionName: Next
+      displayLabel: NEXT
+    - slotIndex: 5
+      command: {fileID: 0}
+      actionName: Sprint
+      displayLabel: SPR
+  - category: 30
+    slotCount: 4
+    slotCommands:
+    - slotIndex: 0
+      command: {fileID: 0}
+      actionName: Attack
+      displayLabel: ATK
+    - slotIndex: 1
+      command: {fileID: 0}
+      actionName: Jump
+      displayLabel: JMP
+    - slotIndex: 2
+      command: {fileID: 0}
+      actionName: Crouch
+      displayLabel: CR
+    - slotIndex: 3
+      command: {fileID: 0}
+      actionName: Previous
+      displayLabel: PREV

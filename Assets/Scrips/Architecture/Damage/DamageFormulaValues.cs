@@ -38,10 +38,14 @@ namespace TicGame.Architecture
             return strikeScale * scaledAttack + FlatDamage;
         }
 
+        public float CalculateEligibleBaseDamage()
+        {
+            return StrikePercent * (Attack * (1f + AttackBuffPercent));
+        }
+
         public float CalculateFinalDamage()
         {
             return CalculateRawDamage() * (1f + FinalDamagePercent) * CritValue;
         }
     }
 }
-

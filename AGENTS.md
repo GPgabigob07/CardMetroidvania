@@ -67,3 +67,15 @@ When adding Unity code, prefer data-driven structures where appropriate, especia
 Unity script-assets must follow Unity file naming expectations: each concrete `MonoBehaviour` or `ScriptableObject` should be a top-level declaration in a `.cs` file with the same name as the class. Do not group multiple concrete MonoBehaviours or ScriptableObjects in one file.
 
 Follow the repository code conventions in `specs/code-conventions-*.md`: apply SOLID pragmatically, document non-concrete methods with XML docs, prefer declarative/idiomatic C# (`var`, `foreach`, native language/library features), and group Unity Inspector fields with editor annotations such as `Header`, `Tooltip`, `Min`, `Range`, or `TextArea` when applicable.
+
+## Unity Editor Collaboration
+
+Before editing scenes, prefabs, serialized assets, or Editor tooling, check the
+latest `specs/unity-editor-collaboration-workflow-*.md`.
+
+The current baseline does not require a Unity MCP. Prefer code and data changes,
+then idempotent Unity Editor tooling for deterministic scene/prefab setup. Ask
+the user for short, explicit Editor actions when visual judgment, live Inspector
+assignment, animation authoring, or Play Mode observation is required. After
+the user saves those changes, inspect the serialized assets and continue the
+implementation.

@@ -25,7 +25,6 @@ namespace TicGame.Architecture
         public PlayerLocomotionState CurrentStateId => CurrentState.Id;
         public float JumpBufferTimer => jumpBufferTimer;
         public float CoyoteTimer => coyoteTimer;
-
         public void EnterInitialState(PlayerContext context)
         {
             CurrentState.Enter(context: context);
