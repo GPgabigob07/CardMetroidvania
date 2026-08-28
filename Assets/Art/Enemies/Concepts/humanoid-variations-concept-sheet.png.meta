@@ -1,0 +1,1053 @@
+fileFormatVersion: 2
+guid: f88c8d6fb65fe404bb94f851a238e3a4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8694658587348522185
+    second: humanoid-variations-concept-sheet_0
+  - first:
+      213: 2324064210891217884
+    second: humanoid-variations-concept-sheet_1
+  - first:
+      213: 6945895901729697461
+    second: humanoid-variations-concept-sheet_2
+  - first:
+      213: 1678008571050130728
+    second: humanoid-variations-concept-sheet_3
+  - first:
+      213: 2901247114584520991
+    second: humanoid-variations-concept-sheet_4
+  - first:
+      213: 6021385633678852732
+    second: humanoid-variations-concept-sheet_5
+  - first:
+      213: -5023661075699633314
+    second: humanoid-variations-concept-sheet_6
+  - first:
+      213: 356648818442838755
+    second: humanoid-variations-concept-sheet_7
+  - first:
+      213: 7172299647087767346
+    second: humanoid-variations-concept-sheet_8
+  - first:
+      213: 378432245651703746
+    second: humanoid-variations-concept-sheet_9
+  - first:
+      213: -1935972584574377996
+    second: humanoid-variations-concept-sheet_10
+  - first:
+      213: -795457490284381006
+    second: humanoid-variations-concept-sheet_11
+  - first:
+      213: 5286594062778557291
+    second: humanoid-variations-concept-sheet_12
+  - first:
+      213: 4689852709113847335
+    second: humanoid-variations-concept-sheet_13
+  - first:
+      213: 5473200675500060884
+    second: humanoid-variations-concept-sheet_14
+  - first:
+      213: 5518905693831851204
+    second: humanoid-variations-concept-sheet_15
+  - first:
+      213: -9054024944784798080
+    second: humanoid-variations-concept-sheet_16
+  - first:
+      213: 3741065831464955578
+    second: humanoid-variations-concept-sheet_17
+  - first:
+      213: -4084874480136996440
+    second: humanoid-variations-concept-sheet_18
+  - first:
+      213: -7461113837906264099
+    second: humanoid-variations-concept-sheet_19
+  - first:
+      213: -2394983021499133967
+    second: humanoid-variations-concept-sheet_20
+  - first:
+      213: -7884379872902754889
+    second: humanoid-variations-concept-sheet_21
+  - first:
+      213: -2418320252932532438
+    second: humanoid-variations-concept-sheet_22
+  - first:
+      213: 6674099919885060913
+    second: humanoid-variations-concept-sheet_23
+  - first:
+      213: -7724166182311894418
+    second: humanoid-variations-concept-sheet_24
+  - first:
+      213: 4369380325758403233
+    second: humanoid-variations-concept-sheet_25
+  - first:
+      213: 2221701864190680276
+    second: humanoid-variations-concept-sheet_26
+  - first:
+      213: -851140148684279802
+    second: humanoid-variations-concept-sheet_27
+  - first:
+      213: -6098872236206353733
+    second: humanoid-variations-concept-sheet_28
+  - first:
+      213: 226576674108940294
+    second: humanoid-variations-concept-sheet_29
+  - first:
+      213: -5518648014716682205
+    second: humanoid-variations-concept-sheet_30
+  - first:
+      213: 5746678832407050955
+    second: humanoid-variations-concept-sheet_31
+  - first:
+      213: 6673616563663493653
+    second: humanoid-variations-concept-sheet_32
+  - first:
+      213: 8392524555226660781
+    second: humanoid-variations-concept-sheet_33
+  - first:
+      213: -2290697449881388829
+    second: humanoid-variations-concept-sheet_34
+  - first:
+      213: 1995309895177578484
+    second: humanoid-variations-concept-sheet_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 540
+        width: 600
+        height: 712
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 73baac1c41e565780800000000000000
+      internalID: -8694658587348522185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 1232
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cdb9e5d161cb04020800000000000000
+      internalID: 2324064210891217884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 567
+        width: 653
+        height: 672
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bea07d8587c46060800000000000000
+      internalID: 6945895901729697461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1007
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82df087a7eb794710800000000000000
+      internalID: 1678008571050130728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 670
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f19ff6611ec434820800000000000000
+      internalID: 2901247114584520991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 665
+        width: 13
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c728117c452409350800000000000000
+      internalID: 6021385633678852732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 524
+        y: 637
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5377fe3ede584ab0800000000000000
+      internalID: -5023661075699633314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 629
+        width: 10
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e229d4f53213f400800000000000000
+      internalID: 356648818442838755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 605
+        width: 27
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23f635f4780298360800000000000000
+      internalID: 7172299647087767346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 646
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c78f955f16704500800000000000000
+      internalID: 378432245651703746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 478
+        y: 621
+        width: 17
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ff9c89013b0225e0800000000000000
+      internalID: -1935972584574377996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 603
+        width: 13
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2bcfca980a7f5f4f0800000000000000
+      internalID: -795457490284381006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 569
+        width: 42
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b63ea9f5a41cd5940800000000000000
+      internalID: 5286594062778557291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 583
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72e52a7e034b51140800000000000000
+      internalID: 4689852709113847335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 0
+        width: 544
+        height: 598
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d0fb9f1407b4fb40800000000000000
+      internalID: 5473200675500060884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 661
+        height: 572
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cc6ab5fc77179c40800000000000000
+      internalID: 5518905693831851204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 565
+        width: 11
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08e83927844a95280800000000000000
+      internalID: -9054024944784798080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 508
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abee1dd7d8feae330800000000000000
+      internalID: 3741065831464955578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_18
+      rect:
+        serializedVersion: 2
+        x: 1179
+        y: 257
+        width: 21
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a9306b8d4c9f47c0800000000000000
+      internalID: -4084874480136996440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_19
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 93
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddf78debe7cc47890800000000000000
+      internalID: -7461113837906264099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_20
+      rect:
+        serializedVersion: 2
+        x: 589
+        y: 98
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ffc37091af43ced0800000000000000
+      internalID: -2394983021499133967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_21
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 58
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bd4461674e059290800000000000000
+      internalID: -7884379872902754889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_22
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 66
+        width: 12
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a27d2d2fa86607ed0800000000000000
+      internalID: -2418320252932532438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_23
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 47
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13b4638248a2f9c50800000000000000
+      internalID: 6674099919885060913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_24
+      rect:
+        serializedVersion: 2
+        x: 332
+        y: 36
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e62e63518cf3ec490800000000000000
+      internalID: -7724166182311894418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_25
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 22
+        width: 11
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a2096d914823ac30800000000000000
+      internalID: 4369380325758403233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_26
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 49
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4dc98eb031215de10800000000000000
+      internalID: 2221701864190680276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_27
+      rect:
+        serializedVersion: 2
+        x: 619
+        y: 46
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 600b9975b842034f0800000000000000
+      internalID: -851140148684279802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_28
+      rect:
+        serializedVersion: 2
+        x: 856
+        y: 37
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb29d6ea3047c5ba0800000000000000
+      internalID: -6098872236206353733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_29
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 49
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60027aed846f42300800000000000000
+      internalID: 226576674108940294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_30
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 31
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 320c562aed2d963b0800000000000000
+      internalID: -5518648014716682205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_31
+      rect:
+        serializedVersion: 2
+        x: 1030
+        y: 41
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bcaf0eb63fd40cf40800000000000000
+      internalID: 5746678832407050955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_32
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 29
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51a535408e27d9c50800000000000000
+      internalID: 6673616563663493653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_33
+      rect:
+        serializedVersion: 2
+        x: 338
+        y: 23
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: daf37031e9c387470800000000000000
+      internalID: 8392524555226660781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_34
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 15
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e83de35ecec530e0800000000000000
+      internalID: -2290697449881388829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: humanoid-variations-concept-sheet_35
+      rect:
+        serializedVersion: 2
+        x: 1028
+        y: 15
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f7a1ee27c3c0bb10800000000000000
+      internalID: 1995309895177578484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      humanoid-variations-concept-sheet_0: -8694658587348522185
+      humanoid-variations-concept-sheet_1: 2324064210891217884
+      humanoid-variations-concept-sheet_10: -1935972584574377996
+      humanoid-variations-concept-sheet_11: -795457490284381006
+      humanoid-variations-concept-sheet_12: 5286594062778557291
+      humanoid-variations-concept-sheet_13: 4689852709113847335
+      humanoid-variations-concept-sheet_14: 5473200675500060884
+      humanoid-variations-concept-sheet_15: 5518905693831851204
+      humanoid-variations-concept-sheet_16: -9054024944784798080
+      humanoid-variations-concept-sheet_17: 3741065831464955578
+      humanoid-variations-concept-sheet_18: -4084874480136996440
+      humanoid-variations-concept-sheet_19: -7461113837906264099
+      humanoid-variations-concept-sheet_2: 6945895901729697461
+      humanoid-variations-concept-sheet_20: -2394983021499133967
+      humanoid-variations-concept-sheet_21: -7884379872902754889
+      humanoid-variations-concept-sheet_22: -2418320252932532438
+      humanoid-variations-concept-sheet_23: 6674099919885060913
+      humanoid-variations-concept-sheet_24: -7724166182311894418
+      humanoid-variations-concept-sheet_25: 4369380325758403233
+      humanoid-variations-concept-sheet_26: 2221701864190680276
+      humanoid-variations-concept-sheet_27: -851140148684279802
+      humanoid-variations-concept-sheet_28: -6098872236206353733
+      humanoid-variations-concept-sheet_29: 226576674108940294
+      humanoid-variations-concept-sheet_3: 1678008571050130728
+      humanoid-variations-concept-sheet_30: -5518648014716682205
+      humanoid-variations-concept-sheet_31: 5746678832407050955
+      humanoid-variations-concept-sheet_32: 6673616563663493653
+      humanoid-variations-concept-sheet_33: 8392524555226660781
+      humanoid-variations-concept-sheet_34: -2290697449881388829
+      humanoid-variations-concept-sheet_35: 1995309895177578484
+      humanoid-variations-concept-sheet_4: 2901247114584520991
+      humanoid-variations-concept-sheet_5: 6021385633678852732
+      humanoid-variations-concept-sheet_6: -5023661075699633314
+      humanoid-variations-concept-sheet_7: 356648818442838755
+      humanoid-variations-concept-sheet_8: 7172299647087767346
+      humanoid-variations-concept-sheet_9: 378432245651703746
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

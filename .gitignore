@@ -105,3 +105,14 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+# Local Codex/document review artifacts
+/output/
+
+# Source documents and presentation artifacts stay local.
+# Keep their Markdown counterparts versioned instead.
+*.docx
+*.pptx
+/presentation-tic-1/
+/local-artifacts/
+/.worktrees/

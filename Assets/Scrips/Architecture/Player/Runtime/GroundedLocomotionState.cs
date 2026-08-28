@@ -14,6 +14,7 @@ namespace TicGame.Architecture
         public void Enter(PlayerContext context)
         {
             context.Locomotion.ResetCoyoteTime(context: context);
+            context.ExtraJumpRuntime?.Clear();
         }
 
         public void Tick(PlayerContext context, float deltaTime)

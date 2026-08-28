@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace TicGame.Architecture
@@ -16,7 +17,10 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Raised when health reaches zero.")]
         [SerializeField] private VoidEventChannelSO deathEvent;
 
+        public event Action<SimpleHealthChanged> Changed;
+
         public float CurrentHealth { get; private set; }
+        public float MaximumHealth => maxHealth;
         public bool IsDead => CurrentHealth <= 0f;
 
         private void Awake()
@@ -26,28 +30,45 @@ namespace TicGame.Architecture
 
         public void Initialize()
         {
+            var previousHealth = CurrentHealth;
             CurrentHealth = maxHealth;
+            Changed?.Invoke(new SimpleHealthChanged(
+                previous: previousHealth,
+                current: CurrentHealth,
+                maximum: MaximumHealth));
         }
 
         public DamageResult ApplyDamage(in DamageContext context)
         {
             if (IsDead)
             {
-                return new DamageResult(accepted: false, killed: true, appliedAmount: 0f, remainingHealth: CurrentHealth);
+                return new DamageResult(accepted: false, killed: true, appliedAmount: 0f, remainingHealth: CurrentHealth, hitStopSeconds: 0f);
             }
 
             float amount = context.Amount > 0f ? context.Amount : (context.Profile != null ? context.Profile.BaseDamage : 0f);
+            var previousHealth = CurrentHealth;
             CurrentHealth = Mathf.Max(a: 0f, b: CurrentHealth - amount);
             bool killed = CurrentHealth <= 0f;
 
             damageTakenEvent?.Raise(payload: context);
+            Changed?.Invoke(new SimpleHealthChanged(
+                previous: previousHealth,
+                current: CurrentHealth,
+                maximum: MaximumHealth));
 
             if (killed)
             {
                 deathEvent?.Raise();
             }
 
-            return new DamageResult(accepted: true, killed: killed, appliedAmount: amount, remainingHealth: CurrentHealth);
+            return new DamageResult(
+                accepted: true,
+                killed: killed,
+                appliedAmount: amount,
+                remainingHealth: CurrentHealth,
+                hitStopSeconds: context.Profile != null
+                    ? context.Profile.HitStopSeconds
+                    : 0.1f);
         }
     }
 }

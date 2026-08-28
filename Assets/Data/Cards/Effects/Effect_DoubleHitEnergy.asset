@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01a9f4633aff4f11ad716b9219b43c62, type: 3}
+  m_Name: Effect_DoubleHitEnergy
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardEffectDefinitionSO
+  status: {fileID: 11400000, guid: 1a02c43aa8a32c6498f14807583f92a7, type: 2}
+  activationConditions: []
+  commitOperations:
+  - kind: 10
+    status: {fileID: 11400000, guid: 1a02c43aa8a32c6498f14807583f92a7, type: 2}
+    resource: {fileID: 0}
+    ability: {fileID: 0}
+    amount: 5
+    multiplier: 1
+    effectId: 
+  reactiveRules:
+  - trigger: 10
+    conditions:
+    - kind: 50
+      resource: {fileID: 0}
+      ability: {fileID: 0}
+      amount: 0
+    operations:
+    - kind: 50
+      status: {fileID: 11400000, guid: 1a02c43aa8a32c6498f14807583f92a7, type: 2}
+      resource: {fileID: 0}
+      ability: {fileID: 0}
+      amount: 0
+      multiplier: 2
+      effectId: 
+    consumesCharge: 1
+  lifetimes:
+  - kind: 10
+  stacking:
+    kind: 30
+    maximumCharges: 0
+    maximumCapacity: 0
+    maximumStacks: 0

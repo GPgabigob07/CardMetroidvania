@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41fa8afe0b4aba841bd3bc7042814c14, type: 3}
+  m_Name: Card Impact Overcharge
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageProfileSO
+  id: damage.card-impact.overcharge
+  displayName: Card Impact Overcharge
+  description: Tags an armed Overcharge attack as Card and Impact.
+  baseDamage: 0
+  hitStopSeconds: 0.1
+  knockbackForce: 0
+  damageTags:
+    tags:
+    - {fileID: 11400000, guid: c5f0c1814fd9a814daf687d851aea77e, type: 2}
+    - {fileID: 11400000, guid: be34621849fd2ec4286841746294d70b, type: 2}

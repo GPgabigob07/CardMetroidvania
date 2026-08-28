@@ -1,0 +1,1053 @@
+fileFormatVersion: 2
+guid: e4e1f25749ac4ce4f9371a4f345ad9ab
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4496610368426455642
+    second: flying-variations-concept-sheet_0
+  - first:
+      213: 5598633087503032810
+    second: flying-variations-concept-sheet_1
+  - first:
+      213: 2107868787920613890
+    second: flying-variations-concept-sheet_2
+  - first:
+      213: 7154706717244000438
+    second: flying-variations-concept-sheet_3
+  - first:
+      213: 5431332977997983343
+    second: flying-variations-concept-sheet_4
+  - first:
+      213: -6699765337988291084
+    second: flying-variations-concept-sheet_5
+  - first:
+      213: 7493279459685967649
+    second: flying-variations-concept-sheet_6
+  - first:
+      213: -5175262473742030370
+    second: flying-variations-concept-sheet_7
+  - first:
+      213: -8902607837785748834
+    second: flying-variations-concept-sheet_8
+  - first:
+      213: 7126963000053110659
+    second: flying-variations-concept-sheet_9
+  - first:
+      213: 1226138928093146913
+    second: flying-variations-concept-sheet_10
+  - first:
+      213: 5283767322800837743
+    second: flying-variations-concept-sheet_11
+  - first:
+      213: -67115598809392438
+    second: flying-variations-concept-sheet_12
+  - first:
+      213: 3921889098112414655
+    second: flying-variations-concept-sheet_13
+  - first:
+      213: 4834728800784433506
+    second: flying-variations-concept-sheet_14
+  - first:
+      213: -7977193739636450589
+    second: flying-variations-concept-sheet_15
+  - first:
+      213: 6043931155494240447
+    second: flying-variations-concept-sheet_16
+  - first:
+      213: -1567689192079980803
+    second: flying-variations-concept-sheet_17
+  - first:
+      213: 5009043501772476599
+    second: flying-variations-concept-sheet_18
+  - first:
+      213: 4055336016548610032
+    second: flying-variations-concept-sheet_19
+  - first:
+      213: 1895362040505474377
+    second: flying-variations-concept-sheet_20
+  - first:
+      213: 7946968031751637509
+    second: flying-variations-concept-sheet_21
+  - first:
+      213: 777178570143250589
+    second: flying-variations-concept-sheet_22
+  - first:
+      213: 5145134731066524833
+    second: flying-variations-concept-sheet_23
+  - first:
+      213: 8006064246588491305
+    second: flying-variations-concept-sheet_24
+  - first:
+      213: 8422351508910975174
+    second: flying-variations-concept-sheet_25
+  - first:
+      213: 1446330576445086244
+    second: flying-variations-concept-sheet_26
+  - first:
+      213: -6463647219039109916
+    second: flying-variations-concept-sheet_27
+  - first:
+      213: -7452482047850001527
+    second: flying-variations-concept-sheet_28
+  - first:
+      213: 8922228963657327642
+    second: flying-variations-concept-sheet_29
+  - first:
+      213: 9169482577300658620
+    second: flying-variations-concept-sheet_30
+  - first:
+      213: 959983902288387077
+    second: flying-variations-concept-sheet_31
+  - first:
+      213: -1017450610640410765
+    second: flying-variations-concept-sheet_32
+  - first:
+      213: 2389157764229912927
+    second: flying-variations-concept-sheet_33
+  - first:
+      213: 3675998811163781320
+    second: flying-variations-concept-sheet_34
+  - first:
+      213: -4992068996372456308
+    second: flying-variations-concept-sheet_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 633
+        width: 513
+        height: 581
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a52b5675e4b276e30800000000000000
+      internalID: 4496610368426455642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 1211
+        width: 29
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae1ed58512752bd40800000000000000
+      internalID: 5598633087503032810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 652
+        y: 1211
+        width: 94
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2023421ae77a04d10800000000000000
+      internalID: 2107868787920613890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 1085
+        width: 10
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b80e612adf9a4360800000000000000
+      internalID: 7154706717244000438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 545
+        width: 665
+        height: 665
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6e2f6a2198ff5b40800000000000000
+      internalID: 5431332977997983343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 651
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f5abb60ce6a503a0800000000000000
+      internalID: -6699765337988291084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 1157
+        y: 627
+        width: 26
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 127205da7f97df760800000000000000
+      internalID: 7493279459685967649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 1162
+        y: 655
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed962392336cd28b0800000000000000
+      internalID: -5175262473742030370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 565
+        height: 636
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9a0c2ee655937480800000000000000
+      internalID: -8902607837785748834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 609
+        width: 23
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3879489961f08e260800000000000000
+      internalID: 7126963000053110659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 539
+        y: 615
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12f2546dbde140110800000000000000
+      internalID: 1226138928093146913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 611
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f645c5fa266b35940800000000000000
+      internalID: 5283767322800837743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 611
+        width: 11
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aca141ee7be811ff0800000000000000
+      internalID: -67115598809392438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 1061
+        y: 604
+        width: 9
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb3b77d0b595d6630800000000000000
+      internalID: 3921889098112414655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 599
+        width: 9
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2614b149a38681340800000000000000
+      internalID: 4834728800784433506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_15
+      rect:
+        serializedVersion: 2
+        x: 1077
+        y: 595
+        width: 17
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3eadf7c0f805b4190800000000000000
+      internalID: -7977193739636450589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_16
+      rect:
+        serializedVersion: 2
+        x: 1157
+        y: 581
+        width: 20
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb086222d5b50e350800000000000000
+      internalID: 6043931155494240447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_17
+      rect:
+        serializedVersion: 2
+        x: 1173
+        y: 593
+        width: 20
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df68adb5cf27e3ae0800000000000000
+      internalID: -1567689192079980803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_18
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 545
+        width: 39
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b090ab9682b38540800000000000000
+      internalID: 5009043501772476599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_19
+      rect:
+        serializedVersion: 2
+        x: 1167
+        y: 569
+        width: 10
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ff3a37fe92774830800000000000000
+      internalID: 4055336016548610032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_20
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 521
+        width: 15
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d9619dbbdad4a10800000000000000
+      internalID: 1895362040505474377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_21
+      rect:
+        serializedVersion: 2
+        x: 604
+        y: 0
+        width: 621
+        height: 564
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50a01fde15d494e60800000000000000
+      internalID: 7946968031751637509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_22
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 515
+        width: 23
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d983f68bac719ca00800000000000000
+      internalID: 777178570143250589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_23
+      rect:
+        serializedVersion: 2
+        x: 533
+        y: 460
+        width: 64
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a4cebe17c0376740800000000000000
+      internalID: 5145134731066524833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_24
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 286
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 926ccdaa3014b1f60800000000000000
+      internalID: 8006064246588491305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_25
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 263
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c82d16e21432e470800000000000000
+      internalID: 8422351508910975174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_26
+      rect:
+        serializedVersion: 2
+        x: 479
+        y: 97
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42a9bcc0ff5621410800000000000000
+      internalID: 1446330576445086244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_27
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 85
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ec7bb3a9138c46a0800000000000000
+      internalID: -6463647219039109916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_28
+      rect:
+        serializedVersion: 2
+        x: 1039
+        y: 79
+        width: 41
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98bcceaff07739890800000000000000
+      internalID: -7452482047850001527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_29
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 63
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a142f7f68ff12db70800000000000000
+      internalID: 8922228963657327642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_30
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 63
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb9932272db804f70800000000000000
+      internalID: 9169482577300658620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_31
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 62
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50c1efdd54c825d00800000000000000
+      internalID: 959983902288387077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_32
+      rect:
+        serializedVersion: 2
+        x: 851
+        y: 53
+        width: 18
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37726407f0a41e1f0800000000000000
+      internalID: -1017450610640410765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_33
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 31
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f595a49045ef72120800000000000000
+      internalID: 2389157764229912927
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_34
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 17
+        width: 11
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c8ec264175c30330800000000000000
+      internalID: 3675998811163781320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: flying-variations-concept-sheet_35
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 0
+        width: 93
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8c9af862bb98bab0800000000000000
+      internalID: -4992068996372456308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      flying-variations-concept-sheet_0: 4496610368426455642
+      flying-variations-concept-sheet_1: 5598633087503032810
+      flying-variations-concept-sheet_10: 1226138928093146913
+      flying-variations-concept-sheet_11: 5283767322800837743
+      flying-variations-concept-sheet_12: -67115598809392438
+      flying-variations-concept-sheet_13: 3921889098112414655
+      flying-variations-concept-sheet_14: 4834728800784433506
+      flying-variations-concept-sheet_15: -7977193739636450589
+      flying-variations-concept-sheet_16: 6043931155494240447
+      flying-variations-concept-sheet_17: -1567689192079980803
+      flying-variations-concept-sheet_18: 5009043501772476599
+      flying-variations-concept-sheet_19: 4055336016548610032
+      flying-variations-concept-sheet_2: 2107868787920613890
+      flying-variations-concept-sheet_20: 1895362040505474377
+      flying-variations-concept-sheet_21: 7946968031751637509
+      flying-variations-concept-sheet_22: 777178570143250589
+      flying-variations-concept-sheet_23: 5145134731066524833
+      flying-variations-concept-sheet_24: 8006064246588491305
+      flying-variations-concept-sheet_25: 8422351508910975174
+      flying-variations-concept-sheet_26: 1446330576445086244
+      flying-variations-concept-sheet_27: -6463647219039109916
+      flying-variations-concept-sheet_28: -7452482047850001527
+      flying-variations-concept-sheet_29: 8922228963657327642
+      flying-variations-concept-sheet_3: 7154706717244000438
+      flying-variations-concept-sheet_30: 9169482577300658620
+      flying-variations-concept-sheet_31: 959983902288387077
+      flying-variations-concept-sheet_32: -1017450610640410765
+      flying-variations-concept-sheet_33: 2389157764229912927
+      flying-variations-concept-sheet_34: 3675998811163781320
+      flying-variations-concept-sheet_35: -4992068996372456308
+      flying-variations-concept-sheet_4: 5431332977997983343
+      flying-variations-concept-sheet_5: -6699765337988291084
+      flying-variations-concept-sheet_6: 7493279459685967649
+      flying-variations-concept-sheet_7: -5175262473742030370
+      flying-variations-concept-sheet_8: -8902607837785748834
+      flying-variations-concept-sheet_9: 7126963000053110659
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

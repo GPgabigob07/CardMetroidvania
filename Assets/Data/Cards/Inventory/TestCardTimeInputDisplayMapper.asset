@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6895c80722aa45b38abe1c55e553512d, type: 3}
+  m_Name: TestCardTimeInputDisplayMapper
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeInputDisplayMapperSO
+  bindings:
+  - deviceFamily: 0
+    actionName: CardTimeLeft
+    controlPath: <Keyboard>/j
+    displayLabel: J
+  - deviceFamily: 0
+    actionName: CardTimeRight
+    controlPath: <Keyboard>/k
+    displayLabel: K
+  - deviceFamily: 1
+    actionName: CardTimeLeft
+    controlPath: <Gamepad>/leftShoulder
+    displayLabel: LB
+  - deviceFamily: 1
+    actionName: CardTimeRight
+    controlPath: <Gamepad>/rightShoulder
+    displayLabel: RB
+  - deviceFamily: 1
+    actionName: CardSlotGamepad1
+    controlPath: 
+    displayLabel: LB
+  - deviceFamily: 1
+    actionName: CardSlotGamepad2
+    controlPath: 
+    displayLabel: RB
+  - deviceFamily: 1
+    actionName: CardSlotGamepad3
+    controlPath: 
+    displayLabel: LT
+  - deviceFamily: 1
+    actionName: CardSlotGamepad4
+    controlPath: 
+    displayLabel: RT
+  - deviceFamily: 1
+    actionName: CardSlotGamepad5
+    controlPath: 
+    displayLabel: X
+  - deviceFamily: 1
+    actionName: CardSlotGamepad6
+    controlPath: 
+    displayLabel: Y
+  - deviceFamily: 1
+    actionName: CardSlotGamepad7
+    controlPath: 
+    displayLabel: A
+  - deviceFamily: 1
+    actionName: CardSlotGamepad8
+    controlPath: 
+    displayLabel: B

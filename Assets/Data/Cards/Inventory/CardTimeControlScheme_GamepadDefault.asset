@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f0e1cf613b45d38e1212b85ed9271d, type: 3}
+  m_Name: CardTimeControlScheme_GamepadDefault
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeControlSchemeSO
+  schemeId: GamepadDefault
+  displayName: Gamepad Default
+  deviceFamily: 1
+  description: Shoulders and triggers first, then face buttons.
+  layouts:
+  - category: 10
+    slotCount: 8
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotGamepad1
+      displayLabel: LB
+      defaultControlPath: <Gamepad>/leftShoulder
+    - slotIndex: 1
+      actionName: CardSlotGamepad2
+      displayLabel: RB
+      defaultControlPath: <Gamepad>/rightShoulder
+    - slotIndex: 2
+      actionName: CardSlotGamepad3
+      displayLabel: LT
+      defaultControlPath: <Gamepad>/leftTrigger
+    - slotIndex: 3
+      actionName: CardSlotGamepad4
+      displayLabel: RT
+      defaultControlPath: <Gamepad>/rightTrigger
+    - slotIndex: 4
+      actionName: CardSlotGamepad5
+      displayLabel: X
+      defaultControlPath: <Gamepad>/buttonWest
+    - slotIndex: 5
+      actionName: CardSlotGamepad6
+      displayLabel: Y
+      defaultControlPath: <Gamepad>/buttonNorth
+    - slotIndex: 6
+      actionName: CardSlotGamepad7
+      displayLabel: A
+      defaultControlPath: <Gamepad>/buttonSouth
+    - slotIndex: 7
+      actionName: CardSlotGamepad8
+      displayLabel: B
+      defaultControlPath: <Gamepad>/buttonEast
+  - category: 20
+    slotCount: 6
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotGamepad1
+      displayLabel: LB
+      defaultControlPath: <Gamepad>/leftShoulder
+    - slotIndex: 1
+      actionName: CardSlotGamepad2
+      displayLabel: RB
+      defaultControlPath: <Gamepad>/rightShoulder
+    - slotIndex: 2
+      actionName: CardSlotGamepad3
+      displayLabel: LT
+      defaultControlPath: <Gamepad>/leftTrigger
+    - slotIndex: 3
+      actionName: CardSlotGamepad4
+      displayLabel: RT
+      defaultControlPath: <Gamepad>/rightTrigger
+    - slotIndex: 4
+      actionName: CardSlotGamepad5
+      displayLabel: X
+      defaultControlPath: <Gamepad>/buttonWest
+    - slotIndex: 5
+      actionName: CardSlotGamepad6
+      displayLabel: Y
+      defaultControlPath: <Gamepad>/buttonNorth
+  - category: 30
+    slotCount: 4
+    slots:
+    - slotIndex: 0
+      actionName: CardSlotGamepad1
+      displayLabel: LB
+      defaultControlPath: <Gamepad>/leftShoulder
+    - slotIndex: 1
+      actionName: CardSlotGamepad2
+      displayLabel: RB
+      defaultControlPath: <Gamepad>/rightShoulder
+    - slotIndex: 2
+      actionName: CardSlotGamepad3
+      displayLabel: LT
+      defaultControlPath: <Gamepad>/leftTrigger
+    - slotIndex: 3
+      actionName: CardSlotGamepad4
+      displayLabel: RT
+      defaultControlPath: <Gamepad>/rightTrigger

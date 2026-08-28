@@ -18,6 +18,14 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Fallback recovery duration used without animator-authored flags.")]
         [SerializeField] private float recoveryDuration = 0.18f;
 
+        [Min(min: 0f)]
+        [Tooltip(tooltip: "Fallback seconds after Recovery during which attack input continues the combo.")]
+        [SerializeField] private float postRecoveryBufferGraceDuration = 0.5f;
+
+        [Min(min: 0f)]
+        [Tooltip(tooltip: "Fallback seconds after Recovery before attack input restarts at Attack1.")]
+        [SerializeField] private float sequenceRestartCooldown = 0.5f;
+
         [Header(header: "Ground Movement")]
         [Range(min: 0f, max: 1f)]
         [Tooltip(tooltip: "Horizontal velocity multiplier while attacking on the ground.")]
@@ -40,6 +48,8 @@ namespace TicGame.Architecture
         public float ReadingDuration => readingDuration;
         public float ExecutionDuration => executionDuration;
         public float RecoveryDuration => recoveryDuration;
+        public float PostRecoveryBufferGraceDuration => postRecoveryBufferGraceDuration;
+        public float SequenceRestartCooldown => sequenceRestartCooldown;
         public float GroundedHorizontalMultiplier => groundedHorizontalMultiplier;
         public float GroundedExecutionNudge => groundedExecutionNudge;
         public float AirborneExecutionGravityMultiplier => airborneExecutionGravityMultiplier;

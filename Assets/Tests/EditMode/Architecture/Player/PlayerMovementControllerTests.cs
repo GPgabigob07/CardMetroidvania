@@ -96,18 +96,104 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
-        public void AttackAction_ReducesAirborneGravityDuringExecution()
+        public void PlayerMotor_SetFacing_FlipsAssignedVisualRoot()
+        {
+            owner = new GameObject("Player Motor Test");
+            var body = owner.AddComponent<Rigidbody2D>();
+            var visual = new GameObject("Visual").transform;
+            visual.SetParent(owner.transform);
+            visual.localScale = new Vector3(2f, 3f, 1f);
+            var motor = owner.AddComponent<PlayerMotor2D>();
+            motor.SetBody(body);
+            motor.SetVisualRoot(visual);
+
+            motor.SetFacing(-1);
+
+            Assert.AreEqual(-1, motor.FacingDirection);
+            Assert.AreEqual(-2f, visual.localScale.x);
+
+            motor.SetFacing(1);
+
+            Assert.AreEqual(1, motor.FacingDirection);
+            Assert.AreEqual(2f, visual.localScale.x);
+        }
+
+        [Test]
+        public void PlayerMotor_SetFacingZero_PreservesFacingAndVisualScale()
+        {
+            owner = new GameObject("Player Motor Test");
+            var body = owner.AddComponent<Rigidbody2D>();
+            var visual = new GameObject("Visual").transform;
+            visual.SetParent(owner.transform);
+            visual.localScale = new Vector3(2f, 3f, 1f);
+            var motor = owner.AddComponent<PlayerMotor2D>();
+            motor.SetBody(body);
+            motor.SetVisualRoot(visual);
+            motor.SetFacing(-1);
+
+            motor.SetFacing(0);
+
+            Assert.AreEqual(-1, motor.FacingDirection);
+            Assert.AreEqual(-2f, visual.localScale.x);
+        }
+
+        [Test]
+        public void PlayerDeathRespawn_ResetsPositionVelocityAndHealth_WhenHealthReachesZero()
+        {
+            owner = new GameObject("Player Respawn Test");
+            owner.transform.position = new Vector3(4f, 5f, 0f);
+            var body = owner.AddComponent<Rigidbody2D>();
+            var motor = owner.AddComponent<PlayerMotor2D>();
+            motor.SetBody(body);
+            motor.SetVelocity(new Vector2(3f, -2f));
+            var health = owner.AddComponent<SimpleHealth>();
+            var respawn = owner.AddComponent<PlayerDeathRespawn>();
+            respawn.Configure(health, controller: null, playerMotor: motor);
+
+            health.ApplyDamage(new DamageContext(
+                source: null,
+                target: owner,
+                profile: null,
+                amount: health.MaximumHealth,
+                hitPoint: Vector2.zero,
+                direction: Vector2.right));
+
+            Assert.AreEqual(Vector3.zero, owner.transform.position);
+            Assert.AreEqual(Vector2.zero, motor.Velocity);
+            Assert.AreEqual(health.MaximumHealth, health.CurrentHealth);
+        }
+
+        [Test]
+        public void AttackAction_AirborneMiss_PreservesGravityAndHorizontalVelocity()
         {
             var context = CreateContext(grounded: false, new Vector2(0f, -2f), out _);
             var action = new AttackAction(PlayerActionState.Attack1);
-            var frame = new LocomotionFrame(new Vector2(0f, -2f), context.MovementConfig.FallGravityScale, true, true, false);
+            var frame = new LocomotionFrame(new Vector2(3f, -2f), context.MovementConfig.FallGravityScale, true, true, false);
 
             action.Enter(context);
             action.Tick(context, context.AttackDefinition.ReadingDuration + 0.01f);
             action.ModifyLocomotionFrame(ref frame, context, 0.016f);
 
             Assert.AreEqual(PlayerActionPhase.Execution, action.CurrentPhase);
+            Assert.AreEqual(context.MovementConfig.FallGravityScale, frame.GravityScale);
+            Assert.AreEqual(3f, frame.Velocity.x);
+            Assert.AreEqual(-2f, frame.Velocity.y);
+        }
+
+        [Test]
+        public void AttackAction_ConfirmedAerialHit_ReducesGravityWithoutForwardNudge()
+        {
+            var context = CreateContext(grounded: false, new Vector2(0f, -2f), out _);
+            var action = new AttackAction(PlayerActionState.Attack1);
+            var frame = new LocomotionFrame(new Vector2(3f, -2f), context.MovementConfig.FallGravityScale, true, true, false);
+
+            action.Enter(context);
+            action.Tick(context, context.AttackDefinition.ReadingDuration + 0.01f);
+            action.ConfirmHit();
+            action.ModifyLocomotionFrame(ref frame, context, 0.016f);
+
             Assert.Less(frame.GravityScale, context.MovementConfig.FallGravityScale);
+            Assert.AreEqual(3f, frame.Velocity.x);
             Assert.GreaterOrEqual(frame.Velocity.y, context.AttackDefinition.AirborneExecutionMinLift);
         }
 

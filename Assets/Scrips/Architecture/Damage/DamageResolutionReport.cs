@@ -15,6 +15,11 @@ namespace TicGame.Architecture
             TotalAppliedAmount = targetResults.Sum(selector: result => result.Result.AppliedAmount);
             EffectiveHitCount = targetResults.Count(predicate: result => result.Result.Accepted && result.Result.AppliedAmount > 0f);
             KilledTargets = targetResults.Count(predicate: result => result.Result.Killed);
+            RequestedHitStopSeconds = targetResults
+                .Where(predicate: result => result.Result is { Accepted: true, AppliedAmount: > 0f })
+                .Select(selector: result => result.Result.HitStopSeconds)
+                .DefaultIfEmpty()
+                .Max();
         }
 
         public DamageInstance Instance { get; }
@@ -23,6 +28,9 @@ namespace TicGame.Architecture
         public float TotalAppliedAmount { get; }
         public int EffectiveHitCount { get; }
         public int KilledTargets { get; }
+        public float RequestedHitStopSeconds { get; }
+        public bool IsPrimary => Instance.Provenance.OriginKind == DamageOriginKind.Primary;
+        public bool IsSupplemental => Instance.Provenance.OriginKind == DamageOriginKind.Supplemental;
+        public bool Allows(DamageProcPolicy policy) => (Instance.ProcPolicy & policy) == policy;
     }
 }
-

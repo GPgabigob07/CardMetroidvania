@@ -1,6 +1,22 @@
 namespace TicGame.Architecture
 {
     /// <summary>
+    /// Defines optional animation notifications that a state can observe.
+    /// </summary>
+    public interface IAnimationAwareState
+    {
+        /// <summary>
+        /// Runs when an animation emits a named event while the state is active.
+        /// </summary>
+        void OnAnimationEvent(string eventName);
+
+        /// <summary>
+        /// Runs when the active state's animation finishes.
+        /// </summary>
+        void OnAnimationFinished();
+    }
+
+    /// <summary>
     /// Defines a state that can be owned by a typed state machine.
     /// </summary>
     public interface IState<out TStateId>

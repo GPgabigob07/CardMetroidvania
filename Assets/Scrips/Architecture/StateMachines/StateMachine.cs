@@ -23,16 +23,31 @@ namespace TicGame.Architecture
             states[key: state.Id] = state;
         }
 
+        public void AddState<TOwner>(IOwnedState<TStateId, TOwner> state, TOwner owner)
+        {
+            if (state == null)
+            {
+                throw new ArgumentNullException(paramName: nameof(state));
+            }
+
+            states[key: state.Id] = new OwnedStateAdapter<TOwner>(state, owner);
+        }
+
         public bool ContainsState(TStateId id)
         {
             return states.ContainsKey(key: id);
         }
 
-        public bool TryChangeState(TStateId id)
+        public bool TryChangeState(TStateId id, bool restart = false)
         {
             if (!states.TryGetValue(key: id, value: out IState<TStateId> nextState))
             {
                 return false;
+            }
+
+            if (!restart && CurrentState != null && EqualityComparer<TStateId>.Default.Equals(CurrentState.Id, id))
+            {
+                return true;
             }
 
             TStateId previousId = CurrentStateId;
@@ -52,6 +67,65 @@ namespace TicGame.Architecture
         {
             CurrentState?.FixedTick(fixedDeltaTime: fixedDeltaTime);
         }
+
+        public void ForwardAnimationEvent(string eventName)
+        {
+            if (CurrentState is IAnimationAwareState animationAwareState)
+            {
+                animationAwareState.OnAnimationEvent(eventName);
+            }
+        }
+
+        public void ForwardAnimationFinished()
+        {
+            if (CurrentState is IAnimationAwareState animationAwareState)
+            {
+                animationAwareState.OnAnimationFinished();
+            }
+        }
+
+        private sealed class OwnedStateAdapter<TOwner> : IState<TStateId>, IAnimationAwareState
+        {
+            private readonly IOwnedState<TStateId, TOwner> state;
+            private readonly TOwner owner;
+
+            public OwnedStateAdapter(IOwnedState<TStateId, TOwner> state, TOwner owner)
+            {
+                this.state = state;
+                this.owner = owner;
+            }
+
+            public TStateId Id => state.Id;
+
+            public void Enter()
+            {
+                state.Enter(owner);
+            }
+
+            public void Tick(float deltaTime)
+            {
+                state.Tick(deltaTime);
+            }
+
+            public void FixedTick(float fixedDeltaTime)
+            {
+                state.FixedTick(fixedDeltaTime);
+            }
+
+            public void Exit()
+            {
+                state.Exit();
+            }
+
+            public void OnAnimationEvent(string eventName)
+            {
+                state.OnAnimationEvent(eventName);
+            }
+
+            public void OnAnimationFinished()
+            {
+                state.OnAnimationFinished();
+            }
+        }
     }
 }
-

@@ -37,6 +37,13 @@ namespace TicGame.Architecture
                 velocity.y = config.JumpVelocity;
                 context.Locomotion.ConsumeJumpBuffer();
             }
+            else if (context.Locomotion.HasBufferedJump
+                && context.ExtraJumpRuntime != null
+                && context.ExtraJumpRuntime.TryConsume())
+            {
+                velocity.y = config.JumpVelocity;
+                context.Locomotion.ConsumeJumpBuffer();
+            }
 
             var gravityScale = ResolveGravityScale(context: context, velocity: velocity);
             velocity.y = Mathf.Max(a: velocity.y, b: -config.MaxFallSpeed);

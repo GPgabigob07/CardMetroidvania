@@ -1,0 +1,507 @@
+fileFormatVersion: 2
+guid: 59b2e1e7903332748abc877f17e2c433
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2846966764613944090
+    second: golem-variations-concept-sheet_0
+  - first:
+      213: -8835336849452519679
+    second: golem-variations-concept-sheet_1
+  - first:
+      213: 682571870903249191
+    second: golem-variations-concept-sheet_2
+  - first:
+      213: -4194423175520012514
+    second: golem-variations-concept-sheet_3
+  - first:
+      213: 8665413253928768359
+    second: golem-variations-concept-sheet_4
+  - first:
+      213: 782819704752000046
+    second: golem-variations-concept-sheet_5
+  - first:
+      213: -3722440667224699921
+    second: golem-variations-concept-sheet_6
+  - first:
+      213: 8452958764964649686
+    second: golem-variations-concept-sheet_7
+  - first:
+      213: -5257630398764700109
+    second: golem-variations-concept-sheet_8
+  - first:
+      213: 5995924134764378337
+    second: golem-variations-concept-sheet_9
+  - first:
+      213: -6649187107284679789
+    second: golem-variations-concept-sheet_10
+  - first:
+      213: 5074358293672651196
+    second: golem-variations-concept-sheet_11
+  - first:
+      213: -6668208156198367385
+    second: golem-variations-concept-sheet_12
+  - first:
+      213: -1479269905692512417
+    second: golem-variations-concept-sheet_13
+  - first:
+      213: -4991530457387459836
+    second: golem-variations-concept-sheet_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 692
+        width: 580
+        height: 544
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1348244035728720800000000000000
+      internalID: 2846966764613944090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_1
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 697
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10fa67172f3926580800000000000000
+      internalID: -8835336849452519679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_2
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 690
+        width: 563
+        height: 542
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 729acda008bf87900800000000000000
+      internalID: 682571870903249191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 614
+        height: 621
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e17b679485a6ac5c0800000000000000
+      internalID: -4194423175520012514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_4
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 601
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 763d260717bb14870800000000000000
+      internalID: 8665413253928768359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_5
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 0
+        width: 576
+        height: 625
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2c4be8bf522dda00800000000000000
+      internalID: 782819704752000046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_6
+      rect:
+        serializedVersion: 2
+        x: 722
+        y: 600
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feb8a9c7feb375cc0800000000000000
+      internalID: -3722440667224699921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_7
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 513
+        width: 19
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6da1eb60631fe4570800000000000000
+      internalID: 8452958764964649686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_8
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 119
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ea55922052907b0800000000000000
+      internalID: -5257630398764700109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_9
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 71
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e872d89b3dc53350800000000000000
+      internalID: 5995924134764378337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_10
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 61
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39380390e8759b3a0800000000000000
+      internalID: -6649187107284679789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_11
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 47
+        width: 19
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb96a65abfdbb6640800000000000000
+      internalID: 5074358293672651196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_12
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 15
+        width: 22
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76f0f69f204c573a0800000000000000
+      internalID: -6668208156198367385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_13
+      rect:
+        serializedVersion: 2
+        x: 1135
+        y: 15
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5fa548bbd3987be0800000000000000
+      internalID: -1479269905692512417
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: golem-variations-concept-sheet_14
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 0
+        width: 46
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40b90e9ce758abab0800000000000000
+      internalID: -4991530457387459836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      golem-variations-concept-sheet_0: 2846966764613944090
+      golem-variations-concept-sheet_1: -8835336849452519679
+      golem-variations-concept-sheet_10: -6649187107284679789
+      golem-variations-concept-sheet_11: 5074358293672651196
+      golem-variations-concept-sheet_12: -6668208156198367385
+      golem-variations-concept-sheet_13: -1479269905692512417
+      golem-variations-concept-sheet_14: -4991530457387459836
+      golem-variations-concept-sheet_2: 682571870903249191
+      golem-variations-concept-sheet_3: -4194423175520012514
+      golem-variations-concept-sheet_4: 8665413253928768359
+      golem-variations-concept-sheet_5: 782819704752000046
+      golem-variations-concept-sheet_6: -3722440667224699921
+      golem-variations-concept-sheet_7: 8452958764964649686
+      golem-variations-concept-sheet_8: -5257630398764700109
+      golem-variations-concept-sheet_9: 5995924134764378337
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace TicGame.Architecture
@@ -8,6 +9,12 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Rigidbody2D moved by the player controller. Falls back to this GameObject when empty.")]
         [SerializeField] private Rigidbody2D body;
 
+        [Header(header: "Presentation")]
+        [Tooltip(tooltip: "Visual root flipped on X when facing changes. Leave empty to use a child SpriteRenderer when available.")]
+        [SerializeField] private Transform visualRoot;
+
+        private float visualScaleMagnitudeX = 1f;
+
         public Vector2 Velocity => body != null ? body.linearVelocity : Vector2.zero;
         public int FacingDirection { get; private set; } = 1;
 
@@ -17,6 +24,15 @@ namespace TicGame.Architecture
             {
                 body = GetComponent<Rigidbody2D>();
             }
+
+            if (visualRoot == null)
+            {
+                var spriteRenderer = GetComponentsInChildren<SpriteRenderer>()
+                    .FirstOrDefault(renderer => renderer.transform != transform);
+                visualRoot = spriteRenderer != null ? spriteRenderer.transform : null;
+            }
+
+            CacheVisualScale();
         }
 
         public void ApplyFrame(in LocomotionFrame frame)
@@ -35,6 +51,13 @@ namespace TicGame.Architecture
             body = nextBody;
         }
 
+        public void SetVisualRoot(Transform nextVisualRoot)
+        {
+            visualRoot = nextVisualRoot;
+            CacheVisualScale();
+            ApplyVisualFacing();
+        }
+
         public void SetVelocity(Vector2 velocity)
         {
             if (body != null)
@@ -51,6 +74,33 @@ namespace TicGame.Architecture
             }
 
             FacingDirection = direction > 0 ? 1 : -1;
+            ApplyVisualFacing();
+        }
+
+        private void CacheVisualScale()
+        {
+            if (visualRoot == null)
+            {
+                return;
+            }
+
+            visualScaleMagnitudeX = Mathf.Abs(f: visualRoot.localScale.x);
+            if (visualScaleMagnitudeX <= Mathf.Epsilon)
+            {
+                visualScaleMagnitudeX = 1f;
+            }
+        }
+
+        private void ApplyVisualFacing()
+        {
+            if (visualRoot == null)
+            {
+                return;
+            }
+
+            var scale = visualRoot.localScale;
+            scale.x = visualScaleMagnitudeX * FacingDirection;
+            visualRoot.localScale = scale;
         }
     }
 }

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f641a96781403da584917048f0c31b, type: 3}
+  m_Name: TestCardCatalog
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardCatalogSO
+  cards:
+  - {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
+  - {fileID: 11400000, guid: 69b7538b5530f7243bc8c6af5b981d83, type: 2}
+  - {fileID: 11400000, guid: d3498f7b2cab6574db03a47f7d7ec218, type: 2}

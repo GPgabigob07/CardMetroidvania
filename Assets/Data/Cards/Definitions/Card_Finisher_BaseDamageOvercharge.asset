@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fdd3ab013d42e4b160e88f59ae63a9, type: 3}
+  m_Name: Card_Finisher_BaseDamageOvercharge
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardDefinitionSO
+  id: card.finisher.base-damage-overcharge
+  displayName: Base Damage Overcharge
+  description: Arms attack-scoped supplemental damage using a variable Energy spend.
+  category: 30
+  fixedCosts:
+  - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+    amount: 15
+  effect: {fileID: 11400000, guid: ba74ae7ed9401fd47a961ea8baecb7a2, type: 2}
