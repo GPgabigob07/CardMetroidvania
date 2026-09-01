@@ -62,7 +62,7 @@ namespace TicGame.Architecture
                 return;
             }
 
-            TryResolveHit(ResolveDamageTarget(other.gameObject));
+            TryResolveCollision(other.gameObject);
         }
 
         public void Launch(Vector2 direction, GameObject sourceObject, float speed)
@@ -146,6 +146,11 @@ namespace TicGame.Architecture
             return true;
         }
 
+        public bool TryResolveCollision(GameObject collisionObject)
+        {
+            return TryResolveHit(ResolveDamageTarget(collisionObject));
+        }
+
         private static DamageFormulaValues CreateHealthFormula(DamageProfileSO profile)
         {
             return new DamageFormulaValues(
@@ -169,6 +174,16 @@ namespace TicGame.Architecture
 
         private static GameObject ResolveDamageTarget(GameObject target)
         {
+            if (target == null)
+            {
+                return null;
+            }
+
+            if (target.GetComponents<MonoBehaviour>().Any(component => component is IDamageable))
+            {
+                return target;
+            }
+
             var rigidbody = target.GetComponentInParent<Rigidbody2D>();
             return rigidbody != null ? rigidbody.gameObject : target;
         }

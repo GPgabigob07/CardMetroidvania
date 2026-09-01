@@ -96,6 +96,31 @@ namespace TicGame.Architecture.Tests
             Assert.IsNull(effects.LastSupplementalReport);
         }
 
+        [Test]
+        public void TryResolveCollision_DeflectedProjectileOnBatHurtbox_RoutesThroughBatPolicy()
+        {
+            SetField(damageProfile, "baseDamage", 2f);
+            SetField(projectile, "damageProfile", damageProfile);
+            var health = target.AddComponent<EnemyHealth>();
+            health.Initialize(12f);
+            var poise = target.AddComponent<EnemyPoise>();
+            poise.Initialize(30f, 0f);
+            var policy = target.AddComponent<BatMachineDamagePolicy>();
+            policy.SetDependencies(health, poise, null);
+            var hurtboxObject = new GameObject("Bat Hurtbox");
+            hurtboxObject.transform.SetParent(target.transform);
+            var hurtbox = hurtboxObject.AddComponent<BatMachineHurtbox>();
+            hurtbox.Configure(policy);
+            projectile.Launch(Vector2.right, enemySource, 4f);
+            projectile.Deflect(playerSource);
+
+            var resolved = projectile.TryResolveCollision(hurtboxObject);
+
+            Assert.IsTrue(resolved);
+            Assert.AreEqual(10f, health.CurrentHealth);
+            Assert.AreEqual(20f, poise.CurrentPoise);
+        }
+
         private static void SetField<T>(object target, string fieldName, T value)
         {
             var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);

@@ -66,6 +66,23 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void PatrolRandom_AllCandidatesRejected_RetainsPositionWithoutMovingIntoObstacle()
+        {
+            var obstacle = CreateObject("Patrol Bounds Obstacle");
+            var obstacleCollider = obstacle.AddComponent<BoxCollider2D>();
+            obstacleCollider.size = new Vector2(10f, 10f);
+            Physics2D.SyncTransforms();
+            var rig = CreateBat(
+                withTarget: false,
+                configureBrain: brain => SetField(brain, "patrolObstacleLayers", (LayerMask)(1 << obstacle.layer)));
+
+            rig.Brain.FixedTick(0.1f);
+
+            Assert.AreEqual(rig.Body.position, rig.Brain.CurrentPatrolWaypoint);
+            Assert.AreEqual(Vector2.zero, rig.Body.linearVelocity);
+        }
+
+        [Test]
         public void FirePlan_LowHealthAndLowPoise_UsesShortCooldownAndTwoShots()
         {
             var rig = CreateBat();
@@ -75,6 +92,46 @@ namespace TicGame.Architecture.Tests
 
             Assert.AreEqual(2, rig.Brain.CurrentFirePlan.ProjectileCount);
             Assert.Less(rig.Brain.CurrentFirePlan.Cooldown, rig.Brain.NormalFireCooldown);
+        }
+
+        [Test]
+        public void WindupFire_OffsetLauncherSpawn_LocksDirectionFromEffectiveSpawnPosition()
+        {
+            var rig = CreateBat();
+            var spawn = CreateObject("Offset Projectile Spawn");
+            spawn.transform.position = new Vector3(0f, 2f, 0f);
+            rig.Launcher.Configure(null, spawn.transform, rig.Root, projectileSpeed: 6f);
+            EnterEngage(rig);
+
+            rig.Brain.Tick(0f);
+            rig.Brain.Tick(0.2f);
+
+            Assert.AreEqual(new Vector2(1f, -2f).normalized, rig.Brain.CurrentFirePlan.LockedDirection);
+        }
+
+        [Test]
+        public void Engage_RepeatedTicksAfterFailedDodge_RollsOnlyOnceForThreatWindow()
+        {
+            var rig = CreateBat();
+            EnterEngage(rig);
+            rig.Brain.Tick(0f);
+            Assert.AreEqual(BatMachineState.WindupFire, rig.Brain.CurrentState);
+            rig.Brain.Tick(0.2f);
+            Assert.AreEqual(BatMachineState.Engage, rig.Brain.CurrentState);
+            var approachingTarget = CreateObject("Approaching Target");
+            approachingTarget.transform.position = Vector3.right * 3f;
+            var targetBody = approachingTarget.AddComponent<Rigidbody2D>();
+            targetBody.gravityScale = 0f;
+            targetBody.linearVelocity = Vector2.left * 4f;
+            rig.Brain.SetTarget(approachingTarget.transform, targetBody);
+            var rolls = new CountingRollSource(0.99f);
+            rig.Brain.SetDodgeRollSource(rolls);
+
+            rig.Brain.Tick(0.01f);
+            rig.Brain.Tick(0.01f);
+
+            Assert.AreEqual(BatMachineState.Engage, rig.Brain.CurrentState);
+            Assert.AreEqual(1, rolls.CallCount);
         }
 
         [Test]
@@ -88,6 +145,20 @@ namespace TicGame.Architecture.Tests
 
             Assert.AreEqual(BatMachineState.StunnedFall, rig.Brain.CurrentState);
             Assert.AreEqual(0f, rig.Poise.CurrentPoise);
+        }
+
+        [Test]
+        public void Heal_WhileStunnedFall_DoesNotRestoreFlightOrChangeState()
+        {
+            var rig = CreateBat();
+            rig.Health.ApplyDamage(CreateContext(rig.Root, amount: 2f));
+            EnterStunnedFall(rig, descendingSpeed: 5f);
+
+            rig.Health.Restore(1f);
+
+            Assert.AreEqual(BatMachineState.StunnedFall, rig.Brain.CurrentState);
+            Assert.AreEqual(0f, rig.Poise.CurrentPoise);
+            Assert.Greater(rig.Body.gravityScale, 0f);
         }
 
         [Test]
@@ -147,7 +218,36 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(0f, rig.Body.gravityScale);
         }
 
-        private BatRig CreateBat(bool withTarget = true)
+        [Test]
+        public void Heal_WhileGroundedRecovery_DoesNotBypassRecoveryTimer()
+        {
+            var rig = CreateBat();
+            rig.Health.ApplyDamage(CreateContext(rig.Root, amount: 2f));
+            EnterStunnedFall(rig, descendingSpeed: 5f);
+            rig.Brain.ReportTerrainLanding(isTerrain: true);
+
+            rig.Health.Restore(1f);
+
+            Assert.AreEqual(BatMachineState.GroundedRecovery, rig.Brain.CurrentState);
+            Assert.AreEqual(0f, rig.Poise.CurrentPoise);
+            Assert.Greater(rig.Body.gravityScale, 0f);
+        }
+
+        [Test]
+        public void Heal_AfterDefeat_ResurrectsIntoPatrolWithFlightAndPoise()
+        {
+            var rig = CreateBat();
+            rig.Health.ApplyDamage(CreateContext(rig.Root, amount: 12f));
+            Assert.AreEqual(BatMachineState.Dead, rig.Brain.CurrentState);
+
+            rig.Health.Restore(1f);
+
+            Assert.AreEqual(BatMachineState.PatrolRandom, rig.Brain.CurrentState);
+            Assert.AreEqual(rig.Poise.MaximumPoise, rig.Poise.CurrentPoise);
+            Assert.AreEqual(0f, rig.Body.gravityScale);
+        }
+
+        private BatRig CreateBat(bool withTarget = true, System.Action<BatMachineBrain> configureBrain = null)
         {
             var root = CreateObject("Bat Machine");
             var body = root.AddComponent<Rigidbody2D>();
@@ -169,6 +269,7 @@ namespace TicGame.Architecture.Tests
             brain.SetDependencies(actor, health, poise, body, motor, monitor, launcher, policy);
             brain.ConfigureFire(normalCooldown: 4f, shortCooldown: 2f, windup: 0.2f, interShotDelay: 0.1f);
             brain.ConfigureRecovery(safeImpactSpeed: 4f, damagePerSpeedUnit: 1f, recoveryDuration: 0.5f, restoredPoise: 12f);
+            configureBrain?.Invoke(brain);
             if (withTarget)
             {
                 var target = CreateObject("Player Target");
@@ -178,7 +279,7 @@ namespace TicGame.Architecture.Tests
 
             brain.Initialize();
 
-            return new BatRig(root, body, health, poise, brain);
+            return new BatRig(root, body, health, poise, launcher, brain);
         }
 
         private static void EnterEngage(BatRig rig)
@@ -238,12 +339,14 @@ namespace TicGame.Architecture.Tests
                 Rigidbody2D body,
                 EnemyHealth health,
                 EnemyPoise poise,
+                BatProjectileLauncher launcher,
                 BatMachineBrain brain)
             {
                 Root = root;
                 Body = body;
                 Health = health;
                 Poise = poise;
+                Launcher = launcher;
                 Brain = brain;
             }
 
@@ -251,7 +354,26 @@ namespace TicGame.Architecture.Tests
             public Rigidbody2D Body { get; }
             public EnemyHealth Health { get; }
             public EnemyPoise Poise { get; }
+            public BatProjectileLauncher Launcher { get; }
             public BatMachineBrain Brain { get; }
+        }
+
+        private sealed class CountingRollSource : IRandomRollSource
+        {
+            private readonly float value;
+
+            public CountingRollSource(float value)
+            {
+                this.value = value;
+            }
+
+            public int CallCount { get; private set; }
+
+            public float NextNormalized()
+            {
+                CallCount++;
+                return value;
+            }
         }
     }
 }

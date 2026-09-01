@@ -42,6 +42,7 @@ namespace TicGame.Architecture
         public event Action<EnemyProjectile2D> ProjectileLaunched;
 
         public bool IsBurstActive { get; private set; }
+        public Vector2 SpawnPosition => spawnPoint != null ? spawnPoint.position : transform.position;
 
         public void BeginBurst(in BatFirePlan plan)
         {
@@ -91,8 +92,7 @@ namespace TicGame.Architecture
                 return;
             }
 
-            var origin = spawnPoint != null ? spawnPoint : transform;
-            var projectile = Instantiate(projectilePrefab, origin.position, Quaternion.identity);
+            var projectile = Instantiate(projectilePrefab, SpawnPosition, Quaternion.identity);
             projectile.Launch(
                 activePlan.LockedDirection,
                 sourceObject != null ? sourceObject : gameObject,

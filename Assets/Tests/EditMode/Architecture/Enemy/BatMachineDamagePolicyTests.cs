@@ -39,6 +39,37 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void DamageResolver_BatHurtboxCandidate_RoutesHealthAndPoiseThroughPolicy()
+        {
+            var hurtboxObject = new GameObject("Bat Hurtbox");
+            hurtboxObject.transform.SetParent(root.transform);
+            var hurtbox = hurtboxObject.AddComponent<BatMachineHurtbox>();
+            hurtbox.Configure(policy);
+
+            var report = DamageResolver.Resolve(new DamageRequest(
+                instance: new DamageInstance(
+                    instanceId: "bat-policy-route",
+                    sourceObject: null,
+                    profile: null,
+                    formula: new DamageFormulaValues(
+                        attack: 0f,
+                        strikePercent: 0f,
+                        strikeBonusPercent: 0f,
+                        attackBuffPercent: 0f,
+                        flatDamage: 2f,
+                        finalDamagePercent: 0f,
+                        critValue: 1f),
+                    poiseDamage: 10f),
+                candidateTargets: new[] { hurtboxObject },
+                hitPoint: Vector2.zero,
+                direction: Vector2.right));
+
+            Assert.AreEqual(1, report.EffectiveHitCount);
+            Assert.AreEqual(10f, health.CurrentHealth);
+            Assert.AreEqual(20f, poise.CurrentPoise);
+        }
+
+        [Test]
         public void ApplyDamage_NormalUnmodifiedAttack_DoesNotInventPoiseDamage()
         {
             policy.ApplyDamage(CreateContext(amount: 2f));

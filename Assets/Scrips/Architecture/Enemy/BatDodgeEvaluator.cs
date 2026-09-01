@@ -6,16 +6,40 @@ namespace TicGame.Architecture
     {
         private IRandomRollSource rollSource = new UnityRandomRollSource();
         private float minimumClosingSpeed = 0.1f;
+        private bool hasEvaluatedThreatWindow;
+        private bool wasCooldownReady;
 
         public bool LastEvaluationConsumesCooldown { get; private set; }
 
         public bool TryEvaluate(BatThreatFacts threat, float currentPoise, float maximumPoise, bool cooldownReady = true)
         {
             LastEvaluationConsumesCooldown = false;
-            if (!cooldownReady || !IsEligible(threat))
+            if (!IsEligible(threat))
+            {
+                hasEvaluatedThreatWindow = false;
+                wasCooldownReady = cooldownReady;
+                return false;
+            }
+
+            if (!cooldownReady)
+            {
+                hasEvaluatedThreatWindow = false;
+                wasCooldownReady = false;
+                return false;
+            }
+
+            if (!wasCooldownReady)
+            {
+                hasEvaluatedThreatWindow = false;
+            }
+
+            wasCooldownReady = true;
+            if (hasEvaluatedThreatWindow)
             {
                 return false;
             }
+
+            hasEvaluatedThreatWindow = true;
 
             var normalizedPoise = maximumPoise <= 10f
                 ? (currentPoise > 10f ? 1f : 0f)

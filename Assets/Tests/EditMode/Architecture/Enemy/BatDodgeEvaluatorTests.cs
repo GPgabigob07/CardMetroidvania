@@ -46,6 +46,35 @@ namespace TicGame.Architecture.Tests
             Assert.IsFalse(evaluator.LastEvaluationConsumesCooldown);
         }
 
+        [Test]
+        public void Evaluate_FailedRoll_IsNotRetriedWhileEligibleThreatWindowRemainsActive()
+        {
+            var rolls = new CountingRollSource(0.99f);
+            evaluator.SetRollSource(rolls);
+
+            Assert.IsFalse(evaluator.TryEvaluate(threat, currentPoise: 30f, maximumPoise: 30f));
+            Assert.IsFalse(evaluator.TryEvaluate(threat, currentPoise: 30f, maximumPoise: 30f));
+
+            Assert.AreEqual(1, rolls.CallCount);
+        }
+
+        [Test]
+        public void Evaluate_AfterThreatWindowEnds_AllowsOneNewRoll()
+        {
+            var rolls = new CountingRollSource(0.99f);
+            evaluator.SetRollSource(rolls);
+            var inactiveThreat = new BatThreatFacts(
+                isMonitored: true,
+                relativeClosingSpeed: 0f,
+                isWithinBaseMeleeReachOuterBand: false);
+            evaluator.TryEvaluate(threat, currentPoise: 30f, maximumPoise: 30f);
+
+            evaluator.TryEvaluate(inactiveThreat, currentPoise: 30f, maximumPoise: 30f);
+            evaluator.TryEvaluate(threat, currentPoise: 30f, maximumPoise: 30f);
+
+            Assert.AreEqual(2, rolls.CallCount);
+        }
+
         private sealed class FixedRollSource : IRandomRollSource
         {
             private readonly float value;

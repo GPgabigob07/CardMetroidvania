@@ -248,6 +248,11 @@ namespace TicGame.Architecture
             targetBody = valueBody;
         }
 
+        public void SetDodgeRollSource(IRandomRollSource value)
+        {
+            dodgeEvaluator.SetRollSource(value);
+        }
+
         public void ConfigureFire(float normalCooldown, float shortCooldown, float windup, float interShotDelay)
         {
             normalFireCooldown = Mathf.Max(0f, normalCooldown);
@@ -390,9 +395,11 @@ namespace TicGame.Architecture
                 return;
             }
 
-            var fallbackDistance = Mathf.Min(halfExtents.x, Mathf.Max(minimumPatrolWaypointDistance, patrolArrivalDistance));
-            currentPatrolWaypoint = patrolAnchor + Vector2.right * fallbackDistance;
-            hasPatrolWaypoint = true;
+            currentPatrolWaypoint = body.position;
+            hasPatrolWaypoint = false;
+            isWaitingAtPatrolWaypoint = true;
+            patrolWaitRemaining = patrolWaitSeconds;
+            motor.Stop();
         }
 
         private void TickEngage()
@@ -445,7 +452,7 @@ namespace TicGame.Architecture
             }
 
             var predictedPoint = shotPredictor.LockPrediction();
-            var origin = launcher != null ? (Vector2)launcher.transform.position : (Vector2)transform.position;
+            var origin = launcher != null ? launcher.SpawnPosition : (Vector2)transform.position;
             var direction = predictedPoint - origin;
             lockedFireDirection = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             var plan = BuildFirePlan(lockedFireDirection);
@@ -577,7 +584,7 @@ namespace TicGame.Architecture
 
         private void OnRestored(EnemyHealthChanged payload)
         {
-            if (!IsInitialized || !actor.IsOperational)
+            if (!IsInitialized || CurrentState != BatMachineState.Dead || !actor.IsOperational)
             {
                 return;
             }
