@@ -197,6 +197,22 @@ namespace TicGame.Architecture.Tests
                 effect.ReactiveRules[0].Operations[0].Kind);
         }
 
+        [TestCase(CardOperationKind.GainResource)]
+        [TestCase(CardOperationKind.AddStatusCharges)]
+        [TestCase(CardOperationKind.AddStatusCapacity)]
+        [TestCase(CardOperationKind.AddStatusStacks)]
+        [TestCase(CardOperationKind.ModifyKnockback)]
+        [TestCase(CardOperationKind.ModifyResourceGain)]
+        [TestCase(CardOperationKind.ClearStatusStacks)]
+        [TestCase(CardOperationKind.RemoveStatus)]
+        [TestCase(CardOperationKind.InvokeAbility)]
+        public void Operation_NonDamageKindWithPositivePoise_IsInvalid(CardOperationKind kind)
+        {
+            var operation = new CardOperationDefinition(kind, poiseDamage: 1f);
+
+            Assert.IsFalse(operation.IsValid());
+        }
+
         private CardEffectDefinitionSO CreateEffect(
             CardStatusDefinitionSO status,
             CardOperationDefinition operation)
