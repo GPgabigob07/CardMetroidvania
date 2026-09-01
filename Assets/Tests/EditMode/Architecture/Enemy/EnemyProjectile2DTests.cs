@@ -1,3 +1,4 @@
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace TicGame.Architecture.Tests
         private GameObject enemySource;
         private GameObject playerSource;
         private GameObject target;
+        private DamageProfileSO damageProfile;
         private EnemyProjectile2D projectile;
 
         [SetUp]
@@ -22,6 +24,7 @@ namespace TicGame.Architecture.Tests
             enemySource = new GameObject("Enemy Source");
             playerSource = new GameObject("Player Source");
             target = new GameObject("Target");
+            damageProfile = ScriptableObject.CreateInstance<DamageProfileSO>();
         }
 
         [TearDown]
@@ -31,6 +34,7 @@ namespace TicGame.Architecture.Tests
             Object.DestroyImmediate(enemySource);
             Object.DestroyImmediate(playerSource);
             Object.DestroyImmediate(target);
+            Object.DestroyImmediate(damageProfile);
         }
 
         [Test]
@@ -60,6 +64,45 @@ namespace TicGame.Architecture.Tests
             Assert.IsFalse(projectileObject.activeSelf);
         }
 
+        [Test]
+        public void FixedTick_LifetimeExpires_DisablesProjectile()
+        {
+            projectile.Launch(Vector2.right, enemySource, 4f);
+
+            projectile.FixedTick(3f);
+
+            Assert.IsFalse(projectile.IsLaunched);
+            Assert.IsFalse(projectileObject.activeSelf);
+        }
+
+        [Test]
+        public void TryResolveHit_DeflectedProjectile_PreservesHealthDamageAndSuppressesPlayerProcs()
+        {
+            SetField(damageProfile, "baseDamage", 7f);
+            SetField(projectile, "damageProfile", damageProfile);
+            var effects = playerSource.AddComponent<PlayerCombatEffects>();
+            effects.AddChainCapacity(2, damagePercentPerIncrement: 0.1f);
+            effects.ArmSupplementalDamage("deflect", "overcharge", totalMultiplier: 2f);
+            var receiver = target.AddComponent<RecordingDamageable>();
+            projectile.Launch(Vector2.right, enemySource, 4f);
+            projectile.Deflect(playerSource);
+
+            var resolved = projectile.TryResolveHit(target);
+
+            Assert.IsTrue(resolved);
+            Assert.AreEqual(7f, receiver.LastContext.Amount);
+            Assert.AreEqual(10f, receiver.LastContext.PoiseDamage);
+            Assert.AreEqual(0, effects.ChainIncrements);
+            Assert.IsNull(effects.LastSupplementalReport);
+        }
+
+        private static void SetField<T>(object target, string fieldName, T value)
+        {
+            var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.NotNull(field, $"Expected private field '{fieldName}' on {target.GetType().Name}.");
+            field.SetValue(target, value);
+        }
+
         private sealed class AcceptingZeroDamage : MonoBehaviour, IDamageable
         {
             public DamageResult ApplyDamage(in DamageContext context)
@@ -69,6 +112,22 @@ namespace TicGame.Architecture.Tests
                     killed: false,
                     appliedAmount: 0f,
                     remainingHealth: 1f,
+                    hitStopSeconds: 0f);
+            }
+        }
+
+        private sealed class RecordingDamageable : MonoBehaviour, IDamageable
+        {
+            public DamageContext LastContext { get; private set; }
+
+            public DamageResult ApplyDamage(in DamageContext context)
+            {
+                LastContext = context;
+                return new DamageResult(
+                    accepted: true,
+                    killed: false,
+                    appliedAmount: context.Amount,
+                    remainingHealth: 100f - context.Amount,
                     hitStopSeconds: 0f);
             }
         }

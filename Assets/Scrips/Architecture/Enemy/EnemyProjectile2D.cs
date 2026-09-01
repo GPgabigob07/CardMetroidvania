@@ -13,9 +13,6 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Rigidbody moved by this projectile. Falls back to the Rigidbody2D on this GameObject.")]
         [SerializeField] private Rigidbody2D body;
 
-        [Tooltip(tooltip: "Trigger collider that reports projectile contacts. Falls back to the first Collider2D on this GameObject.")]
-        [SerializeField] private Collider2D triggerCollider;
-
         [Header(header: "Lifetime")]
         [Min(min: 0f)]
         [Tooltip(tooltip: "Seconds the projectile remains active after launch.")]
@@ -168,10 +165,6 @@ namespace TicGame.Architecture
                 body = GetComponent<Rigidbody2D>();
             }
 
-            if (triggerCollider == null)
-            {
-                triggerCollider = GetComponents<Collider2D>().FirstOrDefault();
-            }
         }
 
         private static GameObject ResolveDamageTarget(GameObject target)
