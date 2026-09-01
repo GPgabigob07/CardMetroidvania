@@ -40,6 +40,7 @@ namespace TicGame.Architecture
         [SerializeField] private Vector2 hitPoint;
         [SerializeField] private Vector2 direction;
         [SerializeField] private GameplayTagSet tags;
+        [SerializeField] private float poiseDamage;
 
         public DamageContext(
             GameObject source,
@@ -48,7 +49,8 @@ namespace TicGame.Architecture
             float amount,
             Vector2 hitPoint,
             Vector2 direction,
-            GameplayTagSet tags = null)
+            GameplayTagSet tags = null,
+            float poiseDamage = 0f)
         {
             this.source = source;
             this.target = target;
@@ -57,6 +59,7 @@ namespace TicGame.Architecture
             this.hitPoint = hitPoint;
             this.direction = direction;
             this.tags = tags;
+            this.poiseDamage = Mathf.Max(0f, poiseDamage);
         }
 
         public GameObject Source => source;
@@ -66,6 +69,7 @@ namespace TicGame.Architecture
         public Vector2 HitPoint => hitPoint;
         public Vector2 Direction => direction;
         public GameplayTagSet Tags => tags;
+        public float PoiseDamage => poiseDamage;
     }
 
     [Serializable]

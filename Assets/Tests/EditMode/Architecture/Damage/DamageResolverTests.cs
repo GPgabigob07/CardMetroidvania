@@ -181,6 +181,48 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(0f, health.CurrentHealth);
         }
 
+        [Test]
+        public void Resolve_InstanceWithPoiseDamage_ForwardsPoiseToTargetContext()
+        {
+            var report = DamageResolver.Resolve(CreateRequest(poiseDamage: 12f));
+
+            Assert.AreEqual(12f, report.TargetResults[0].Context.PoiseDamage);
+        }
+
+        [Test]
+        public void Resolve_InstanceWithNegativePoiseDamage_ClampsToZero()
+        {
+            var report = DamageResolver.Resolve(CreateRequest(poiseDamage: -5f));
+
+            Assert.AreEqual(0f, report.TargetResults[0].Context.PoiseDamage);
+        }
+
+        private DamageRequest CreateRequest(float poiseDamage)
+        {
+            var source = CreateObject("Source");
+            var target = CreateObject("Target");
+            CreateInitializedHealth(target);
+            var instance = new DamageInstance(
+                instanceId: "poise-instance",
+                sourceObject: source,
+                profile: null,
+                formula: new DamageFormulaValues(
+                    attack: 1f,
+                    strikePercent: 1f,
+                    strikeBonusPercent: 0f,
+                    attackBuffPercent: 0f,
+                    flatDamage: 0f,
+                    finalDamagePercent: 0f,
+                    critValue: 1f),
+                poiseDamage: poiseDamage);
+
+            return new DamageRequest(
+                instance,
+                new[] { target },
+                Vector2.zero,
+                Vector2.right);
+        }
+
         private GameObject CreateObject(string name)
         {
             var instance = new GameObject(name);

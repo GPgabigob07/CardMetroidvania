@@ -122,6 +122,10 @@ namespace TicGame.Architecture
                 && armedSupplemental.AttackExecutionId == attackExecutionId
                 ? supplementalDamageProfile
                 : null;
+            var poiseDamage = armedSupplemental.IsArmed
+                && armedSupplemental.AttackExecutionId == attackExecutionId
+                ? armedSupplemental.PoiseDamage
+                : 0f;
             return new DamageInstance(
                 instanceId: instanceId,
                 sourceObject: gameObject,
@@ -137,7 +141,8 @@ namespace TicGame.Architecture
                 maxTargets: maxTargets,
                 attackExecutionId: attackExecutionId,
                 knockbackForce: appliedKnockback,
-                procPolicy: DamageProcPolicy.PrimaryAttack);
+                procPolicy: DamageProcPolicy.PrimaryAttack,
+                poiseDamage: poiseDamage);
         }
 
         public void BeginAttack(string executionId)
@@ -224,13 +229,15 @@ namespace TicGame.Architecture
             string attackExecutionId,
             string effectId,
             float totalMultiplier,
-            CardDefinitionSO card = null)
+            CardDefinitionSO card = null,
+            float poiseDamage = 0f)
         {
             armedSupplemental = new ArmedSupplementalDamage(
                 attackExecutionId,
                 effectId,
                 Mathf.Max(1f, totalMultiplier),
-                card);
+                card,
+                Mathf.Max(0f, poiseDamage));
             cardFeedback?.UpsertHudEffect(new CardHudEffectViewModel(
                 effectKey: BuildFeedbackKey(SupplementalFeedbackId),
                 sourceObject: gameObject,
@@ -434,7 +441,8 @@ namespace TicGame.Architecture
                         critValue: 1f),
                     attackExecutionId: report.Instance.AttackExecutionId,
                     provenance: provenance,
-                    procPolicy: DamageProcPolicy.SupplementalDefault);
+                    procPolicy: DamageProcPolicy.SupplementalDefault,
+                    poiseDamage: armed.PoiseDamage);
                 var request = new DamageRequest(
                     instance: instance,
                     candidateTargets: new[] { targetResult.Context.Target },
@@ -544,18 +552,21 @@ namespace TicGame.Architecture
                 string attackExecutionId,
                 string effectId,
                 float totalMultiplier,
-                CardDefinitionSO card)
+                CardDefinitionSO card,
+                float poiseDamage)
             {
                 AttackExecutionId = attackExecutionId;
                 EffectId = effectId;
                 TotalMultiplier = totalMultiplier;
                 Card = card;
+                PoiseDamage = poiseDamage;
             }
 
             public string AttackExecutionId { get; }
             public string EffectId { get; }
             public float TotalMultiplier { get; }
             public CardDefinitionSO Card { get; }
+            public float PoiseDamage { get; }
             public bool IsArmed => !string.IsNullOrWhiteSpace(AttackExecutionId);
         }
 

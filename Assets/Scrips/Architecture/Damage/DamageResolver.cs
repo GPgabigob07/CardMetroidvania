@@ -48,7 +48,8 @@ namespace TicGame.Architecture
                     amount: finalAmount,
                     hitPoint: request.HitPoint,
                     direction: request.Direction,
-                    tags: instance.Tags);
+                    tags: instance.Tags,
+                    poiseDamage: instance.PoiseDamage);
 
                 var result = damageable.ApplyDamage(context: context);
                 var targetResult = new DamageTargetResult(
