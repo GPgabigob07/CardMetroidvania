@@ -39,7 +39,7 @@ namespace TicGame.Architecture
         public void Stop()
         {
             ResolveBody();
-            if (body != null)
+            if (isFlying && body != null)
             {
                 body.linearVelocity = Vector2.zero;
             }

@@ -49,5 +49,18 @@ namespace TicGame.Architecture.Tests
 
             Assert.AreEqual(11.5f, prediction.x, 0.001f);
         }
+
+        [Test]
+        public void LockPrediction_NonDivisibleSampleStep_InterpolatesFinalPositionAtWindupBoundary()
+        {
+            predictor.Configure(windupDuration: 0.2f, leadTime: 0.2f, maximumLeadDistance: 10f);
+            predictor.BeginSample(Vector2.zero);
+            predictor.Sample(new Vector2(1.5f, 0f), 0.15f);
+            predictor.Sample(new Vector2(3f, 0f), 0.15f);
+
+            var prediction = predictor.LockPrediction();
+
+            Assert.AreEqual(4f, prediction.x, 0.001f);
+        }
     }
 }

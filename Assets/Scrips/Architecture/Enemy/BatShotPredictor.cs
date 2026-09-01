@@ -30,8 +30,18 @@ namespace TicGame.Architecture
                 return;
             }
 
-            latestSamplePosition = playerPosition;
-            sampledDuration = Mathf.Min(windupDuration, sampledDuration + Mathf.Max(0f, deltaTime));
+            var providedDuration = Mathf.Max(0f, deltaTime);
+            if (providedDuration <= 0f)
+            {
+                return;
+            }
+
+            var acceptedDuration = Mathf.Min(windupDuration - sampledDuration, providedDuration);
+            latestSamplePosition = Vector2.Lerp(
+                latestSamplePosition,
+                playerPosition,
+                acceptedDuration / providedDuration);
+            sampledDuration += acceptedDuration;
         }
 
         public Vector2 LockPrediction()

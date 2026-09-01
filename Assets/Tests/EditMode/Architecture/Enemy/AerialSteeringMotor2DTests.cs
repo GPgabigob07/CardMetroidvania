@@ -44,6 +44,18 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void Stop_AfterBeginFall_PreservesDescendingImpactVelocity()
+        {
+            var motor = CreateMotor(out var body);
+            body.linearVelocity = new Vector2(1f, -12f);
+            motor.BeginFall();
+
+            motor.Stop();
+
+            Assert.AreEqual(new Vector2(1f, -12f), body.linearVelocity);
+        }
+
+        [Test]
         public void ResumeFlight_DisablesGravityAfterFall()
         {
             var motor = CreateMotor(out var body);
