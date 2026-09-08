@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: 537d1fd65f8ef1441bba6627f6b7861a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -34428106985438488
+    second: BatMachine_PatrolRandom-source_0
+  - first:
+      213: 7836327522874844356
+    second: BatMachine_PatrolRandom-source_1
+  - first:
+      213: -806974285909461335
+    second: BatMachine_PatrolRandom-source_2
+  - first:
+      213: 7633526388668061107
+    second: BatMachine_PatrolRandom-source_3
+  - first:
+      213: 6037595674983178200
+    second: BatMachine_PatrolRandom-source_4
+  - first:
+      213: -5614852750342559533
+    second: BatMachine_PatrolRandom-source_5
+  - first:
+      213: -7491538258441174535
+    second: BatMachine_PatrolRandom-source_6
+  - first:
+      213: 4639563715905554908
+    second: BatMachine_PatrolRandom-source_7
+  - first:
+      213: -1903469855638915668
+    second: BatMachine_PatrolRandom-source_8
+  - first:
+      213: 7537331579316183974
+    second: BatMachine_PatrolRandom-source_9
+  - first:
+      213: -5315097332730322842
+    second: BatMachine_PatrolRandom-source_10
+  - first:
+      213: 2750775967376640008
+    second: BatMachine_PatrolRandom-source_11
+  - first:
+      213: 5439097350138773171
+    second: BatMachine_PatrolRandom-source_12
+  - first:
+      213: 4324319178095551821
+    second: BatMachine_PatrolRandom-source_13
+  - first:
+      213: -4856038419221341169
+    second: BatMachine_PatrolRandom-source_14
+  - first:
+      213: 1222196312185246508
+    second: BatMachine_PatrolRandom-source_15
+  - first:
+      213: 7445930094608951031
+    second: BatMachine_PatrolRandom-source_16
+  - first:
+      213: 5463878995556584588
+    second: BatMachine_PatrolRandom-source_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 138
+        width: 310
+        height: 566
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e208d0b1dfa58ff0800000000000000
+      internalID: -34428106985438488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_1
+      rect:
+        serializedVersion: 2
+        x: 326
+        y: 254
+        width: 461
+        height: 430
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c462980d5a30cc60800000000000000
+      internalID: 7836327522874844356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_2
+      rect:
+        serializedVersion: 2
+        x: 941
+        y: 586
+        width: 313
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a6fd79992d0dc4f0800000000000000
+      internalID: -806974285909461335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_3
+      rect:
+        serializedVersion: 2
+        x: 1287
+        y: 610
+        width: 285
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b5512c6ecbbfe960800000000000000
+      internalID: 7633526388668061107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_4
+      rect:
+        serializedVersion: 2
+        x: 1762
+        y: 130
+        width: 396
+        height: 566
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8df9ec02749d9c350800000000000000
+      internalID: 6037595674983178200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_5
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 586
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d8e4bd1c290412b0800000000000000
+      internalID: -5614852750342559533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_6
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 63
+        width: 337
+        height: 148
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f18d5455a5b80890800000000000000
+      internalID: -7491538258441174535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_7
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 101
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd9875f3e9a036040800000000000000
+      internalID: 4639563715905554908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_8
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 226
+        width: 292
+        height: 277
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca57af550448595e0800000000000000
+      internalID: -1903469855638915668
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_9
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 130
+        width: 150
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a3a97b032bf99860800000000000000
+      internalID: 7537331579316183974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_10
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 190
+        width: 14
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 660abffe22bfc36b0800000000000000
+      internalID: -5315097332730322842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_11
+      rect:
+        serializedVersion: 2
+        x: 812
+        y: 180
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8088a280b28bc2620800000000000000
+      internalID: 2750775967376640008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_12
+      rect:
+        serializedVersion: 2
+        x: 965
+        y: 79
+        width: 273
+        height: 390
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3be3acde83e8b7b40800000000000000
+      internalID: 5439097350138773171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_13
+      rect:
+        serializedVersion: 2
+        x: 1141
+        y: 98
+        width: 8
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d456bc99161130c30800000000000000
+      internalID: 4324319178095551821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_14
+      rect:
+        serializedVersion: 2
+        x: 1252
+        y: 71
+        width: 299
+        height: 428
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0c99ae39c2eb9cb0800000000000000
+      internalID: -4856038419221341169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_15
+      rect:
+        serializedVersion: 2
+        x: 1398
+        y: 132
+        width: 15
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c231899021d16f010800000000000000
+      internalID: 1222196312185246508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_16
+      rect:
+        serializedVersion: 2
+        x: 1544
+        y: 63
+        width: 327
+        height: 484
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f6ae8788f1455760800000000000000
+      internalID: 7445930094608951031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BatMachine_PatrolRandom-source_17
+      rect:
+        serializedVersion: 2
+        x: 1721
+        y: 95
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8c4ed16ff893db40800000000000000
+      internalID: 5463878995556584588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      BatMachine_PatrolRandom-source_0: -34428106985438488
+      BatMachine_PatrolRandom-source_1: 7836327522874844356
+      BatMachine_PatrolRandom-source_10: -5315097332730322842
+      BatMachine_PatrolRandom-source_11: 2750775967376640008
+      BatMachine_PatrolRandom-source_12: 5439097350138773171
+      BatMachine_PatrolRandom-source_13: 4324319178095551821
+      BatMachine_PatrolRandom-source_14: -4856038419221341169
+      BatMachine_PatrolRandom-source_15: 1222196312185246508
+      BatMachine_PatrolRandom-source_16: 7445930094608951031
+      BatMachine_PatrolRandom-source_17: 5463878995556584588
+      BatMachine_PatrolRandom-source_2: -806974285909461335
+      BatMachine_PatrolRandom-source_3: 7633526388668061107
+      BatMachine_PatrolRandom-source_4: 6037595674983178200
+      BatMachine_PatrolRandom-source_5: -5614852750342559533
+      BatMachine_PatrolRandom-source_6: -7491538258441174535
+      BatMachine_PatrolRandom-source_7: 4639563715905554908
+      BatMachine_PatrolRandom-source_8: -1903469855638915668
+      BatMachine_PatrolRandom-source_9: 7537331579316183974
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
