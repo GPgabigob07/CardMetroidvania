@@ -21,6 +21,9 @@ namespace TicGame.Architecture
         [SerializeField] private float multiplier;
         [Tooltip("Stable effect id used by linked supplemental damage provenance.")]
         [SerializeField] private string effectId;
+        [Min(0f)]
+        [Tooltip("Poise damage applied by damage-capable operations.")]
+        [SerializeField] private float poiseDamage;
 
         public CardOperationDefinition(
             CardOperationKind kind,
@@ -29,7 +32,8 @@ namespace TicGame.Architecture
             AbilityDefinitionSO ability = null,
             float amount = 0f,
             float multiplier = 1f,
-            string effectId = null)
+            string effectId = null,
+            float poiseDamage = 0f)
         {
             this.kind = kind;
             this.status = status;
@@ -38,6 +42,7 @@ namespace TicGame.Architecture
             this.amount = amount;
             this.multiplier = multiplier;
             this.effectId = effectId;
+            this.poiseDamage = poiseDamage;
         }
 
         public CardOperationKind Kind => kind;
@@ -47,13 +52,19 @@ namespace TicGame.Architecture
         public float Amount => amount;
         public float Multiplier => multiplier;
         public string EffectId => effectId;
+        public float PoiseDamage => poiseDamage;
 
         public bool IsValid()
         {
             if (!float.IsFinite(amount)
                 || amount < 0f
                 || !float.IsFinite(multiplier)
-                || multiplier < 0f)
+                || multiplier < 0f
+                || !float.IsFinite(poiseDamage)
+                || poiseDamage < 0f
+                || (poiseDamage > 0f
+                    && kind is not CardOperationKind.ModifyDamage
+                        and not CardOperationKind.ArmSupplementalDamage))
             {
                 return false;
             }

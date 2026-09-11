@@ -380,7 +380,8 @@ namespace TicGame.Architecture
                             context.AttackExecutionId,
                             operation.EffectId,
                             totalMultiplier,
-                            card);
+                            card,
+                            operation.PoiseDamage);
                         break;
                     case CardOperationKind.InvokeAbility: extraJump.Invoke(operation.Ability, card); break;
                 }

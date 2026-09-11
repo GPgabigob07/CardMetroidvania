@@ -48,5 +48,19 @@ namespace TicGame.Architecture
                 effectId: effectId,
                 chainDepth: chainDepth);
         }
+
+        public static DamageProvenance Converted(
+            string parentInstanceId,
+            string rootInstanceId,
+            string effectId,
+            int chainDepth = 1)
+        {
+            return new DamageProvenance(
+                originKind: DamageOriginKind.Converted,
+                parentInstanceId: parentInstanceId,
+                rootInstanceId: rootInstanceId,
+                effectId: effectId,
+                chainDepth: chainDepth);
+        }
     }
 }

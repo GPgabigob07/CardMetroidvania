@@ -15,6 +15,7 @@ namespace TicGame.Architecture
         public TargetPriorityMode TargetPriorityMode;
         public string AttackExecutionId;
         public float KnockbackForce;
+        public float PoiseDamage;
         public DamageProvenance Provenance;
         public DamageProcPolicy ProcPolicy;
 
@@ -29,7 +30,8 @@ namespace TicGame.Architecture
             string attackExecutionId = null,
             float knockbackForce = 0f,
             DamageProvenance? provenance = null,
-            DamageProcPolicy procPolicy = DamageProcPolicy.PrimaryAttack)
+            DamageProcPolicy procPolicy = DamageProcPolicy.PrimaryAttack,
+            float poiseDamage = 0f)
         {
             InstanceId = string.IsNullOrWhiteSpace(value: instanceId) ? Guid.NewGuid().ToString(format: "N") : instanceId;
             SourceObject = sourceObject;
@@ -40,6 +42,7 @@ namespace TicGame.Architecture
             TargetPriorityMode = targetPriorityMode;
             AttackExecutionId = attackExecutionId;
             KnockbackForce = Mathf.Max(a: 0f, b: knockbackForce);
+            PoiseDamage = Mathf.Max(a: 0f, b: poiseDamage);
             Provenance = provenance ?? DamageProvenance.Primary(instanceId: InstanceId);
             ProcPolicy = procPolicy;
         }

@@ -437,6 +437,21 @@ namespace TicGame.Architecture
 
             protected override void OnEnter()
             {
+                Owner.EnterIdle();
+            }
+
+            public override void Tick(float deltaTime)
+            {
+                Owner.TickIdle();
+            }
+        }
+
+        private sealed class PatrolState : OwnedState<GolemChargerState, GolemChargerBrain>
+        {
+            public override GolemChargerState Id => GolemChargerState.Patrol;
+
+            protected override void OnEnter()
+            {
                 Owner.EnterPatrol();
             }
 
@@ -448,21 +463,6 @@ namespace TicGame.Architecture
             public override void FixedTick(float fixedDeltaTime)
             {
                 Owner.FixedTickPatrol();
-            }
-        }
-
-        private sealed class PatrolState : OwnedState<GolemChargerState, GolemChargerBrain>
-        {
-            public override GolemChargerState Id => GolemChargerState.Patrol;
-
-            protected override void OnEnter()
-            {
-                Owner.EnterIdle();
-            }
-
-            public override void Tick(float deltaTime)
-            {
-                Owner.TickIdle();
             }
         }
 

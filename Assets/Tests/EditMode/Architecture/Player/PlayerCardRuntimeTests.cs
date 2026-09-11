@@ -225,6 +225,60 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(0, effects.KnockbackCharges);
         }
 
+        [Test]
+        public void Commit_ArmedSupplementalDamageCard_ForwardsAuthoredPoiseToPrimaryDamage()
+        {
+            var energy = CreateAsset<ResourceDefinitionSO>("Energy");
+            var player = new GameObject("Player");
+            objectsToDestroy.Add(player);
+            var wallet = player.AddComponent<PlayerResourceWallet>();
+            wallet.ConfigureSingleResource(energy, startingAmount: 10f, maximumAmount: 10f);
+            var effects = player.AddComponent<PlayerCombatEffects>();
+            var cards = player.AddComponent<PlayerCardRuntime>();
+            cards.Configure(wallet, effects, player.AddComponent<PlayerExtraJumpRuntime>());
+            var card = CreateSupplementalDamageCard(energy, poiseDamage: 12f);
+            cards.EquipCard(PlayerCardTimeState.Chain, card);
+
+            Assert.IsTrue(cards.Commit(PlayerCardTimeState.Chain, "attack-1", isAirborne: false));
+
+            var instance = effects.BuildPrimaryDamageInstance(
+                "primary",
+                "attack-1",
+                1f,
+                1f,
+                0f,
+                1);
+
+            Assert.AreEqual(12f, instance.PoiseDamage);
+        }
+
+        [Test]
+        public void Commit_ZeroPoiseSupplementalDamageCard_EmitsZeroPoise()
+        {
+            var energy = CreateAsset<ResourceDefinitionSO>("Energy");
+            var player = new GameObject("Player");
+            objectsToDestroy.Add(player);
+            var wallet = player.AddComponent<PlayerResourceWallet>();
+            wallet.ConfigureSingleResource(energy, startingAmount: 10f, maximumAmount: 10f);
+            var effects = player.AddComponent<PlayerCombatEffects>();
+            var cards = player.AddComponent<PlayerCardRuntime>();
+            cards.Configure(wallet, effects, player.AddComponent<PlayerExtraJumpRuntime>());
+            var card = CreateSupplementalDamageCard(energy, poiseDamage: 0f);
+            cards.EquipCard(PlayerCardTimeState.Chain, card);
+
+            Assert.IsTrue(cards.Commit(PlayerCardTimeState.Chain, "attack-1", isAirborne: false));
+
+            var instance = effects.BuildPrimaryDamageInstance(
+                "primary",
+                "attack-1",
+                1f,
+                1f,
+                0f,
+                1);
+
+            Assert.AreEqual(0f, instance.PoiseDamage);
+        }
+
         [TestCase(PlayerActionState.Attack1, PlayerCardTimeState.Chain)]
         [TestCase(PlayerActionState.Attack2, PlayerCardTimeState.Chain)]
         [TestCase(PlayerActionState.Attack3, PlayerCardTimeState.Finisher)]
@@ -384,6 +438,37 @@ namespace TicGame.Architecture.Tests
                 PlayerCardTimeState.Chain,
                 energy,
                 15f,
+                effect);
+        }
+
+        private CardDefinitionSO CreateSupplementalDamageCard(
+            ResourceDefinitionSO energy,
+            float poiseDamage)
+        {
+            var effect = CreateAsset<CardEffectDefinitionSO>("SupplementalDamageEffect");
+            effect.Configure(
+                statusDefinition: null,
+                conditions: null,
+                operations: new[]
+                {
+                    new CardOperationDefinition(
+                        CardOperationKind.ArmSupplementalDamage,
+                        amount: 1f,
+                        effectId: "overcharge",
+                        poiseDamage: poiseDamage)
+                },
+                rules: null,
+                lifetimeDefinitions: new[]
+                {
+                    new CardLifetimeDefinition(CardLifetimeKind.Immediate)
+                },
+                stackingDefinition: new CardStackingDefinition(
+                    CardStackingKind.RejectIfActive));
+            return CreateCard(
+                "SupplementalDamage",
+                PlayerCardTimeState.Chain,
+                energy,
+                1f,
                 effect);
         }
 

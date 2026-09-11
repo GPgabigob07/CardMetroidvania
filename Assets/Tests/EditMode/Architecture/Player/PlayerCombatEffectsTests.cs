@@ -121,6 +121,25 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void BuildPrimaryDamageInstance_ArmedDamageCard_EmitsItsPoiseDamage()
+        {
+            var source = CreateObject("Player");
+            var effects = source.AddComponent<PlayerCombatEffects>();
+            var card = CreateCard("card.overcharge");
+            effects.ArmSupplementalDamage("attack-1", "overcharge", 2f, card, poiseDamage: 12f);
+
+            var instance = effects.BuildPrimaryDamageInstance(
+                "primary",
+                "attack-1",
+                1f,
+                1f,
+                0f,
+                1);
+
+            Assert.AreEqual(12f, instance.PoiseDamage);
+        }
+
+        [Test]
         public void EnergyGainCharges_ReportHudAndWorldFeedback()
         {
             var energy = CreateResource();
