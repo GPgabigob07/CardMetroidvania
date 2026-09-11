@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,7 +93,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,19 +121,19 @@ TextureImporter:
       name: BatMachine_WindupFire_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 10
-        width: 30
-        height: 39
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 25eecf036e57286b0800000000000000
+      spriteID: 4b59613079b7e30aad97013434b99076
       internalID: -5295540580309471662
       vertices: []
       indices: 
@@ -143,19 +143,19 @@ TextureImporter:
       name: BatMachine_WindupFire_1
       rect:
         serializedVersion: 2
-        x: 80
-        y: 15
-        width: 32
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 346ab8673760e4e00800000000000000
+      spriteID: c9cda3e66df0236030c3dc67ce86e589
       internalID: 1030768457694291523
       vertices: []
       indices: 
@@ -165,19 +165,19 @@ TextureImporter:
       name: BatMachine_WindupFire_2
       rect:
         serializedVersion: 2
-        x: 139
-        y: 22
-        width: 42
-        height: 41
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 847aa6fdc9f82b370800000000000000
+      spriteID: 6d6a3207192e8374ea4fa08ecae0afc9
       internalID: 8336883764142188360
       vertices: []
       indices: 
@@ -187,19 +187,19 @@ TextureImporter:
       name: BatMachine_WindupFire_3
       rect:
         serializedVersion: 2
-        x: 203
-        y: 1
-        width: 42
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 615b065e745e48220800000000000000
+      spriteID: e4a52d238f8af7d7abc59f5d562989c0
       internalID: 2487364991169115414
       vertices: []
       indices: 
@@ -209,19 +209,19 @@ TextureImporter:
       name: BatMachine_WindupFire_4
       rect:
         serializedVersion: 2
-        x: 272
-        y: 13
-        width: 32
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6a5bd01f5fe39fad0800000000000000
+      spriteID: e17a2272dd01ad7a9a1279f28c2519e2
       internalID: -2668032078208191066
       vertices: []
       indices: 
@@ -231,19 +231,19 @@ TextureImporter:
       name: BatMachine_WindupFire_5
       rect:
         serializedVersion: 2
-        x: 336
-        y: 18
-        width: 32
-        height: 44
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 6fd1b98fb2395df60800000000000000
+      spriteID: 59c74759adf279179335a06f19f965b3
       internalID: 8058508925313162742
       vertices: []
       indices: 
@@ -253,19 +253,19 @@ TextureImporter:
       name: BatMachine_WindupFire_6
       rect:
         serializedVersion: 2
-        x: 401
-        y: 19
-        width: 29
-        height: 30
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2b5d34f70c45a1640800000000000000
+      spriteID: c7c2a2d7e5a05a5e139e89da84b74cb8
       internalID: 5051443117795038642
       vertices: []
       indices: 
@@ -275,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e21383cf7882f6046a5a720b6ec91e82
     internalID: 0
     vertices: []
     indices: 

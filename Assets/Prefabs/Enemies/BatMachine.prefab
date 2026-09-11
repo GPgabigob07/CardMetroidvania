@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8305087930574284476}
   - component: {fileID: 5881797004350264100}
   - component: {fileID: 4651149036021590822}
+  - component: {fileID: 5762102106895340750}
   m_Layer: 8
   m_Name: ProjectileTemplate
   m_TagString: Untagged
@@ -196,7 +197,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 8aa4163dd182fe646b165f69959206de, type: 3}
+  m_Sprite: {fileID: 7960147187202806011, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -206,6 +207,27 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &5762102106895340750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360107039611002496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2736053294e7314eab4b05e9177a728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.ProjectileSpinVisual
+  projectile: {fileID: 5881797004350264100}
+  renderer: {fileID: 4651149036021590822}
+  frames:
+  - {fileID: 7960147187202806011, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
+  - {fileID: 1243710038436563773, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
+  - {fileID: 7461846414048977090, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
+  - {fileID: 2471280132487291235, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
+  - {fileID: -4039381762744437141, guid: 544d72e507a37c54389ef3176c3c7f7f, type: 3}
+  framesPerSecond: 5
 --- !u!1 &2464818843275882257
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1652549914500194478}
   - component: {fileID: 5120349563826737243}
+  - component: {fileID: 3137610690098749283}
   m_Layer: 8
   m_Name: VisualRoot
   m_TagString: Untagged
@@ -297,6 +320,91 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &3137610690098749283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2464818843275882257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4802f07a1c6e9843a390a811511402c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.BatMachineVisualController
+  brain: {fileID: 2577891878541078280}
+  body: {fileID: 523230384927732986}
+  renderer: {fileID: 5120349563826737243}
+  stateBindings:
+  - state: 0
+    frames:
+    - {fileID: -2365943488303911678, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: 5995714417931066223, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: 6695068106307076342, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: 8468056160123723861, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: 7840497488183494980, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: -8836866735941226826, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+    - {fileID: -8228572057339998933, guid: 09e3df9505022074d949b49240d7ffe7, type: 3}
+  - state: 1
+    frames:
+    - {fileID: 3345214147405756161, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: 9222067217984421172, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: -4797729802291124325, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: -8081760075267616128, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: 3484981880286139049, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: 4901558002124549962, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+    - {fileID: 2269067098933907146, guid: d7736f8cdbc3e11458742ae2d483423d, type: 3}
+  - state: 2
+    frames:
+    - {fileID: -5295540580309471662, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: 1030768457694291523, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: 8336883764142188360, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: 2487364991169115414, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: -2668032078208191066, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: 8058508925313162742, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+    - {fileID: 5051443117795038642, guid: 80cc85d190f6bdc4187bde0b808e4deb, type: 3}
+  - state: 3
+    frames:
+    - {fileID: 8987719437118032571, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: -1014483599868634231, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: -3531925186427840160, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: 4954770175153018610, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: 3522639443379152384, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: 2947161672619851232, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+    - {fileID: 2734858876711481589, guid: 7d1fe95c858e6a74cacbe4bfdc79eee7, type: 3}
+  - state: 4
+    frames:
+    - {fileID: -5778472001912209800, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: 5295236587623240592, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: -5776517505950003266, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: -2173881669808682788, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: 9174291809281328842, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: 1602914386366649474, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+    - {fileID: -3246045116227452077, guid: d39a826ebb290224d9d806904fda8fc9, type: 3}
+  - state: 5
+    frames:
+    - {fileID: 8379799263828414870, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: 7966652262886606891, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: 3682758470357682627, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: -8701360751857729547, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: 5531674830276882120, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: 1767882819130427657, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+    - {fileID: -4024633658673707597, guid: b02d9fb13e91e014faebe4e54820888c, type: 3}
+  - state: 6
+    frames:
+    - {fileID: -7286859592264871579, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: 870205990248664429, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: -1240484291318658172, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: 5225878723261360961, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: 3764869430564451931, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: 2664393591628093056, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+    - {fileID: -6142060697478724101, guid: 6515d9b093a95804aaadd045afe0aac8, type: 3}
+  framesPerSecond: 8
+  basePlaybackRate: 1
+  maximumAerialSpeed: 5
+  minimumVelocityPlaybackRate: 0.8
+  maximumVelocityPlaybackRate: 1.2
+  facingDeadZone: 0.01
 --- !u!1 &2901764028970451344
 GameObject:
   m_ObjectHideFlags: 0

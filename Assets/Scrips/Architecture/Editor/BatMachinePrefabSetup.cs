@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using TicGame.Architecture;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,9 +16,29 @@ namespace TicGame.Architecture.EditorTools
         private const string PlayerLayerName = "PlayerHitbox";
         private const string EnemyDefinitionPath = "Assets/Data/Enemies/Enemy_BatMachine.asset";
         private const string ProjectileDamagePath = "Assets/Data/Damage/Damage_BatProjectile.asset";
-        private const string ProjectileSpritePath = "Assets/Art/Enemies/BatMachine/BatMachineProjectile-v2.png";
+        private const string BatSheetDirectory = "Assets/Art/Enemies/BatMachine/";
+        private const string ProjectileSpritePath = BatSheetDirectory + "BatMachineProjectile-v2.png";
+        private const string ProjectileSpinPath = BatSheetDirectory + "BatMachineProjectile_Spin.png";
         private const string PrefabPath = "Assets/Prefabs/Enemies/BatMachine.prefab";
         private const string ScenePath = "Assets/Scenes/Test_BatMachine.unity";
+        private const int BatFrameWidth = 64;
+        private const int BatFrameHeight = 64;
+        private const int ProjectileFrameWidth = 32;
+        private const int ProjectileFrameHeight = 32;
+        private const int BatFrameCount = 7;
+        private const int ProjectileFrameCount = 5;
+        private const float SpritePixelsPerUnit = 64f;
+
+        private static readonly Dictionary<BatMachineState, string> BatSheetPaths = new()
+        {
+            { BatMachineState.PatrolRandom, BatSheetDirectory + "BatMachine_PatrolRandom.png" },
+            { BatMachineState.Engage, BatSheetDirectory + "BatMachine_Engage.png" },
+            { BatMachineState.WindupFire, BatSheetDirectory + "BatMachine_WindupFire.png" },
+            { BatMachineState.Evade, BatSheetDirectory + "BatMachine_Evade.png" },
+            { BatMachineState.StunnedFall, BatSheetDirectory + "BatMachine_StunnedFall.png" },
+            { BatMachineState.GroundedRecovery, BatSheetDirectory + "BatMachine_GroundedRecovery.png" },
+            { BatMachineState.Dead, BatSheetDirectory + "BatMachine_Dead.png" }
+        };
 
         [MenuItem("TIC/Setup/Create Or Update Bat Machine")]
         public static void CreateOrUpdateBatMachine()
@@ -36,14 +58,29 @@ namespace TicGame.Architecture.EditorTools
 
             var definition = CreateOrLoadEnemyDefinition();
             var projectileDamage = CreateOrLoadProjectileDamage();
-            var projectileSprite = ConfigureProjectileSprite();
-            if (projectileSprite == null)
+            var legacyProjectileSprite = ConfigureLegacyProjectileSprite();
+            var batFramesByState = ConfigureBatVisualSheets();
+            var projectileFrames = ConfigureSpriteSheet(
+                ProjectileSpinPath,
+                ProjectileFrameWidth,
+                ProjectileFrameHeight,
+                SpritePixelsPerUnit);
+            if (legacyProjectileSprite == null
+                || !HasExpectedFrameCount(batFramesByState.Values, BatFrameCount)
+                || projectileFrames.Count != ProjectileFrameCount)
             {
-                Debug.LogError($"Bat Machine setup requires an imported Sprite at {ProjectileSpritePath}.");
+                Debug.LogError("Bat Machine setup requires seven frames for each Bat sheet and five projectile spin frames.");
                 return;
             }
 
-            CreateOrUpdatePrefab(definition, projectileDamage, projectileSprite, enemyLayer, environmentLayer, playerLayer);
+            CreateOrUpdatePrefab(
+                definition,
+                projectileDamage,
+                batFramesByState,
+                projectileFrames,
+                enemyLayer,
+                environmentLayer,
+                playerLayer);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("Created or updated the Bat Machine authored data and prefab.");
@@ -125,31 +162,121 @@ namespace TicGame.Architecture.EditorTools
             return profile;
         }
 
-        private static Sprite ConfigureProjectileSprite()
+        private static Dictionary<BatMachineState, Sprite[]> ConfigureBatVisualSheets()
+        {
+            var framesByState = new Dictionary<BatMachineState, Sprite[]>();
+            foreach (var pair in BatSheetPaths)
+            {
+                var frames = ConfigureSpriteSheet(pair.Value, BatFrameWidth, BatFrameHeight, SpritePixelsPerUnit);
+                framesByState[pair.Key] = frames.ToArray();
+            }
+
+            return framesByState;
+        }
+
+        private static Sprite ConfigureLegacyProjectileSprite()
         {
             AssetDatabase.Refresh();
             AssetDatabase.ImportAsset(ProjectileSpritePath, ImportAssetOptions.ForceUpdate);
             var importer = AssetImporter.GetAtPath(ProjectileSpritePath) as TextureImporter;
             if (importer == null)
             {
+                Debug.LogError($"Missing legacy Bat Machine projectile sprite at {ProjectileSpritePath}.");
                 return null;
             }
 
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
-            importer.spritePixelsPerUnit = 64f;
-            importer.maxTextureSize = 32;
+            importer.spritePixelsPerUnit = SpritePixelsPerUnit;
+            importer.maxTextureSize = ProjectileFrameWidth;
             importer.filterMode = FilterMode.Point;
             importer.textureCompression = TextureImporterCompression.Uncompressed;
             importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
             importer.SaveAndReimport();
             return AssetDatabase.LoadAssetAtPath<Sprite>(ProjectileSpritePath);
+        }
+
+        private static List<Sprite> ConfigureSpriteSheet(
+            string path,
+            int frameWidth,
+            int frameHeight,
+            float pixelsPerUnit)
+        {
+            AssetDatabase.Refresh();
+            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
+            var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+            if (importer == null)
+            {
+                Debug.LogError($"Missing Bat Machine sprite sheet at {path}.");
+                return new List<Sprite>();
+            }
+
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Multiple;
+            importer.spritePixelsPerUnit = pixelsPerUnit;
+            importer.filterMode = FilterMode.Point;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+            importer.mipmapEnabled = false;
+            importer.alphaIsTransparency = true;
+            importer.SaveAndReimport();
+
+            var texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+            if (texture == null
+                || texture.width % frameWidth != 0
+                || texture.height != frameHeight)
+            {
+                Debug.LogError($"Bat Machine sprite sheet at {path} must be a single row of {frameWidth} by {frameHeight} frames.");
+                return new List<Sprite>();
+            }
+
+            var frameCount = texture.width / frameWidth;
+            var spriteRects = new SpriteRect[frameCount];
+            var sheetName = System.IO.Path.GetFileNameWithoutExtension(path);
+            for (var index = 0; index < frameCount; index++)
+            {
+                spriteRects[index] = new SpriteRect
+                {
+                    name = $"{sheetName}_{index}",
+                    alignment = SpriteAlignment.Custom,
+                    pivot = new Vector2(0.5f, 0.5f),
+                    spriteID = new GUID(Hash128.Compute($"{path}:{index}").ToString()),
+                    rect = new Rect(index * frameWidth, 0f, frameWidth, frameHeight)
+                };
+            }
+
+            var dataProviderFactories = new SpriteDataProviderFactories();
+            dataProviderFactories.Init();
+            var dataProvider = dataProviderFactories.GetSpriteEditorDataProviderFromObject(importer);
+            dataProvider.InitSpriteEditorDataProvider();
+            dataProvider.SetSpriteRects(spriteRects);
+            if (dataProvider is ISpriteNameFileIdDataProvider nameFileIdDataProvider)
+            {
+                nameFileIdDataProvider.SetNameFileIdPairs(spriteRects
+                    .Select(spriteRect => new SpriteNameFileIdPair(spriteRect.name, spriteRect.spriteID))
+                    .ToArray());
+            }
+
+            dataProvider.Apply();
+            importer.SaveAndReimport();
+            return AssetDatabase.LoadAllAssetsAtPath(path)
+                .OfType<Sprite>()
+                .OrderBy(sprite => sprite.rect.x)
+                .ToList();
+        }
+
+        private static bool HasExpectedFrameCount(IEnumerable<Sprite[]> clips, int expectedFrameCount)
+        {
+            return clips.All(clip => clip != null
+                && clip.Length == expectedFrameCount
+                && clip.All(sprite => sprite != null));
         }
 
         private static void CreateOrUpdatePrefab(
             EnemyDefinitionSO definition,
             DamageProfileSO projectileDamage,
-            Sprite projectileSprite,
+            IReadOnlyDictionary<BatMachineState, Sprite[]> batFramesByState,
+            IReadOnlyList<Sprite> projectileFrames,
             int enemyLayer,
             int environmentLayer,
             int playerLayer)
@@ -200,8 +327,10 @@ namespace TicGame.Architecture.EditorTools
                 projectileCollider.radius = 0.12f;
                 var projectile = GetOrAddComponent<EnemyProjectile2D>(projectileTemplate);
                 var projectileRenderer = GetOrAddComponent<SpriteRenderer>(projectileTemplate);
-                projectileRenderer.sprite = projectileSprite;
+                projectileRenderer.sprite = projectileFrames[0];
                 projectileRenderer.sortingOrder = 2;
+                var projectileSpinVisual = GetOrAddComponent<ProjectileSpinVisual>(projectileTemplate);
+                projectileSpinVisual.Configure(projectile, projectileRenderer, projectileFrames.ToArray());
                 projectileTemplate.SetActive(false);
 
                 var visual = GetOrCreateChild(root, "VisualRoot", enemyLayer);
@@ -210,6 +339,8 @@ namespace TicGame.Architecture.EditorTools
                 renderer.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
                 renderer.color = new Color(0.45f, 0.75f, 0.95f, 1f);
                 renderer.sortingOrder = 1;
+                var visualController = GetOrAddComponent<BatMachineVisualController>(visual);
+                visualController.Configure(brain, body, renderer, batFramesByState);
 
                 ConfigureComponents(
                     actor, health, poise, body, motor, monitor, policy, brain, launcher, projectile,

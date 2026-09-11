@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -99,7 +99,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,19 +127,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_0
       rect:
         serializedVersion: 2
-        x: 13
-        y: 17
-        width: 37
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 87e7b75745ebecfa0800000000000000
+      spriteID: 198c857f5746c2c8700772f897a4dc28
       internalID: -5778472001912209800
       vertices: []
       indices: 
@@ -149,19 +149,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_1
       rect:
         serializedVersion: 2
-        x: 80
-        y: 17
-        width: 32
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0935feefe957c7940800000000000000
+      spriteID: f12e1ec0a0bd3ce16a50fd6a12929b0e
       internalID: 5295236587623240592
       vertices: []
       indices: 
@@ -171,19 +171,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_2
       rect:
         serializedVersion: 2
-        x: 139
-        y: 15
-        width: 42
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ebf46030fefa5dfa0800000000000000
+      spriteID: b9318653c595d18fc0e6ab5f6d74ab74
       internalID: -5776517505950003266
       vertices: []
       indices: 
@@ -193,19 +193,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_3
       rect:
         serializedVersion: 2
-        x: 209
-        y: 15
-        width: 30
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: cd802579322d4d1e0800000000000000
+      spriteID: d3ed236c7ab6cd3d3a133fbfab7c7156
       internalID: -2173881669808682788
       vertices: []
       indices: 
@@ -215,19 +215,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_4
       rect:
         serializedVersion: 2
-        x: 272
-        y: 15
-        width: 22
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ac64df50bc1a15f70800000000000000
+      spriteID: 0a3d30b8508ef6463ddce27c1defa0f0
       internalID: 9174291809281328842
       vertices: []
       indices: 
@@ -237,19 +237,19 @@ TextureImporter:
       name: BatMachine_StunnedFall_5
       rect:
         serializedVersion: 2
-        x: 296
-        y: 16
-        width: 8
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2845fbc4422be3610800000000000000
+      spriteID: a748388049d4c603e8e9f5c86294c4f9
       internalID: 1602914386366649474
       vertices: []
       indices: 
@@ -259,64 +259,20 @@ TextureImporter:
       name: BatMachine_StunnedFall_6
       rect:
         serializedVersion: 2
-        x: 336
-        y: 16
-        width: 21
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3530f524a2bb3f2d0800000000000000
+      spriteID: 6cae2a47b6a2b253951c04d23a3347b9
       internalID: -3246045116227452077
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BatMachine_StunnedFall_7
-      rect:
-        serializedVersion: 2
-        x: 356
-        y: 16
-        width: 12
-        height: 10
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: afaba874e144fd060800000000000000
-      internalID: 6980372844287539962
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BatMachine_StunnedFall_8
-      rect:
-        serializedVersion: 2
-        x: 385
-        y: 2
-        width: 62
-        height: 35
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5cf06e92646e81320800000000000000
-      internalID: 2529024379793575877
       vertices: []
       indices: 
       edges: []
@@ -325,7 +281,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b67f373ad93ce5f4c869e70462dde0c4
     internalID: 0
     vertices: []
     indices: 
@@ -342,8 +298,6 @@ TextureImporter:
       BatMachine_StunnedFall_4: 9174291809281328842
       BatMachine_StunnedFall_5: 1602914386366649474
       BatMachine_StunnedFall_6: -3246045116227452077
-      BatMachine_StunnedFall_7: 6980372844287539962
-      BatMachine_StunnedFall_8: 2529024379793575877
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

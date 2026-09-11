@@ -58,7 +58,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -72,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -96,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -124,19 +124,19 @@ TextureImporter:
       name: BatMachine_Evade_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 4
-        width: 36
-        height: 47
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: bba4b46853bcabc70800000000000000
+      spriteID: 8f3fd890e7fb41eaf6b9dbca197fcc5e
       internalID: 8987719437118032571
       vertices: []
       indices: 
@@ -146,19 +146,19 @@ TextureImporter:
       name: BatMachine_Evade_1
       rect:
         serializedVersion: 2
-        x: 59
-        y: 5
-        width: 68
-        height: 55
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 98bde577a84dbe1f0800000000000000
+      spriteID: 6f0504d8bd8104208adfa26437502bad
       internalID: -1014483599868634231
       vertices: []
       indices: 
@@ -168,19 +168,19 @@ TextureImporter:
       name: BatMachine_Evade_2
       rect:
         serializedVersion: 2
-        x: 129
-        y: 15
-        width: 62
-        height: 36
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 06996b181c41cfec0800000000000000
+      spriteID: 57db2621752d2cd12f557ffa038e38a0
       internalID: -3531925186427840160
       vertices: []
       indices: 
@@ -190,19 +190,19 @@ TextureImporter:
       name: BatMachine_Evade_3
       rect:
         serializedVersion: 2
-        x: 148
-        y: 14
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 2f612b90931e2c440800000000000000
+      spriteID: 5c998c12ef700438dfe39c57b44b2a69
       internalID: 4954770175153018610
       vertices: []
       indices: 
@@ -212,19 +212,19 @@ TextureImporter:
       name: BatMachine_Evade_4
       rect:
         serializedVersion: 2
-        x: 193
-        y: 3
-        width: 62
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 006e466f8ede2e030800000000000000
+      spriteID: d6066c8838dadc373ffdb71eba8a7a4c
       internalID: 3522639443379152384
       vertices: []
       indices: 
@@ -234,19 +234,19 @@ TextureImporter:
       name: BatMachine_Evade_5
       rect:
         serializedVersion: 2
-        x: 257
-        y: 2
-        width: 62
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0edf6203deb66e820800000000000000
+      spriteID: 1ef45709bd296c77a1cf6e3bb9bc897f
       internalID: 2947161672619851232
       vertices: []
       indices: 
@@ -256,42 +256,20 @@ TextureImporter:
       name: BatMachine_Evade_6
       rect:
         serializedVersion: 2
-        x: 321
-        y: 6
-        width: 49
-        height: 53
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 5f0363198ab24f520800000000000000
+      spriteID: 8c30c41ace2ca1c95c6c00f0dcabe4e4
       internalID: 2734858876711481589
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BatMachine_Evade_7
-      rect:
-        serializedVersion: 2
-        x: 379
-        y: 3
-        width: 68
-        height: 58
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 743078e89ee2c6a10800000000000000
-      internalID: 1903948323124347719
       vertices: []
       indices: 
       edges: []
@@ -300,7 +278,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 3859409b27e19a74f8ce4e109578be53
     internalID: 0
     vertices: []
     indices: 
@@ -317,7 +295,6 @@ TextureImporter:
       BatMachine_Evade_4: 3522639443379152384
       BatMachine_Evade_5: 2947161672619851232
       BatMachine_Evade_6: 2734858876711481589
-      BatMachine_Evade_7: 1903948323124347719
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

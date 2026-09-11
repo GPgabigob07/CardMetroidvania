@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,7 +93,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -121,19 +121,19 @@ TextureImporter:
       name: BatMachine_Engage_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 1
-        width: 28
-        height: 61
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1073bb91b869c6e20800000000000000
+      spriteID: fcfd09ad3c05554e2290490d79edee7e
       internalID: 3345214147405756161
       vertices: []
       indices: 
@@ -143,19 +143,19 @@ TextureImporter:
       name: BatMachine_Engage_1
       rect:
         serializedVersion: 2
-        x: 81
-        y: 6
-        width: 30
-        height: 55
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 64
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 43d7cbe264d5bff70800000000000000
+      spriteID: 2c5ea7e59437098c84849c98cedef9ea
       internalID: 9222067217984421172
       vertices: []
       indices: 
@@ -165,19 +165,19 @@ TextureImporter:
       name: BatMachine_Engage_2
       rect:
         serializedVersion: 2
-        x: 141
-        y: 1
-        width: 37
-        height: 62
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 128
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b97e12e0a2a0b6db0800000000000000
+      spriteID: 52fa8eb5d8fec45cd26b89082246acec
       internalID: -4797729802291124325
       vertices: []
       indices: 
@@ -187,19 +187,19 @@ TextureImporter:
       name: BatMachine_Engage_3
       rect:
         serializedVersion: 2
-        x: 210
-        y: 1
-        width: 31
-        height: 43
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 192
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 0825db1d702d7df80800000000000000
+      spriteID: 9d8e058107763cbdd5fa964f3432484f
       internalID: -8081760075267616128
       vertices: []
       indices: 
@@ -209,19 +209,19 @@ TextureImporter:
       name: BatMachine_Engage_4
       rect:
         serializedVersion: 2
-        x: 275
-        y: 20
-        width: 26
-        height: 41
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9a2d02f4e842d5030800000000000000
+      spriteID: 1f74f313dad27c62e7d66c1c8e621a9f
       internalID: 3484981880286139049
       vertices: []
       indices: 
@@ -231,19 +231,19 @@ TextureImporter:
       name: BatMachine_Engage_5
       rect:
         serializedVersion: 2
-        x: 338
-        y: 14
-        width: 28
-        height: 35
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: a4f6b9a8805d50440800000000000000
+      spriteID: 98731999e0dadfdb6477f011064c1425
       internalID: 4901558002124549962
       vertices: []
       indices: 
@@ -253,19 +253,19 @@ TextureImporter:
       name: BatMachine_Engage_6
       rect:
         serializedVersion: 2
-        x: 401
-        y: 16
-        width: 27
-        height: 35
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 384
+        y: 0
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ace4b7321885d7f10800000000000000
+      spriteID: 028f0e66c71c342b2ef454b895cb6778
       internalID: 2269067098933907146
       vertices: []
       indices: 
@@ -275,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 15275874dc2dc964e90137d4567d798d
     internalID: 0
     vertices: []
     indices: 
