@@ -18,6 +18,7 @@ namespace TicGame.Architecture
         private const string KnockbackFeedbackId = "knockback";
         private const string SupplementalFeedbackId = "supplemental";
         private const string PoiseFeedbackId = "poise";
+        private const string ReachFeedbackId = "reach";
 
         [Header("Resources")]
         [Tooltip("Wallet that receives Energy from hit rolls and enemy defeats.")]
@@ -52,6 +53,10 @@ namespace TicGame.Architecture
         private int energyGainCharges;
         private int knockbackCharges;
         private int remainingPoiseHits;
+        private int reachIncrements;
+        private int reachLimit;
+        private float reachPercentPerHit;
+        private bool growingReachActive;
         private float energyGainMultiplier = 1f;
         private float knockbackMultiplier = 1f;
         private float basePoiseDamage;
@@ -61,10 +66,13 @@ namespace TicGame.Architecture
         private CardDefinitionSO energyGainCard;
         private CardDefinitionSO knockbackCard;
         private CardDefinitionSO poiseCard;
+        private CardDefinitionSO reachCard;
 
         private void Awake()
         {
             chainModifier = new ChainDamageModifier(this);
+            EligiblePrimaryHitsResolved += HandleGrowingReachHits;
+            PrimaryAttackMissed += HandleGrowingReachMiss;
         }
 
         public float AttackValue => 1f;
@@ -75,6 +83,8 @@ namespace TicGame.Architecture
         public int KnockbackCharges => knockbackCharges;
         public int RemainingPoiseHits => remainingPoiseHits;
         public bool CanArmPoiseHits => remainingPoiseHits <= 0;
+        public bool CanArmGrowingReach => !growingReachActive;
+        public float PrimaryReachMultiplier => 1f + reachIncrements * reachPercentPerHit;
         public DamageResolutionReport LastSupplementalReport { get; private set; }
         public event Action<int> EligiblePrimaryHitsResolved;
         public event Action PrimaryAttackMissed;
@@ -174,6 +184,7 @@ namespace TicGame.Architecture
                 isCardEnhancedMelee: (knockbackCharges > 0 && knockbackMultiplier > 1f)
                     || (chainIncrements > 0 && chainDamagePercentPerIncrement > 0f)
                     || remainingPoiseHits > 0
+                    || growingReachActive
                     || (armedSupplemental.IsArmed
                         && armedSupplemental.AttackExecutionId == attackExecutionId
                         && armedSupplemental.TotalMultiplier > 1f));
@@ -297,6 +308,75 @@ namespace TicGame.Architecture
             poiseCard = card != null ? card : poiseCard;
             RefreshChargeHud(PoiseFeedbackId, poiseCard, remainingPoiseHits);
             PublishWorldFeedback(poiseCard, CardFeedbackKind.Activated);
+        }
+
+        public void ArmGrowingReach(
+            float percentPerHit,
+            int maxIncrements,
+            CardDefinitionSO card = null)
+        {
+            reachPercentPerHit = Mathf.Max(0f, percentPerHit);
+            reachLimit = Mathf.Max(0, maxIncrements);
+            reachIncrements = 0;
+            growingReachActive = true;
+            reachCard = card;
+            RefreshReachHud();
+            PublishWorldFeedback(reachCard, CardFeedbackKind.Activated);
+        }
+
+        public void ClearGrowingReach()
+        {
+            growingReachActive = false;
+            reachIncrements = 0;
+            reachLimit = 0;
+            reachPercentPerHit = 0f;
+            cardFeedback?.RemoveHudEffect(BuildFeedbackKey(ReachFeedbackId));
+            reachCard = null;
+        }
+
+        private void HandleGrowingReachHits(int eligibleHitCount)
+        {
+            if (!growingReachActive || eligibleHitCount <= 0)
+            {
+                return;
+            }
+
+            var previous = reachIncrements;
+            reachIncrements = Mathf.Min(reachLimit, reachIncrements + eligibleHitCount);
+            if (reachIncrements == previous)
+            {
+                return;
+            }
+
+            RefreshReachHud();
+            PublishWorldFeedback(reachCard, CardFeedbackKind.Triggered);
+        }
+
+        private void HandleGrowingReachMiss()
+        {
+            if (!growingReachActive)
+            {
+                return;
+            }
+
+            PublishWorldFeedback(reachCard, CardFeedbackKind.Failed);
+            ClearGrowingReach();
+        }
+
+        private void RefreshReachHud()
+        {
+            var key = BuildFeedbackKey(ReachFeedbackId);
+            if (!growingReachActive)
+            {
+                cardFeedback?.RemoveHudEffect(key);
+                return;
+            }
+
+            cardFeedback?.UpsertHudEffect(new CardHudEffectViewModel(
+                effectKey: key,
+                sourceObject: gameObject,
+                card: reachCard,
+                displayText: $"+{reachIncrements * reachPercentPerHit:P0}"));
         }
 
         public void ClearPoiseHits()

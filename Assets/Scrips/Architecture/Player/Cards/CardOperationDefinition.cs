@@ -93,6 +93,8 @@ namespace TicGame.Architecture
                 CardOperationKind.GrantTimedDash => amount > 0f,
                 CardOperationKind.ArmPoiseHits =>
                     chargeCount > 0 && amount > 0f && multiplier > 0f,
+                CardOperationKind.ArmGrowingReach =>
+                    chargeCount > 0 && amount > 0f,
                 _ => false
             };
         }

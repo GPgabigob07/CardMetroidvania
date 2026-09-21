@@ -206,6 +206,7 @@ namespace TicGame.Architecture
             groundedJumpBoost?.Clear();
             dashPermission?.Clear();
             combatEffects?.ClearPoiseHits();
+            combatEffects?.ClearGrowingReach();
         }
 
         public void ConfigureCardDefinitions(
@@ -386,6 +387,12 @@ namespace TicGame.Architecture
                         }
 
                         break;
+                    case CardOperationKind.ArmGrowingReach:
+                        if (!combatEffects.CanArmGrowingReach) {
+                            return false;
+                        }
+
+                        break;
                     default: return false;
                 }
             }
@@ -402,7 +409,8 @@ namespace TicGame.Architecture
                     or CardOperationKind.InvokeAbility
                     or CardOperationKind.ArmGroundedJumpBoost
                     or CardOperationKind.GrantTimedDash
-                    or CardOperationKind.ArmPoiseHits) {
+                    or CardOperationKind.ArmPoiseHits
+                    or CardOperationKind.ArmGrowingReach) {
                     return true;
                 }
 
@@ -463,6 +471,12 @@ namespace TicGame.Architecture
                             operation.ChargeCount,
                             operation.Amount,
                             operation.Multiplier,
+                            card);
+                        break;
+                    case CardOperationKind.ArmGrowingReach:
+                        combatEffects.ArmGrowingReach(
+                            operation.Amount,
+                            operation.ChargeCount,
                             card);
                         break;
                 }

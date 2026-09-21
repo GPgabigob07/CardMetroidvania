@@ -75,11 +75,10 @@ namespace TicGame.Architecture
         private void ResolveHits()
         {
             var facing = playerController.Context.FacingDirection;
-            var center = (Vector2)transform.position
-                + new Vector2(x: localOffset.x * facing, y: localOffset.y);
+            GetHitBoxGeometry(facing, out var center, out var querySize);
             var colliders = Physics2D.OverlapBoxAll(
                 point: center,
-                size: size,
+                size: querySize,
                 angle: 0f,
                 layerMask: targetLayers);
 
@@ -170,10 +169,26 @@ namespace TicGame.Architecture
         private void OnDrawGizmosSelected()
         {
             var facing = playerController?.Context?.FacingDirection ?? 1;
-            var center = (Vector2)transform.position
-                + new Vector2(x: localOffset.x * facing, y: localOffset.y);
+            GetHitBoxGeometry(facing, out var center, out var querySize);
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(center: center, size: size);
+            Gizmos.DrawWireCube(center: center, size: querySize);
+        }
+
+        private void GetHitBoxGeometry(
+            int facing,
+            out Vector2 center,
+            out Vector2 querySize)
+        {
+            var rear = localOffset.x - size.x * 0.5f;
+            var front = localOffset.x + size.x * 0.5f;
+            var effects = combatEffects != null
+                ? combatEffects
+                : GetComponent<PlayerCombatEffects>();
+            front *= effects != null ? effects.PrimaryReachMultiplier : 1f;
+            var width = Mathf.Max(0f, front - rear);
+            center = (Vector2)transform.position
+                + new Vector2((front + rear) * 0.5f * facing, localOffset.y);
+            querySize = new Vector2(width, size.y);
         }
 
         private static bool IsAttack(PlayerActionState state)

@@ -162,6 +162,7 @@ namespace TicGame.Architecture
                     case CardOperationKind.ArmGroundedJumpBoost:
                     case CardOperationKind.GrantTimedDash:
                     case CardOperationKind.ArmPoiseHits:
+                    case CardOperationKind.ArmGrowingReach:
                         continue;
                     case CardOperationKind.AddStatusCharges:
                     case CardOperationKind.AddStatusCapacity:
