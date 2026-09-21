@@ -15,6 +15,7 @@ MonoBehaviour:
   id: card.neutral.knockback-charges
   displayName: Knockback Charges
   description: Doubles outgoing knockback for the next three effective hits.
+  icon: {fileID: 0}
   category: 10
   fixedCosts:
   - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}

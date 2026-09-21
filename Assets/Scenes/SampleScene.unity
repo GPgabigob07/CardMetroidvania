@@ -13449,6 +13449,14 @@ PrefabInstance:
       propertyPath: cardSelectionHud
       value: 
       objectReference: {fileID: 1448682226}
+    - target: {fileID: 7988086486144116433, guid: 8c426fa1346b32e4ea803f7082a7583f, type: 3}
+      propertyPath: balances.Array.data[0].maximumAmount
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7988086486144116433, guid: 8c426fa1346b32e4ea803f7082a7583f, type: 3}
+      propertyPath: balances.Array.data[0].startingAmount
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

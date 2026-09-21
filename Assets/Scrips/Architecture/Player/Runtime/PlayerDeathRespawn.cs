@@ -26,6 +26,7 @@ namespace TicGame.Architecture
 
         private bool isRespawning;
         private bool isSubscribed;
+        private GameplayAreaCoordinator coordinator;
 
         private void Awake()
         {
@@ -58,6 +59,41 @@ namespace TicGame.Architecture
             Subscribe();
         }
 
+        /// <summary>
+        /// Routes death recovery through the persistent gameplay coordinator when one owns this player.
+        /// </summary>
+        public void BindCoordinator(GameplayAreaCoordinator configuredCoordinator)
+        {
+            coordinator = configuredCoordinator;
+        }
+
+        /// <summary>
+        /// Applies this component's existing health restoration policy after a coordinated world respawn.
+        /// </summary>
+        public void RestoreHealthAfterCoordinatedRespawn()
+        {
+            if (restoreHealthOnRespawn)
+            {
+                health?.Initialize();
+            }
+        }
+
+        /// <summary>
+        /// Retries a failed coordinated respawn without requiring another health-change notification.
+        /// </summary>
+        public System.Threading.Tasks.Task<bool> RetryCoordinatedRespawnAsync()
+        {
+            return coordinator != null
+                ? coordinator.RespawnAsync()
+                : System.Threading.Tasks.Task.FromResult(false);
+        }
+
+        [ContextMenu("Retry Coordinated Respawn")]
+        private void RetryCoordinatedRespawn()
+        {
+            _ = RetryCoordinatedRespawnAsync();
+        }
+
         private void Subscribe()
         {
             if (isSubscribed || health == null || !isActiveAndEnabled)
@@ -87,7 +123,26 @@ namespace TicGame.Architecture
                 return;
             }
 
-            Respawn();
+            if (coordinator == null)
+            {
+                Respawn();
+                return;
+            }
+
+            _ = RespawnThroughCoordinatorAsync();
+        }
+
+        private async System.Threading.Tasks.Task RespawnThroughCoordinatorAsync()
+        {
+            isRespawning = true;
+            try
+            {
+                await coordinator.RespawnAsync();
+            }
+            finally
+            {
+                isRespawning = false;
+            }
         }
 
         private void Respawn()

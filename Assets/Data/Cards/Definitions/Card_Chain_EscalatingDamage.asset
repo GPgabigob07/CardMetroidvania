@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Escalating Damage
   description: Builds damage stacks on effective hits and loses current stacks on
     a miss.
+  icon: {fileID: 0}
   category: 20
   fixedCosts:
   - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}

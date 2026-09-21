@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Gameplay.unity
+    guid: 45074cca45fc77443a88969b3a25ef58
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/BlueArea_Tutorial.unity
+    guid: fc6ae7958908ffa43b3e04fabb29f436
+  - enabled: 1
+    path: Assets/Scenes/PinkArea_Perimeters.unity
+    guid: 0475870dd953c3f438d64c57f5036808
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

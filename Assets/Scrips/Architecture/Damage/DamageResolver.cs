@@ -49,7 +49,8 @@ namespace TicGame.Architecture
                     hitPoint: request.HitPoint,
                     direction: request.Direction,
                     tags: instance.Tags,
-                    poiseDamage: instance.PoiseDamage);
+                    poiseDamage: instance.PoiseDamage,
+                    isCardEnhancedMelee: instance.IsCardEnhancedMelee);
 
                 var result = damageable.ApplyDamage(context: context);
                 var targetResult = new DamageTargetResult(
