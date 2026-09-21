@@ -267,11 +267,11 @@ namespace TicGame.Architecture
         }
 
         private void Update() {
+            dashPermission?.Tick(Time.deltaTime);
             if (worldHeld) {
                 return;
             }
 
-            dashPermission?.Tick(Time.deltaTime);
             attackCombo.Tick(deltaTime: Time.deltaTime);
             input = ReadInputActions();
             SetInputSnapshot(snapshot: input);
