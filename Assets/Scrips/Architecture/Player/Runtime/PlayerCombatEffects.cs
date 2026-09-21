@@ -68,6 +68,8 @@ namespace TicGame.Architecture
         public int EnergyGainCharges => energyGainCharges;
         public int KnockbackCharges => knockbackCharges;
         public DamageResolutionReport LastSupplementalReport { get; private set; }
+        public event Action<int> EligiblePrimaryHitsResolved;
+        public event Action PrimaryAttackMissed;
 
         public void BindGameplayServices(IGameplayServices services)
         {
@@ -88,6 +90,7 @@ namespace TicGame.Architecture
             }
 
             RecordAttackOutcome(report);
+            RecordEligiblePrimaryHits(report);
             ApplyKnockback(report);
             GrantDefeatRewards(report);
             ResolveHitEnergy(report);
@@ -164,6 +167,11 @@ namespace TicGame.Architecture
                 || !attackOutcomes.Remove(executionId, out var outcome))
             {
                 return;
+            }
+
+            if (outcome.EligiblePrimaryHitCount == 0)
+            {
+                PrimaryAttackMissed?.Invoke();
             }
 
             if (outcome.EffectiveHitCount == 0)
@@ -281,6 +289,32 @@ namespace TicGame.Architecture
 
             outcome.EffectiveHitCount += report.EffectiveHitCount;
             attackOutcomes[executionId] = outcome;
+        }
+
+        private void RecordEligiblePrimaryHits(DamageResolutionReport report)
+        {
+            if (!report.IsPrimary
+                || !report.Allows(DamageProcPolicy.ConfirmAttackHit))
+            {
+                return;
+            }
+
+            var eligibleHitCount = report.TargetResults.Count(
+                targetResult => IsEligibleEnemyHit(targetResult));
+            if (eligibleHitCount <= 0)
+            {
+                return;
+            }
+
+            var executionId = report.Instance.AttackExecutionId;
+            if (!string.IsNullOrWhiteSpace(executionId)
+                && attackOutcomes.TryGetValue(executionId, out var outcome))
+            {
+                outcome.EligiblePrimaryHitCount += eligibleHitCount;
+                attackOutcomes[executionId] = outcome;
+            }
+
+            EligiblePrimaryHitsResolved?.Invoke(eligibleHitCount);
         }
 
         private void ApplyKnockback(DamageResolutionReport report)
@@ -546,9 +580,18 @@ namespace TicGame.Architecture
             return targetResult.Result.Accepted && targetResult.Result.AppliedAmount > 0f;
         }
 
+        private static bool IsEligibleEnemyHit(in DamageTargetResult targetResult)
+        {
+            return targetResult.Result.Accepted
+                && targetResult.Result.AppliedAmount > 0f
+                && targetResult.Context.Target != null
+                && targetResult.Context.Target.GetComponentInParent<EnemyActor>() != null;
+        }
+
         private struct AttackOutcome
         {
             public int EffectiveHitCount;
+            public int EligiblePrimaryHitCount;
         }
 
         private readonly struct ArmedSupplementalDamage
