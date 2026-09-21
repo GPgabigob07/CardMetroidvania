@@ -41,6 +41,12 @@ namespace TicGame.Architecture
 
                 var formula = new ResolvedDamageFormula(values: values);
                 var finalAmount = Mathf.Max(a: 0f, b: formula.RequestedFinalDamage);
+                var poiseSource = FindFirst<IPoiseDamageSource>(owner: instance.SourceObject);
+                var poiseDamage = Mathf.Max(
+                    a: 0f,
+                    b: poiseSource != null
+                        ? poiseSource.GetPoiseDamage(instance, target)
+                        : instance.PoiseDamage);
                 var context = new DamageContext(
                     source: instance.SourceObject,
                     target: target,
@@ -49,7 +55,7 @@ namespace TicGame.Architecture
                     hitPoint: request.HitPoint,
                     direction: request.Direction,
                     tags: instance.Tags,
-                    poiseDamage: instance.PoiseDamage,
+                    poiseDamage: poiseDamage,
                     isCardEnhancedMelee: instance.IsCardEnhancedMelee);
 
                 var result = damageable.ApplyDamage(context: context);

@@ -140,6 +140,8 @@ namespace TicGame.Architecture.EditorTools
 
                 RemoveComponent<EnemyContactAttack2D>(root);
                 var health = GetOrAddComponent<EnemyHealth>(root);
+                var poise = GetOrAddComponent<EnemyPoise>(root);
+                GetOrAddComponent<EnemyPoiseDebugPresentation>(root);
                 var actor = GetOrAddComponent<EnemyActor>(root);
                 actor.SetDefinition(definition);
                 var chargeAttack = GetOrAddComponent<GolemChargeAttack2D>(root);
@@ -174,6 +176,7 @@ namespace TicGame.Architecture.EditorTools
                 ConfigureComponents(
                     actor,
                     health,
+                    poise,
                     brain,
                     chargeAttack,
                     damagePolicy,
@@ -236,6 +239,7 @@ namespace TicGame.Architecture.EditorTools
         private static void ConfigureComponents(
             EnemyActor actor,
             EnemyHealth health,
+            EnemyPoise poise,
             GolemChargerBrain brain,
             GolemChargeAttack2D chargeAttack,
             GolemChargerDamagePolicy damagePolicy,
@@ -261,6 +265,7 @@ namespace TicGame.Architecture.EditorTools
             brainSerialized.FindProperty("actor").objectReferenceValue = actor;
             brainSerialized.FindProperty("chargeAttack").objectReferenceValue = chargeAttack;
             brainSerialized.FindProperty("body").objectReferenceValue = body;
+            brainSerialized.FindProperty("poise").objectReferenceValue = poise;
             brainSerialized.FindProperty("targetLayers").intValue = playerLayers;
             brainSerialized.FindProperty("detectionRange").floatValue = 4f;
             brainSerialized.FindProperty("patrolSpeed").floatValue = 0.75f;
@@ -271,9 +276,15 @@ namespace TicGame.Architecture.EditorTools
             brainSerialized.FindProperty("recoverySeconds").floatValue = 0.35f;
             brainSerialized.ApplyModifiedPropertiesWithoutUndo();
 
+            var poiseSerialized = new SerializedObject(poise);
+            poiseSerialized.FindProperty("maximumPoise").floatValue = 10f;
+            poiseSerialized.FindProperty("regenerationPerSecond").floatValue = 0.33f;
+            poiseSerialized.ApplyModifiedPropertiesWithoutUndo();
+
             var policySerialized = new SerializedObject(damagePolicy);
             policySerialized.FindProperty("health").objectReferenceValue = health;
             policySerialized.FindProperty("brain").objectReferenceValue = brain;
+            policySerialized.FindProperty("poise").objectReferenceValue = poise;
             policySerialized.FindProperty("impactTag").objectReferenceValue = impactTag;
             policySerialized.FindProperty("cardTag").objectReferenceValue = cardTag;
             policySerialized.FindProperty("idleDamageMultiplier").floatValue = 0.15f;

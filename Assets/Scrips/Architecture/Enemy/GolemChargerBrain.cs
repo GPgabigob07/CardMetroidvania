@@ -17,6 +17,9 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Rigidbody2D moved during the slow patrol phase.")]
         [SerializeField] private Rigidbody2D body;
 
+        [Tooltip(tooltip: "Optional posture capability that interrupts this golem when depleted.")]
+        [SerializeField] private EnemyPoise poise;
+
         [Header(header: "Targeting")]
         [Tooltip(tooltip: "Optional authored target. When empty, the brain finds the nearest collider on target layers.")]
         [SerializeField] private Transform target;
@@ -90,6 +93,7 @@ namespace TicGame.Architecture
         private void OnDestroy()
         {
             UnsubscribeFromActor();
+            UnsubscribeFromPoise();
         }
 
         public void Initialize()
@@ -102,6 +106,7 @@ namespace TicGame.Architecture
             }
 
             SubscribeToActor();
+            SubscribeToPoise();
             RegisterStates();
             stateTimeRemaining = 0f;
             patrolAnchor = body.position;
@@ -119,7 +124,13 @@ namespace TicGame.Architecture
                 return;
             }
 
-            stateMachine.Tick(Mathf.Max(0f, deltaTime));
+            var gameplayDeltaTime = Mathf.Max(0f, deltaTime);
+            if (CurrentState != GolemChargerState.Dead && CurrentState != GolemChargerState.Interrupted)
+            {
+                poise?.Tick(gameplayDeltaTime);
+            }
+
+            stateMachine.Tick(gameplayDeltaTime);
         }
 
         public void FixedTick(float fixedDeltaTime)
@@ -294,6 +305,7 @@ namespace TicGame.Architecture
         {
             stateTimeRemaining = recoverySeconds;
             chargeAttack.StopCharge();
+            poise?.RestoreToFull();
         }
 
         private void TickRecovery(float deltaTime)
@@ -372,6 +384,11 @@ namespace TicGame.Architecture
             {
                 body = GetComponent<Rigidbody2D>();
             }
+
+            if (poise == null)
+            {
+                poise = GetComponent<EnemyPoise>();
+            }
         }
 
         private bool ValidateDependencies()
@@ -415,6 +432,23 @@ namespace TicGame.Architecture
             subscribed = false;
         }
 
+        private void SubscribeToPoise()
+        {
+            UnsubscribeFromPoise();
+            if (poise != null)
+            {
+                poise.Depleted += OnPoiseDepleted;
+            }
+        }
+
+        private void UnsubscribeFromPoise()
+        {
+            if (poise != null)
+            {
+                poise.Depleted -= OnPoiseDepleted;
+            }
+        }
+
         private void OnActorDefeated(EnemyDamageEvent payload)
         {
             if (IsInitialized && CurrentState != GolemChargerState.Dead)
@@ -425,9 +459,20 @@ namespace TicGame.Architecture
 
         private void OnActorRestored(EnemyHealthChanged payload)
         {
+            poise?.RestoreToFull();
             if (IsInitialized && actor.IsOperational && CurrentState == GolemChargerState.Dead)
             {
                 stateMachine.TryChangeState(GolemChargerState.Idle);
+            }
+        }
+
+        private void OnPoiseDepleted()
+        {
+            if (IsInitialized
+                && CurrentState != GolemChargerState.Dead
+                && CurrentState != GolemChargerState.Interrupted)
+            {
+                stateMachine.TryChangeState(GolemChargerState.Interrupted);
             }
         }
 
