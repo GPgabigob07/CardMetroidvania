@@ -14,6 +14,9 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Motor used to stop movement during respawn.")]
         [SerializeField] private PlayerMotor2D motor;
 
+        [Tooltip(tooltip: "Clears temporary card effects once when health reaches zero.")]
+        [SerializeField] private PlayerCardRuntime cardRuntime;
+
         [Header(header: "Respawn")]
         [Tooltip(tooltip: "Optional transform used as the respawn position.")]
         [SerializeField] private Transform respawnTarget;
@@ -33,6 +36,7 @@ namespace TicGame.Architecture
             health ??= GetComponent<SimpleHealth>();
             playerController ??= GetComponent<PlayerController>();
             motor ??= GetComponent<PlayerMotor2D>();
+            cardRuntime ??= GetComponent<PlayerCardRuntime>();
         }
 
         private void OnEnable()
@@ -55,6 +59,7 @@ namespace TicGame.Architecture
             health = healthSource;
             playerController = controller;
             motor = playerMotor;
+            cardRuntime ??= GetComponent<PlayerCardRuntime>();
             respawnTarget = target;
             Subscribe();
         }
@@ -123,6 +128,8 @@ namespace TicGame.Architecture
                 return;
             }
 
+            cardRuntime ??= GetComponent<PlayerCardRuntime>();
+            cardRuntime?.ClearNewCardEffects();
             if (coordinator == null)
             {
                 Respawn();

@@ -50,13 +50,15 @@ namespace TicGame.Architecture.EditorTools
             var cardSnapshotSource =
                 GetOrAddComponent<PlayerCardCommitSnapshotSource>(player.gameObject);
             var extraJump = GetOrAddComponent<PlayerExtraJumpRuntime>(player.gameObject);
+            var jumpBoost = GetOrAddComponent<PlayerGroundedJumpBoostRuntime>(player.gameObject);
+            var dashPermission = GetOrAddComponent<PlayerDashPermissionRuntime>(player.gameObject);
             var health = GetOrAddComponent<SimpleHealth>(player.gameObject);
             var respawn = GetOrAddComponent<PlayerDeathRespawn>(player.gameObject);
             var cardDebug = GetOrAddComponent<PlayerCardDebugPresenter>(player.gameObject);
             var motor = player.GetComponent<PlayerMotor2D>();
             var energy = CreateOrLoadEnergyResource();
             var cardLoadout = PrototypeCardAssetSetup.CreateOrUpdateAssets();
-            var cardCatalog = CreateOrUpdateCardCatalog(cardLoadout);
+            var cardCatalog = CreateOrUpdateCardCatalog();
             var cardInventory = CardInventoryProfileSetup.CreateOrUpdateTestInventory();
             var cardSelectionUiConfig = CreateOrUpdateCardSelectionUiConfig();
             var controlSchemeProfile = CreateOrUpdateControlSchemeProfile();
@@ -68,7 +70,14 @@ namespace TicGame.Architecture.EditorTools
             combatEffects.ConfigureResources(wallet, energy);
             cardSnapshotSource.Configure(wallet, health, new[] { energy });
             extraJump.ConfigureAbility(cardLoadout.ExtraJumpAbility);
-            cardRuntime.Configure(wallet, combatEffects, extraJump);
+            cardRuntime.Configure(wallet, combatEffects, extraJump, jumpBoost, dashPermission);
+            var serializedCardRuntime = new SerializedObject(cardRuntime);
+            serializedCardRuntime.FindProperty("sensors").objectReferenceValue =
+                player.GetComponent<PlayerSensors2D>();
+            serializedCardRuntime.ApplyModifiedPropertiesWithoutUndo();
+            var serializedDash = new SerializedObject(dashPermission);
+            serializedDash.FindProperty("combatEffects").objectReferenceValue = combatEffects;
+            serializedDash.ApplyModifiedPropertiesWithoutUndo();
             cardRuntime.ConfigureCardDefinitions(
                 cardLoadout.Neutral,
                 cardLoadout.Chain,
@@ -89,7 +98,9 @@ namespace TicGame.Architecture.EditorTools
                 cardSelectionUiConfig,
                 controlSchemeProfile,
                 cardSnapshotSource,
-                extraJump);
+                extraJump,
+                jumpBoost,
+                dashPermission);
             ConfigureReviewTools(scene, player.transform.position);
 
             EditorSceneManager.MarkSceneDirty(scene);
@@ -126,7 +137,9 @@ namespace TicGame.Architecture.EditorTools
             CardTimeSelectionUiConfigSO cardSelectionUiConfig,
             CardTimeControlSchemeProfileSO controlSchemeProfile,
             PlayerCardCommitSnapshotSource cardSnapshotSource,
-            PlayerExtraJumpRuntime extraJump)
+            PlayerExtraJumpRuntime extraJump,
+            PlayerGroundedJumpBoostRuntime jumpBoost,
+            PlayerDashPermissionRuntime dashPermission)
         {
             var serializedPlayer = new SerializedObject(player);
             serializedPlayer.FindProperty("attackHitDetector").objectReferenceValue = hitDetector;
@@ -149,6 +162,10 @@ namespace TicGame.Architecture.EditorTools
             serializedPlayer.FindProperty("cardSnapshotSource").objectReferenceValue =
                 cardSnapshotSource;
             serializedPlayer.FindProperty("extraJumpRuntime").objectReferenceValue = extraJump;
+            serializedPlayer.FindProperty("groundedJumpBoostRuntime").objectReferenceValue =
+                jumpBoost;
+            serializedPlayer.FindProperty("dashPermission").objectReferenceValue =
+                dashPermission;
             serializedPlayer.ApplyModifiedPropertiesWithoutUndo();
             var serializedSelectionInput = new SerializedObject(cardSelectionInput);
             serializedSelectionInput.FindProperty("selectionUiConfig").objectReferenceValue =
@@ -229,8 +246,7 @@ namespace TicGame.Architecture.EditorTools
             return component != null ? component : owner.AddComponent<T>();
         }
 
-        private static CardCatalogSO CreateOrUpdateCardCatalog(
-            PrototypeCardAssetSetup.PrototypeCardLoadout cardLoadout)
+        private static CardCatalogSO CreateOrUpdateCardCatalog()
         {
             EnsureFolder(CardInventoryFolder);
             var catalog = AssetDatabase.LoadAssetAtPath<CardCatalogSO>(CardCatalogPath);
@@ -241,12 +257,15 @@ namespace TicGame.Architecture.EditorTools
                 AssetDatabase.CreateAsset(catalog, CardCatalogPath);
             }
 
-            catalog.Configure(new[]
-            {
-                cardLoadout.Neutral,
-                cardLoadout.Chain,
-                cardLoadout.Finisher
-            });
+            var definitions = AssetDatabase.FindAssets(
+                    "t:CardDefinitionSO",
+                    new[] { "Assets/Data/Cards/Definitions" })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<CardDefinitionSO>)
+                .Where(card => card != null)
+                .OrderBy(card => card.Id)
+                .ToArray();
+            catalog.Configure(definitions);
             EditorUtility.SetDirty(catalog);
             AssetDatabase.SaveAssets();
             return catalog;

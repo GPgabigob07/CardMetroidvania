@@ -23,16 +23,28 @@ MonoBehaviour:
     count: 1
   - card: {fileID: 11400000, guid: d3498f7b2cab6574db03a47f7d7ec218, type: 2}
     count: 1
+  - card: {fileID: 11400000, guid: d44c1387eb89b174d8378b6e5139e1ac, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: 210e4842044c66143b257597c5838f9c, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: f4039b383545cba44b224127552b952b, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: 8215251cb2aba0645bdaf42288cebc1f, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: aa394aa5fde14cd4f9a7eaed79ca156c, type: 2}
+    count: 1
   loadouts:
   - category: 10
     capacity: 8
     equippedCards:
-    - {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
+    - {fileID: 11400000, guid: 210e4842044c66143b257597c5838f9c, type: 2}
+    - {fileID: 11400000, guid: d44c1387eb89b174d8378b6e5139e1ac, type: 2}
+    - {fileID: 11400000, guid: f4039b383545cba44b224127552b952b, type: 2}
   - category: 20
     capacity: 6
     equippedCards:
-    - {fileID: 11400000, guid: 66cddb8fc314c8f4fa78ad5c1295a20f, type: 2}
-    - {fileID: 11400000, guid: 69b7538b5530f7243bc8c6af5b981d83, type: 2}
+    - {fileID: 11400000, guid: aa394aa5fde14cd4f9a7eaed79ca156c, type: 2}
+    - {fileID: 11400000, guid: 8215251cb2aba0645bdaf42288cebc1f, type: 2}
   - category: 30
     capacity: 4
     equippedCards:

@@ -203,6 +203,7 @@ namespace TicGame.Architecture
 
         public void ClearNewCardEffects()
         {
+            extraJump?.Clear();
             groundedJumpBoost?.Clear();
             dashPermission?.Clear();
             combatEffects?.ClearPoiseHits();

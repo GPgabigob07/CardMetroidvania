@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace TicGame.Architecture.EditorTools
         private const string DefinitionFolder = CardFolder + "/Definitions";
         private const string EnergyPath = "Assets/Data/Resources/Resource_Energy.asset";
         private const string ExtraJumpAbilityPath = AbilityFolder + "/Ability_ExtraJump.asset";
+        private const string TestCatalogPath = CardFolder + "/Inventory/TestCardCatalog.asset";
 
         public readonly struct PrototypeCardLoadout
         {
@@ -86,6 +88,50 @@ namespace TicGame.Architecture.EditorTools
             var doubleEnergyEffect = CreateDoubleEnergyEffect(doubleEnergyStatus);
             var extraJumpEffect = CreateExtraJumpEffect(extraJumpAbility);
             var overchargeEffect = CreateOverchargeEffect(energy);
+            var groundedExtraJumpEffect = CreateSimpleEffect(
+                "Effect_GroundedDoubleJump",
+                new CardOperationDefinition(
+                    CardOperationKind.InvokeAbility,
+                    ability: extraJumpAbility),
+                CardLifetimeKind.UntilLanding,
+                new[]
+                {
+                    new CardConditionDefinition(CardConditionKind.IsGrounded),
+                    new CardConditionDefinition(
+                        CardConditionKind.AbilityAvailable,
+                        ability: extraJumpAbility),
+                    new CardConditionDefinition(
+                        CardConditionKind.AbilityUnlocked,
+                        ability: extraJumpAbility)
+                });
+            var dashEffect = CreateSimpleEffect(
+                "Effect_DashEnabler",
+                new CardOperationDefinition(
+                    CardOperationKind.GrantTimedDash,
+                    amount: 5f,
+                    multiplier: 0.3f),
+                CardLifetimeKind.UntilPlayerDeath);
+            var jumpBoostEffect = CreateSimpleEffect(
+                "Effect_JumpBoost",
+                new CardOperationDefinition(
+                    CardOperationKind.ArmGroundedJumpBoost,
+                    multiplier: 2f),
+                CardLifetimeKind.UntilPlayerDeath);
+            var poiseEffect = CreateSimpleEffect(
+                "Effect_PoiseDamage",
+                new CardOperationDefinition(
+                    CardOperationKind.ArmPoiseHits,
+                    amount: 2f,
+                    multiplier: 1.2f,
+                    chargeCount: 5),
+                CardLifetimeKind.UntilChargesExhausted);
+            var reachEffect = CreateSimpleEffect(
+                "Effect_GrowingReach",
+                new CardOperationDefinition(
+                    CardOperationKind.ArmGrowingReach,
+                    amount: 0.05f,
+                    chargeCount: 5),
+                CardLifetimeKind.UntilMiss);
 
             var knockbackCard = CreateCard(
                 "Card_Neutral_KnockbackCharges",
@@ -132,6 +178,53 @@ namespace TicGame.Architecture.EditorTools
                 energy,
                 cost: 15f,
                 overchargeEffect);
+
+            CreateCard(
+                "Card_Neutral_GroundedDoubleJump",
+                "card.neutral.grounded-double-jump",
+                "Grounded Double Jump",
+                "Grants one midair jump when played while grounded.",
+                PlayerCardTimeState.Neutral,
+                energy,
+                cost: 5f,
+                groundedExtraJumpEffect);
+            CreateCard(
+                "Card_Neutral_DashEnabler",
+                "card.neutral.dash-enabler",
+                "Dash Enabler",
+                "Enables dash for five seconds; enemy melee hits extend it.",
+                PlayerCardTimeState.Neutral,
+                energy,
+                cost: 5f,
+                dashEffect);
+            CreateCard(
+                "Card_Neutral_JumpBoost",
+                "card.neutral.jump-boost",
+                "Jump Boost",
+                "Doubles the launch velocity of the next grounded jump.",
+                PlayerCardTimeState.Neutral,
+                energy,
+                cost: 15f,
+                jumpBoostEffect);
+            CreateCard(
+                "Card_Chain_PoiseDamage",
+                "card.chain.poise-damage",
+                "Poise Damage",
+                "The next five accepted enemy melee hits deal bonus poise damage.",
+                PlayerCardTimeState.Chain,
+                energy,
+                cost: 20f,
+                poiseEffect);
+            CreateCard(
+                "Card_Chain_GrowingReach",
+                "card.chain.growing-reach",
+                "Growing Reach",
+                "Enemy melee hits extend forward reach by five percent, up to five times; a miss resets it.",
+                PlayerCardTimeState.Chain,
+                energy,
+                cost: 40f,
+                reachEffect);
+            UpdateTestCatalog();
 
             AssetDatabase.SaveAssets();
             return new PrototypeCardLoadout(
@@ -351,6 +444,46 @@ namespace TicGame.Architecture.EditorTools
                     CardStackingKind.RejectIfActive));
             EditorUtility.SetDirty(effect);
             return effect;
+        }
+
+        private static CardEffectDefinitionSO CreateSimpleEffect(
+            string assetName,
+            CardOperationDefinition operation,
+            CardLifetimeKind lifetime,
+            IEnumerable<CardConditionDefinition> conditions = null)
+        {
+            var effect = CreateOrLoad<CardEffectDefinitionSO>(
+                EffectFolder + "/" + assetName + ".asset",
+                assetName);
+            effect.Configure(
+                statusDefinition: null,
+                conditions: conditions,
+                operations: new[] { operation },
+                rules: null,
+                lifetimeDefinitions: new[] { new CardLifetimeDefinition(lifetime) },
+                stackingDefinition: new CardStackingDefinition(
+                    CardStackingKind.RejectIfActive));
+            EditorUtility.SetDirty(effect);
+            return effect;
+        }
+
+        private static void UpdateTestCatalog()
+        {
+            const string inventoryFolder = CardFolder + "/Inventory";
+            EnsureFolder(inventoryFolder);
+            var catalog = CreateOrLoad<CardCatalogSO>(
+                TestCatalogPath,
+                "TestCardCatalog");
+            var cards = AssetDatabase.FindAssets(
+                    "t:CardDefinitionSO",
+                    new[] { DefinitionFolder })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<CardDefinitionSO>)
+                .Where(card => card != null)
+                .OrderBy(card => card.Id)
+                .ToArray();
+            catalog.Configure(cards);
+            EditorUtility.SetDirty(catalog);
         }
 
         private static CardStatusDefinitionSO CreateStatus(
