@@ -76,6 +76,10 @@ namespace TicGame.Architecture
         [SerializeField]
         private PlayerExtraJumpRuntime extraJumpRuntime;
 
+        [Tooltip(tooltip: "One-use card modifier applied only when a grounded jump begins.")]
+        [SerializeField]
+        private PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime;
+
         [Header(header: "Input Actions")]
         [Tooltip(tooltip: "Input System action used for player movement.")]
         [SerializeField]
@@ -169,9 +173,11 @@ namespace TicGame.Architecture
             cardRuntime ??= GetComponent<PlayerCardRuntime>();
             cardSnapshotSource ??= GetComponent<PlayerCardCommitSnapshotSource>();
             extraJumpRuntime ??= GetComponent<PlayerExtraJumpRuntime>();
+            groundedJumpBoostRuntime ??= GetComponent<PlayerGroundedJumpBoostRuntime>();
             Context = new PlayerContext(motor: motor, sensors: sensors, movementConfig: movementConfig,
                 dashDefinition: dashDefinition, attackDefinition: attackDefinition,
-                extraJumpRuntime: extraJumpRuntime);
+                extraJumpRuntime: extraJumpRuntime,
+                groundedJumpBoostRuntime: groundedJumpBoostRuntime);
             sensors.Refresh();
             Locomotion = new PlayerLocomotionController(context: Context);
             ActionRunner = new PlayerActionRunner();

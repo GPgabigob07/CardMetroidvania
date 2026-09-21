@@ -14,6 +14,7 @@ namespace TicGame.Architecture
 
         [SerializeField] private PlayerCombatEffects combatEffects;
         [SerializeField] private PlayerExtraJumpRuntime extraJump;
+        [SerializeField] private PlayerGroundedJumpBoostRuntime groundedJumpBoost;
 
         [Header("Equipped Cards")] [SerializeField]
         private CardDefinitionSO neutralCardDefinition;
@@ -187,11 +188,18 @@ namespace TicGame.Architecture
         public void Configure(
             PlayerResourceWallet resourceWallet,
             PlayerCombatEffects effects,
-            PlayerExtraJumpRuntime extraJumpRuntime
+            PlayerExtraJumpRuntime extraJumpRuntime,
+            PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime = null
         ) {
             wallet = resourceWallet;
             combatEffects = effects;
             extraJump = extraJumpRuntime;
+            groundedJumpBoost = groundedJumpBoostRuntime;
+        }
+
+        public void ClearNewCardEffects()
+        {
+            groundedJumpBoost?.Clear();
         }
 
         public void ConfigureCardDefinitions(
@@ -220,6 +228,14 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            var context = new ExecutionContext(
+                commit.Snapshot.AttackExecutionId,
+                commit.Snapshot.IsAirborne);
+            if (!CanExecuteOperations(commit.Card.Effect, context)) {
+                commit.SetFailure(CardCommitFailure.UnsupportedEffect);
+                return false;
+            }
+
             if (!wallet.TrySpend(commit.Costs)) {
                 commit.SetFailure(CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, CardFeedbackKind.Failed);
@@ -229,9 +245,7 @@ namespace TicGame.Architecture
             ApplyOperations(
                 commit.Card,
                 commit.Card.Effect,
-                new ExecutionContext(
-                    commit.Snapshot.AttackExecutionId,
-                    commit.Snapshot.IsAirborne));
+                context);
             PublishCommitFeedback(commit.Card, CardFeedbackKind.Activated);
             return true;
         }
@@ -321,6 +335,12 @@ namespace TicGame.Architecture
                         }
 
                         break;
+                    case CardOperationKind.ArmGroundedJumpBoost:
+                        if (groundedJumpBoost == null || !groundedJumpBoost.CanArm) {
+                            return false;
+                        }
+
+                        break;
                     default: return false;
                 }
             }
@@ -334,7 +354,8 @@ namespace TicGame.Architecture
             foreach (var operation in effect.CommitOperations) {
                 if (operation.Kind is CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
-                    or CardOperationKind.InvokeAbility) {
+                    or CardOperationKind.InvokeAbility
+                    or CardOperationKind.ArmGroundedJumpBoost) {
                     return true;
                 }
 
@@ -384,6 +405,9 @@ namespace TicGame.Architecture
                             operation.PoiseDamage);
                         break;
                     case CardOperationKind.InvokeAbility: extraJump.Invoke(operation.Ability, card); break;
+                    case CardOperationKind.ArmGroundedJumpBoost:
+                        groundedJumpBoost.Arm(operation.Multiplier, card);
+                        break;
                 }
             }
         }

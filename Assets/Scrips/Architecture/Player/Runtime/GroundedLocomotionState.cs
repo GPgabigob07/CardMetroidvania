@@ -42,7 +42,9 @@ namespace TicGame.Architecture
 
             if (context.Locomotion.HasBufferedJump)
             {
-                velocity.y = config.JumpVelocity;
+                velocity.y = context.GroundedJumpBoostRuntime != null
+                    ? context.GroundedJumpBoostRuntime.ConsumeGroundedLaunch(config.JumpVelocity)
+                    : config.JumpVelocity;
                 context.Locomotion.ConsumeJumpBuffer();
                 context.Locomotion.ForceState(context: context, stateId: PlayerLocomotionState.Airborne);
             }

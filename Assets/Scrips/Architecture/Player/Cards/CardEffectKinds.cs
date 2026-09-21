@@ -36,7 +36,8 @@ namespace TicGame.Architecture
         ArmSupplementalDamage = 60,
         ClearStatusStacks = 70,
         RemoveStatus = 80,
-        InvokeAbility = 90
+        InvokeAbility = 90,
+        ArmGroundedJumpBoost = 100
     }
 
     public enum CardLifetimeKind

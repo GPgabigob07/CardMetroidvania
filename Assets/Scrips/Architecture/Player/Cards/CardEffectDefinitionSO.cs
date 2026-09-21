@@ -159,6 +159,8 @@ namespace TicGame.Architecture
             {
                 switch (operation.Kind)
                 {
+                    case CardOperationKind.ArmGroundedJumpBoost:
+                        continue;
                     case CardOperationKind.AddStatusCharges:
                     case CardOperationKind.AddStatusCapacity:
                     case CardOperationKind.AddStatusStacks:

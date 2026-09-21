@@ -83,6 +83,7 @@ namespace TicGame.Architecture
                 CardOperationKind.ClearStatusStacks => status != null,
                 CardOperationKind.RemoveStatus => status != null,
                 CardOperationKind.InvokeAbility => ability != null,
+                CardOperationKind.ArmGroundedJumpBoost => multiplier > 0f,
                 _ => false
             };
         }
