@@ -15,6 +15,7 @@ namespace TicGame.Architecture
         [SerializeField] private PlayerCombatEffects combatEffects;
         [SerializeField] private PlayerExtraJumpRuntime extraJump;
         [SerializeField] private PlayerGroundedJumpBoostRuntime groundedJumpBoost;
+        [SerializeField] private PlayerSensors2D sensors;
 
         [Header("Equipped Cards")] [SerializeField]
         private CardDefinitionSO neutralCardDefinition;
@@ -236,6 +237,11 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            if (!AreLiveGroundedConditionsMet(commit.Card.Effect.ActivationConditions)) {
+                commit.SetFailure(CardCommitFailure.UnmetCondition);
+                return false;
+            }
+
             if (!wallet.TrySpend(commit.Costs)) {
                 commit.SetFailure(CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, CardFeedbackKind.Failed);
@@ -247,6 +253,27 @@ namespace TicGame.Architecture
                 commit.Card.Effect,
                 context);
             PublishCommitFeedback(commit.Card, CardFeedbackKind.Activated);
+            return true;
+        }
+
+        private bool AreLiveGroundedConditionsMet(
+            IReadOnlyList<CardConditionDefinition> conditions
+        ) {
+            if (conditions == null) {
+                return true;
+            }
+
+            foreach (var condition in conditions) {
+                if (condition.Kind != CardConditionKind.IsGrounded) {
+                    continue;
+                }
+
+                sensors ??= GetComponent<PlayerSensors2D>();
+                if (sensors == null || !sensors.IsGrounded) {
+                    return false;
+                }
+            }
+
             return true;
         }
 
