@@ -15,6 +15,7 @@ namespace TicGame.Architecture
         [SerializeField] private PlayerCombatEffects combatEffects;
         [SerializeField] private PlayerExtraJumpRuntime extraJump;
         [SerializeField] private PlayerGroundedJumpBoostRuntime groundedJumpBoost;
+        [SerializeField] private PlayerDashPermissionRuntime dashPermission;
         [SerializeField] private PlayerSensors2D sensors;
 
         [Header("Equipped Cards")] [SerializeField]
@@ -190,17 +191,20 @@ namespace TicGame.Architecture
             PlayerResourceWallet resourceWallet,
             PlayerCombatEffects effects,
             PlayerExtraJumpRuntime extraJumpRuntime,
-            PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime = null
+            PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime = null,
+            PlayerDashPermissionRuntime dashPermissionRuntime = null
         ) {
             wallet = resourceWallet;
             combatEffects = effects;
             extraJump = extraJumpRuntime;
             groundedJumpBoost = groundedJumpBoostRuntime;
+            dashPermission = dashPermissionRuntime;
         }
 
         public void ClearNewCardEffects()
         {
             groundedJumpBoost?.Clear();
+            dashPermission?.Clear();
         }
 
         public void ConfigureCardDefinitions(
@@ -368,6 +372,13 @@ namespace TicGame.Architecture
                         }
 
                         break;
+                    case CardOperationKind.GrantTimedDash:
+                        dashPermission ??= GetComponent<PlayerDashPermissionRuntime>();
+                        if (dashPermission == null || !dashPermission.CanActivate) {
+                            return false;
+                        }
+
+                        break;
                     default: return false;
                 }
             }
@@ -382,7 +393,8 @@ namespace TicGame.Architecture
                 if (operation.Kind is CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
                     or CardOperationKind.InvokeAbility
-                    or CardOperationKind.ArmGroundedJumpBoost) {
+                    or CardOperationKind.ArmGroundedJumpBoost
+                    or CardOperationKind.GrantTimedDash) {
                     return true;
                 }
 
@@ -434,6 +446,9 @@ namespace TicGame.Architecture
                     case CardOperationKind.InvokeAbility: extraJump.Invoke(operation.Ability, card); break;
                     case CardOperationKind.ArmGroundedJumpBoost:
                         groundedJumpBoost.Arm(operation.Multiplier, card);
+                        break;
+                    case CardOperationKind.GrantTimedDash:
+                        dashPermission.Activate(operation.Amount, operation.Multiplier, card);
                         break;
                 }
             }

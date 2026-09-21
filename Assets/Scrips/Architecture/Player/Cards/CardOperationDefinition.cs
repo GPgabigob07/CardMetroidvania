@@ -84,6 +84,7 @@ namespace TicGame.Architecture
                 CardOperationKind.RemoveStatus => status != null,
                 CardOperationKind.InvokeAbility => ability != null,
                 CardOperationKind.ArmGroundedJumpBoost => multiplier > 0f,
+                CardOperationKind.GrantTimedDash => amount > 0f,
                 _ => false
             };
         }

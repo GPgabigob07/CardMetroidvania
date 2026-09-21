@@ -80,6 +80,10 @@ namespace TicGame.Architecture
         [SerializeField]
         private PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime;
 
+        [Tooltip(tooltip: "Time-limited card permission that gates dash activation.")]
+        [SerializeField]
+        private PlayerDashPermissionRuntime dashPermission;
+
         [Header(header: "Input Actions")]
         [Tooltip(tooltip: "Input System action used for player movement.")]
         [SerializeField]
@@ -174,6 +178,7 @@ namespace TicGame.Architecture
             cardSnapshotSource ??= GetComponent<PlayerCardCommitSnapshotSource>();
             extraJumpRuntime ??= GetComponent<PlayerExtraJumpRuntime>();
             groundedJumpBoostRuntime ??= GetComponent<PlayerGroundedJumpBoostRuntime>();
+            dashPermission ??= GetComponent<PlayerDashPermissionRuntime>();
             Context = new PlayerContext(motor: motor, sensors: sensors, movementConfig: movementConfig,
                 dashDefinition: dashDefinition, attackDefinition: attackDefinition,
                 extraJumpRuntime: extraJumpRuntime,
@@ -266,6 +271,7 @@ namespace TicGame.Architecture
                 return;
             }
 
+            dashPermission?.Tick(Time.deltaTime);
             attackCombo.Tick(deltaTime: Time.deltaTime);
             input = ReadInputActions();
             SetInputSnapshot(snapshot: input);
@@ -304,7 +310,7 @@ namespace TicGame.Architecture
                 cardTimeSnapshot = CardTimeSession?.Current ?? default;
             }
 
-            if (input.DashPressed) {
+            if (input.DashPressed && dashPermission != null && dashPermission.IsEnabled) {
                 if (ActionRunner.TryStartAction(
                         context: Context,
                         action: new DashAction(),
@@ -347,6 +353,7 @@ namespace TicGame.Architecture
             cardTimeTransitionEvent = services?.CardTimeTransitions;
             SubscribeCardTimeTransitions();
             attackHitDetector?.BindGameplayServices(services);
+            dashPermission?.BindGameplayServices(services);
             cardTimePresenter?.Initialize(services?.CardTime);
             NotifyGameplayServicesReady();
         }
