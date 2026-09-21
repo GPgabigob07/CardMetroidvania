@@ -9,6 +9,7 @@ namespace TicGame.Architecture
         MonoBehaviour,
         IDamageProvider,
         IDamageListener,
+        IPoiseDamageSource,
         IGameplayServicesConsumer
     {
         private const int MaximumSupplementalDepth = 1;
@@ -16,6 +17,7 @@ namespace TicGame.Architecture
         private const string EnergyGainFeedbackId = "energy-gain";
         private const string KnockbackFeedbackId = "knockback";
         private const string SupplementalFeedbackId = "supplemental";
+        private const string PoiseFeedbackId = "poise";
 
         [Header("Resources")]
         [Tooltip("Wallet that receives Energy from hit rolls and enemy defeats.")]
@@ -49,12 +51,16 @@ namespace TicGame.Architecture
         private int chainCapacity;
         private int energyGainCharges;
         private int knockbackCharges;
+        private int remainingPoiseHits;
         private float energyGainMultiplier = 1f;
         private float knockbackMultiplier = 1f;
+        private float basePoiseDamage;
+        private float poiseMultiplier = 1f;
         private ICardFeedbackService cardFeedback;
         private CardDefinitionSO chainCard;
         private CardDefinitionSO energyGainCard;
         private CardDefinitionSO knockbackCard;
+        private CardDefinitionSO poiseCard;
 
         private void Awake()
         {
@@ -67,6 +73,8 @@ namespace TicGame.Architecture
         public int ChainCapacity => chainCapacity;
         public int EnergyGainCharges => energyGainCharges;
         public int KnockbackCharges => knockbackCharges;
+        public int RemainingPoiseHits => remainingPoiseHits;
+        public bool CanArmPoiseHits => remainingPoiseHits <= 0;
         public DamageResolutionReport LastSupplementalReport { get; private set; }
         public event Action<int> EligiblePrimaryHitsResolved;
         public event Action PrimaryAttackMissed;
@@ -100,6 +108,23 @@ namespace TicGame.Architecture
 
         public void OnDamageDealt(in DamageContext context, in DamageResult result)
         {
+            if (remainingPoiseHits <= 0
+                || context.PoiseDamage <= 0f
+                || !result.Accepted
+                || result.AppliedAmount <= 0f
+                || context.Target == null
+                || context.Target.GetComponentInParent<EnemyActor>() == null)
+            {
+                return;
+            }
+
+            remainingPoiseHits--;
+            PublishWorldFeedback(
+                poiseCard,
+                CardFeedbackKind.Triggered,
+                CardFeedbackAnchor.HitPoint,
+                context.HitPoint);
+            RefreshChargeHud(PoiseFeedbackId, poiseCard, remainingPoiseHits);
         }
 
         public void OnDamageReceived(in DamageContext context, in DamageResult result)
@@ -148,6 +173,7 @@ namespace TicGame.Architecture
                 poiseDamage: poiseDamage,
                 isCardEnhancedMelee: (knockbackCharges > 0 && knockbackMultiplier > 1f)
                     || (chainIncrements > 0 && chainDamagePercentPerIncrement > 0f)
+                    || remainingPoiseHits > 0
                     || (armedSupplemental.IsArmed
                         && armedSupplemental.AttackExecutionId == attackExecutionId
                         && armedSupplemental.TotalMultiplier > 1f));
@@ -258,6 +284,37 @@ namespace TicGame.Architecture
                 displayText: "armed"));
             PublishWorldFeedback(card, CardFeedbackKind.Activated);
         }
+
+        public void ArmPoiseHits(
+            int hits,
+            float basePoise,
+            float multiplier,
+            CardDefinitionSO card = null)
+        {
+            remainingPoiseHits = Mathf.Max(0, hits);
+            basePoiseDamage = Mathf.Max(0f, basePoise);
+            poiseMultiplier = Mathf.Max(0f, multiplier);
+            poiseCard = card != null ? card : poiseCard;
+            RefreshChargeHud(PoiseFeedbackId, poiseCard, remainingPoiseHits);
+            PublishWorldFeedback(poiseCard, CardFeedbackKind.Activated);
+        }
+
+        public void ClearPoiseHits()
+        {
+            remainingPoiseHits = 0;
+            basePoiseDamage = 0f;
+            poiseMultiplier = 1f;
+            cardFeedback?.RemoveHudEffect(BuildFeedbackKey(PoiseFeedbackId));
+        }
+
+        public float GetPoiseDamage(in DamageInstance instance, GameObject target) =>
+            remainingPoiseHits > 0
+            && instance.Provenance.OriginKind == DamageOriginKind.Primary
+            && (instance.ProcPolicy & DamageProcPolicy.ConfirmAttackHit) != 0
+            && target != null
+            && target.GetComponentInParent<EnemyActor>() != null
+                ? basePoiseDamage * poiseMultiplier
+                : 0f;
 
         public void SetRandomRollSource(IRandomRollSource source)
         {

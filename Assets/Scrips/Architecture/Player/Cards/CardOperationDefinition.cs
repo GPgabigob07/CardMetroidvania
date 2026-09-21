@@ -24,6 +24,9 @@ namespace TicGame.Architecture
         [Min(0f)]
         [Tooltip("Poise damage applied by damage-capable operations.")]
         [SerializeField] private float poiseDamage;
+        [Min(0)]
+        [Tooltip("Authored hit count for charged primary-hit operations.")]
+        [SerializeField] private int chargeCount;
 
         public CardOperationDefinition(
             CardOperationKind kind,
@@ -33,7 +36,8 @@ namespace TicGame.Architecture
             float amount = 0f,
             float multiplier = 1f,
             string effectId = null,
-            float poiseDamage = 0f)
+            float poiseDamage = 0f,
+            int chargeCount = 0)
         {
             this.kind = kind;
             this.status = status;
@@ -43,6 +47,7 @@ namespace TicGame.Architecture
             this.multiplier = multiplier;
             this.effectId = effectId;
             this.poiseDamage = poiseDamage;
+            this.chargeCount = chargeCount;
         }
 
         public CardOperationKind Kind => kind;
@@ -53,6 +58,7 @@ namespace TicGame.Architecture
         public float Multiplier => multiplier;
         public string EffectId => effectId;
         public float PoiseDamage => poiseDamage;
+        public int ChargeCount => chargeCount;
 
         public bool IsValid()
         {
@@ -85,6 +91,8 @@ namespace TicGame.Architecture
                 CardOperationKind.InvokeAbility => ability != null,
                 CardOperationKind.ArmGroundedJumpBoost => multiplier > 0f,
                 CardOperationKind.GrantTimedDash => amount > 0f,
+                CardOperationKind.ArmPoiseHits =>
+                    chargeCount > 0 && amount > 0f && multiplier > 0f,
                 _ => false
             };
         }

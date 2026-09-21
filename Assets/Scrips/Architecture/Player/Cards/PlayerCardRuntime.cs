@@ -205,6 +205,7 @@ namespace TicGame.Architecture
         {
             groundedJumpBoost?.Clear();
             dashPermission?.Clear();
+            combatEffects?.ClearPoiseHits();
         }
 
         public void ConfigureCardDefinitions(
@@ -379,6 +380,12 @@ namespace TicGame.Architecture
                         }
 
                         break;
+                    case CardOperationKind.ArmPoiseHits:
+                        if (!combatEffects.CanArmPoiseHits) {
+                            return false;
+                        }
+
+                        break;
                     default: return false;
                 }
             }
@@ -394,7 +401,8 @@ namespace TicGame.Architecture
                     or CardOperationKind.ArmSupplementalDamage
                     or CardOperationKind.InvokeAbility
                     or CardOperationKind.ArmGroundedJumpBoost
-                    or CardOperationKind.GrantTimedDash) {
+                    or CardOperationKind.GrantTimedDash
+                    or CardOperationKind.ArmPoiseHits) {
                     return true;
                 }
 
@@ -449,6 +457,13 @@ namespace TicGame.Architecture
                         break;
                     case CardOperationKind.GrantTimedDash:
                         dashPermission.Activate(operation.Amount, operation.Multiplier, card);
+                        break;
+                    case CardOperationKind.ArmPoiseHits:
+                        combatEffects.ArmPoiseHits(
+                            operation.ChargeCount,
+                            operation.Amount,
+                            operation.Multiplier,
+                            card);
                         break;
                 }
             }
