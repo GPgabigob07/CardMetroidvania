@@ -266,11 +266,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 438014315967047088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d3ebd4774b1451f9436c1e4477a9430, type: 3}
+  m_Script: {fileID: 11500000, guid: 0ee7f798ab8e29f49bc6516f89ffb74d, type: 3}
   m_Name:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyPoise
-  maximumPoise: 10
-  regenerationPerSecond: 0.33
+  fallbackMaximumPoise: 10
+  fallbackRegenerationPerSecond: 0.33
 --- !u!114 &5357305490095725602
 MonoBehaviour:
   m_ObjectHideFlags: 0

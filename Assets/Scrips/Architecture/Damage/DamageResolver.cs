@@ -44,9 +44,8 @@ namespace TicGame.Architecture
                 var poiseSource = FindFirst<IPoiseDamageSource>(owner: instance.SourceObject);
                 var poiseDamage = Mathf.Max(
                     a: 0f,
-                    b: poiseSource != null
-                        ? poiseSource.GetPoiseDamage(instance, target)
-                        : instance.PoiseDamage);
+                    b: instance.PoiseDamage
+                        + (poiseSource?.GetPoiseDamage(instance, target) ?? 0f));
                 var context = new DamageContext(
                     source: instance.SourceObject,
                     target: target,

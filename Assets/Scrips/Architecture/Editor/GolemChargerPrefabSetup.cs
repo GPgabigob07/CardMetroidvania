@@ -277,8 +277,8 @@ namespace TicGame.Architecture.EditorTools
             brainSerialized.ApplyModifiedPropertiesWithoutUndo();
 
             var poiseSerialized = new SerializedObject(poise);
-            poiseSerialized.FindProperty("maximumPoise").floatValue = 10f;
-            poiseSerialized.FindProperty("regenerationPerSecond").floatValue = 0.33f;
+            poiseSerialized.FindProperty("fallbackMaximumPoise").floatValue = 10f;
+            poiseSerialized.FindProperty("fallbackRegenerationPerSecond").floatValue = 0.33f;
             poiseSerialized.ApplyModifiedPropertiesWithoutUndo();
 
             var policySerialized = new SerializedObject(damagePolicy);
