@@ -642,7 +642,7 @@ namespace TicGame.Architecture
             attackCombo.NotifyCardCommitted(
                 snapshot.SessionCardTime,
                 snapshot.ActiveOpportunityId,
-                sensors?.IsGrounded == true);
+                grounded: !isAirborne);
             PublishCardTimeAvailability();
         }
 
