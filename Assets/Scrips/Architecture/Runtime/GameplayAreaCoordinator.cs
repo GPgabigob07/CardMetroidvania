@@ -27,10 +27,18 @@ namespace TicGame.Architecture
         private Task<bool> respawnTask;
         private int respawnTaskGeneration = -1;
         private int sessionGeneration;
+        private bool activeRestoreHealth;
+        private bool lastRecoveryRestoresHealth;
         private bool hasLastAddress;
 
         public string LastError { get; private set; }
         public bool IsReady { get; private set; }
+        public bool IsRecovering => respawnTask != null && respawnTaskGeneration == sessionGeneration;
+
+        /// <summary>
+        /// Returns whether this coordinator owns the persistent player candidate.
+        /// </summary>
+        public bool IsConfiguredPlayer(PlayerController candidate) => candidate != null && candidate == player;
 
         /// <summary>
         /// Supplies the Gameplay composition used by this session coordinator.
@@ -145,13 +153,29 @@ namespace TicGame.Architecture
         /// <summary>
         /// Reconciles loaded areas to the current respawn address before returning the player to its marker.
         /// </summary>
-        public Task<bool> RespawnAsync()
+        public Task<bool> RespawnAsync() => RequestRecoveryAsync(restoreHealth: true);
+
+        /// <summary>
+        /// Returns the player to the current checkpoint after nonlethal hazard damage without restoring health.
+        /// </summary>
+        public Task<bool> RecoverFromHazardAsync() => RequestRecoveryAsync(restoreHealth: false);
+
+        /// <summary>
+        /// Retries a failed recovery with the health policy of its original request.
+        /// </summary>
+        public Task<bool> RetryRecoveryAsync() => RequestRecoveryAsync(lastRecoveryRestoresHealth);
+
+        private Task<bool> RequestRecoveryAsync(bool restoreHealth)
         {
-            if (respawnTask != null && respawnTaskGeneration == sessionGeneration)
+            if (IsRecovering)
             {
+                activeRestoreHealth |= restoreHealth;
+                lastRecoveryRestoresHealth |= restoreHealth;
                 return respawnTask;
             }
 
+            lastRecoveryRestoresHealth = restoreHealth;
+            activeRestoreHealth = restoreHealth;
             var generation = ++sessionGeneration;
             var completion = new TaskCompletionSource<bool>();
             respawnTask = completion.Task;
@@ -184,6 +208,11 @@ namespace TicGame.Architecture
             {
                 completion.TrySetResult(await RunRespawnAsync(generation));
             }
+            catch (OperationCanceledException)
+            {
+                Fail(generation, "Respawn cover operation was cancelled.");
+                completion.TrySetResult(false);
+            }
             catch (Exception error)
             {
                 LastError = $"Respawn failed: {error.Message}";
@@ -204,6 +233,8 @@ namespace TicGame.Architecture
         private async Task<bool> RunRespawnAsync(int generation)
         {
             IsReady = false;
+            EnsureRespawnHeld();
+            var startedAt = Time.unscaledTime;
             if (player == null || progress == null)
             {
                 return Fail(generation, "Respawn requires a configured player and run progress.");
@@ -215,9 +246,17 @@ namespace TicGame.Architecture
                 return Fail(generation, areaError);
             }
 
+            if (respawnCover != null)
+            {
+                await respawnCover.FadeToOpaqueAsync();
+                if (!IsCurrent(generation))
+                {
+                    return false;
+                }
+            }
+
             resolvedRespawnSpawn = null;
             var sequence = new RespawnSequence(
-                hold: () => EnsureRespawnHeld(),
                 suspendTriggers: SceneStreamingService.SuspendDirectionalRequests,
                 settleRequests: async () =>
                 {
@@ -229,9 +268,14 @@ namespace TicGame.Architecture
                 restoreProgress: () => RestoreRespawnProgressAsync(generation, destination),
                 resolveSpawn: () => ResolveRespawnSpawn(generation, destination, address),
                 teleport: TeleportToResolvedRespawn,
-                restoreHealth: RestoreRespawnHealth,
-                resetCrossings: ResetDirectionalCrossings,
-                releaseHold: ReleaseRespawnHold);
+                restoreHealth: () =>
+                {
+                    if (activeRestoreHealth)
+                    {
+                        RestoreRespawnHealth();
+                    }
+                },
+                resetCrossings: ResetDirectionalCrossings);
 
             var respawned = await sequence.RunAsync();
             if (!respawned)
@@ -239,6 +283,23 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            if (respawnCover != null)
+            {
+                var clearDelay = Mathf.Max(0f, startedAt + 2f - respawnCover.FadeSeconds - Time.unscaledTime);
+                await respawnCover.WaitUnscaledAsync(clearDelay);
+                if (!IsCurrent(generation))
+                {
+                    return false;
+                }
+
+                await respawnCover.FadeToClearAsync();
+                if (!IsCurrent(generation))
+                {
+                    return false;
+                }
+            }
+
+            ReleaseRespawnHold();
             LastError = null;
             IsReady = true;
             return true;
@@ -585,6 +646,7 @@ namespace TicGame.Architecture
         {
             respawnTask = null;
             respawnTaskGeneration = -1;
+            activeRestoreHealth = false;
         }
 
         private bool IsCurrent(int generation) => generation == sessionGeneration;
@@ -607,7 +669,6 @@ namespace TicGame.Architecture
         /// </summary>
         public sealed class RespawnSequence
         {
-            private readonly Action hold;
             private readonly Func<IDisposable> suspendTriggers;
             private readonly Func<Task<bool>> settleRequests;
             private readonly Func<Task<bool>> unloadOtherAreas;
@@ -617,10 +678,8 @@ namespace TicGame.Architecture
             private readonly Action teleport;
             private readonly Action restoreHealth;
             private readonly Action resetCrossings;
-            private readonly Action releaseHold;
 
             public RespawnSequence(
-                Action hold,
                 Func<IDisposable> suspendTriggers,
                 Func<Task<bool>> settleRequests,
                 Func<Task<bool>> unloadOtherAreas,
@@ -629,10 +688,8 @@ namespace TicGame.Architecture
                 Func<Task<bool>> resolveSpawn,
                 Action teleport,
                 Action restoreHealth,
-                Action resetCrossings,
-                Action releaseHold)
+                Action resetCrossings)
             {
-                this.hold = hold ?? throw new ArgumentNullException(nameof(hold));
                 this.suspendTriggers = suspendTriggers ?? throw new ArgumentNullException(nameof(suspendTriggers));
                 this.settleRequests = settleRequests ?? throw new ArgumentNullException(nameof(settleRequests));
                 this.unloadOtherAreas = unloadOtherAreas ?? throw new ArgumentNullException(nameof(unloadOtherAreas));
@@ -640,9 +697,8 @@ namespace TicGame.Architecture
                 this.restoreProgress = restoreProgress ?? throw new ArgumentNullException(nameof(restoreProgress));
                 this.resolveSpawn = resolveSpawn ?? throw new ArgumentNullException(nameof(resolveSpawn));
                 this.teleport = teleport ?? throw new ArgumentNullException(nameof(teleport));
-                this.restoreHealth = restoreHealth ?? throw new ArgumentNullException(nameof(restoreHealth));
+                this.restoreHealth = restoreHealth;
                 this.resetCrossings = resetCrossings ?? throw new ArgumentNullException(nameof(resetCrossings));
-                this.releaseHold = releaseHold ?? throw new ArgumentNullException(nameof(releaseHold));
             }
 
             /// <summary>
@@ -650,7 +706,6 @@ namespace TicGame.Architecture
             /// </summary>
             public async Task<bool> RunAsync()
             {
-                hold();
                 using (suspendTriggers())
                 {
                     if (!await settleRequests()
@@ -663,11 +718,10 @@ namespace TicGame.Architecture
                     }
 
                     teleport();
-                    restoreHealth();
+                    restoreHealth?.Invoke();
                     resetCrossings();
                 }
 
-                releaseHold();
                 return true;
             }
         }
