@@ -11,12 +11,7 @@ namespace TicGame.Architecture
         private CardTimeSessionState state;
         private PlayerCardTimeState availableCardTime;
         private PlayerCardTimeState publishedCardTime;
-        private long availableOpportunityId;
-        private long publishedOpportunityId;
-        private long consumedOpportunityId;
-        private long legacyOpportunityId;
-        private PlayerCardTimeState legacyCategory;
-        private bool blockedByConsumedOpportunity;
+        private PlayerCardTimeState consumedCardTime;
         private CardTimeActiveSession activeSession;
         private long nextSessionId = 1;
         private float inputBufferRemaining;
@@ -49,79 +44,52 @@ namespace TicGame.Architecture
 
         public CardTimeSessionSnapshot Current => BuildSnapshot();
 
-        /// <summary>
-        /// Compatibility path for category-only EditMode callers. Gameplay publishes explicit opportunities.
-        /// </summary>
-        public void PublishAvailability(PlayerCardTimeState cardTimeState)
-        {
-            if (cardTimeState == PlayerCardTimeState.None)
-            {
-                PublishAvailability(CardTimeOpportunity.None);
-                return;
-            }
-
-            if (legacyCategory != cardTimeState)
-            {
-                legacyCategory = cardTimeState;
-                legacyOpportunityId++;
-            }
-
-            PublishAvailability(new CardTimeOpportunity(cardTimeState, legacyOpportunityId));
-        }
-
-        public void PublishAvailability(CardTimeOpportunity opportunity)
-        {
-            if (opportunity.IsValid && opportunity.OpportunityId <= consumedOpportunityId)
-            {
-                return;
-            }
-
+        public void PublishAvailability(
+            PlayerCardTimeState cardTimeState
+        ) {
             var previous = BuildSnapshot();
             var previousPublishedCardTime = publishedCardTime;
-            var previousPublishedOpportunityId = publishedOpportunityId;
-            publishedCardTime = opportunity.Category;
-            publishedOpportunityId = opportunity.OpportunityId;
+            var releasedConsumedOpportunity = false;
+            publishedCardTime = cardTimeState;
 
             if (state == CardTimeSessionState.Active) {
                 PublishChangedIfDifferent(previous: previous);
                 return;
             }
 
-            if (opportunity.IsValid)
-            {
-                blockedByConsumedOpportunity = false;
-            }
-            else if (blockedByConsumedOpportunity)
-            {
-                return;
-            }
-
-            if (opportunity.Category == previousPublishedCardTime
-                && opportunity.OpportunityId == previousPublishedOpportunityId
+            if (cardTimeState == previousPublishedCardTime
                 && state == CardTimeSessionState.Available
                 && postWindowGraceRemaining > 0f) {
                 return;
             }
 
+            if (consumedCardTime != PlayerCardTimeState.None) {
+                if (cardTimeState == PlayerCardTimeState.None
+                    || cardTimeState == consumedCardTime) {
+                    return;
+                }
+
+                consumedCardTime = PlayerCardTimeState.None;
+                releasedConsumedOpportunity = true;
+            }
+
             if (ShouldBeginGrace(
                     previous: previousPublishedCardTime,
-                    next: opportunity.Category)
-                && availableOpportunityId > consumedOpportunityId
+                    next: cardTimeState)
+                && !releasedConsumedOpportunity
                 && postWindowGraceDuration > 0f) {
                 availableCardTime = previousPublishedCardTime;
-                availableOpportunityId = previousPublishedOpportunityId;
                 postWindowGraceRemaining = postWindowGraceDuration;
                 state = CardTimeSessionState.Available;
                 PublishChangedIfDifferent(previous: previous);
                 return;
             }
 
-            availableCardTime = opportunity.Category;
-            availableOpportunityId = opportunity.OpportunityId;
+            availableCardTime = cardTimeState;
             postWindowGraceRemaining = 0f;
-            state = opportunity.IsValid
-                ? CardTimeSessionState.Available
-                : CardTimeSessionState.Unavailable;
+            state = cardTimeState == PlayerCardTimeState.None
+                ? CardTimeSessionState.Unavailable
+                : CardTimeSessionState.Available;
 
             if (state == CardTimeSessionState.Available
                 && inputBufferRemaining > 0f) {
@@ -150,7 +118,7 @@ namespace TicGame.Architecture
 
             if (inputBufferDuration <= 0f
                 || state == CardTimeSessionState.Active
-                || blockedByConsumedOpportunity) {
+                || consumedCardTime != PlayerCardTimeState.None) {
                 return CardTimeActivationRequestResult.Rejected;
             }
 
@@ -186,8 +154,7 @@ namespace TicGame.Architecture
 
                     if (postWindowGraceRemaining <= 0f) {
                         availableCardTime = publishedCardTime;
-                        availableOpportunityId = publishedOpportunityId;
-                        state = publishedOpportunityId == 0
+                        state = publishedCardTime == PlayerCardTimeState.None
                             ? CardTimeSessionState.Unavailable
                             : CardTimeSessionState.Available;
                         PublishChanged(previous: gracePrevious);
@@ -252,13 +219,13 @@ namespace TicGame.Architecture
             CardTimeSessionOutcome outcome,
             CardTimeSessionSnapshot previous
         ) {
-            consumedOpportunityId = Math.Max(
-                consumedOpportunityId,
-                activeSession.OpportunityId);
-            blockedByConsumedOpportunity = true;
+            consumedCardTime = ShouldLatchTerminalOutcome(
+                    outcome: outcome,
+                    category: activeSession.Category)
+                ? activeSession.Category
+                : PlayerCardTimeState.None;
             activeSession = null;
             availableCardTime = PlayerCardTimeState.None;
-            availableOpportunityId = 0;
             inputBufferRemaining = 0f;
             postWindowGraceRemaining = 0f;
             state = CardTimeSessionState.Unavailable;
@@ -284,7 +251,6 @@ namespace TicGame.Architecture
             activeSession = new CardTimeActiveSession(
                 id: nextSessionId++,
                 category: availableCardTime,
-                opportunityId: availableOpportunityId,
                 maximumDuration: maximumActiveDuration);
             postWindowGraceRemaining = 0f;
             inputBufferRemaining = 0f;
@@ -357,22 +323,12 @@ namespace TicGame.Architecture
                    && previous is PlayerCardTimeState.Chain or PlayerCardTimeState.Finisher;
         }
 
-        public void ClearSource()
-        {
-            var previous = BuildSnapshot();
-            activeSession = null;
-            state = CardTimeSessionState.Unavailable;
-            availableCardTime = PlayerCardTimeState.None;
-            publishedCardTime = PlayerCardTimeState.None;
-            availableOpportunityId = 0;
-            publishedOpportunityId = 0;
-            consumedOpportunityId = 0;
-            legacyOpportunityId = 0;
-            legacyCategory = PlayerCardTimeState.None;
-            blockedByConsumedOpportunity = false;
-            inputBufferRemaining = 0f;
-            postWindowGraceRemaining = 0f;
-            PublishChangedIfDifferent(previous);
+        private static bool ShouldLatchTerminalOutcome(
+            CardTimeSessionOutcome outcome,
+            PlayerCardTimeState category
+        ) {
+            return outcome != CardTimeSessionOutcome.TimedOut
+                   || category != PlayerCardTimeState.Neutral;
         }
 
         private sealed class AcceptCommitTransaction : ICardCommitTransaction

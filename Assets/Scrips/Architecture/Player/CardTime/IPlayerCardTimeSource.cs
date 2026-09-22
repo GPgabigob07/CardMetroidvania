@@ -13,11 +13,6 @@ namespace TicGame.Architecture
         void PublishAvailability(PlayerCardTimeState state);
 
         /// <summary>
-        /// Publishes a player-owned opportunity with an identity that remains stable across frames.
-        /// </summary>
-        void PublishAvailability(CardTimeOpportunity opportunity);
-
-        /// <summary>
         /// Requests activation from the current player-owned opportunity.
         /// </summary>
         CardTimeActivationRequestResult RequestActivation();
