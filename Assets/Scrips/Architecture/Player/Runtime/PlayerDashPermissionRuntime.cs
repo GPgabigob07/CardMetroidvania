@@ -68,11 +68,18 @@ namespace TicGame.Architecture
                 return;
             }
 
+            var previousTenth = Mathf.RoundToInt(RemainingSeconds * 10f);
             RemainingSeconds = Mathf.Max(0f, RemainingSeconds - Mathf.Max(0f, deltaTime));
             if (!IsEnabled)
             {
                 RemoveHud();
                 PublishWorld(CardFeedbackKind.Expired);
+                return;
+            }
+
+            if (Mathf.RoundToInt(RemainingSeconds * 10f) != previousTenth)
+            {
+                RefreshHud();
             }
         }
 

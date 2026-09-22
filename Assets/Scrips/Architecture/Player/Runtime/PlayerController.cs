@@ -416,7 +416,9 @@ namespace TicGame.Architecture
         }
 
         public void ResetTransientState() {
-            CompleteCurrentAttack();
+            if (ActionRunner?.CurrentAction is IPlayerAttackExecution attackExecution) {
+                combatEffects?.CancelAttack(attackExecution.ExecutionId);
+            }
             ActionRunner?.Clear(context: Context);
             attackCombo.Clear();
             cardTimeSource?.Cancel();

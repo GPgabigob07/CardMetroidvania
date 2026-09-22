@@ -198,6 +198,22 @@ namespace TicGame.Architecture
             }
         }
 
+        public void CancelAttack(string executionId)
+        {
+            if (string.IsNullOrWhiteSpace(executionId))
+            {
+                return;
+            }
+
+            attackOutcomes.Remove(executionId);
+            if (armedSupplemental.IsArmed
+                && armedSupplemental.AttackExecutionId == executionId)
+            {
+                cardFeedback?.RemoveHudEffect(BuildFeedbackKey(SupplementalFeedbackId));
+                armedSupplemental = default;
+            }
+        }
+
         public void CompleteAttack(string executionId)
         {
             if (string.IsNullOrWhiteSpace(executionId)
