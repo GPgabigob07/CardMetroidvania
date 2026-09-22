@@ -50,6 +50,14 @@ namespace TicGame.Architecture
 
         public Task FadeToClearAsync() => FadeToAsync(0f);
 
+        /// <summary>
+        /// Cancels the active fade and unscaled waits when their owning recovery session ends.
+        /// </summary>
+        public void CancelPendingRecoveryOperations()
+        {
+            CancelPendingOperations();
+        }
+
         public Task WaitUnscaledAsync(float seconds)
         {
             if (!isActiveAndEnabled)

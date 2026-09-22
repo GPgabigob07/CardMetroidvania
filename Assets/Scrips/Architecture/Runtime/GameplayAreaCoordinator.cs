@@ -190,6 +190,7 @@ namespace TicGame.Architecture
         public void CancelSession()
         {
             sessionGeneration++;
+            respawnCover?.CancelPendingRecoveryOperations();
             InvalidateRespawnOperation();
             IsReady = false;
             SceneManager.sceneLoaded -= HandleSceneLoaded;
