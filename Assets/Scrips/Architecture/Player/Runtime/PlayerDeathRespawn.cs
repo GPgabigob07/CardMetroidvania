@@ -77,7 +77,6 @@ namespace TicGame.Architecture
         /// </summary>
         public void RestoreHealthAfterCoordinatedRespawn()
         {
-            playerController?.ResetCardTimeForFullRun();
             if (restoreHealthOnRespawn)
             {
                 health?.Initialize();
@@ -131,6 +130,7 @@ namespace TicGame.Architecture
 
             cardRuntime ??= GetComponent<PlayerCardRuntime>();
             cardRuntime?.ClearNewCardEffects();
+            playerController?.ResetCardTimeForFullRun();
             if (coordinator == null)
             {
                 Respawn();
@@ -161,8 +161,6 @@ namespace TicGame.Architecture
             transform.position = respawnTarget != null
                 ? respawnTarget.position
                 : fallbackRespawnPosition;
-
-            playerController?.ResetCardTimeForFullRun();
 
             if (restoreHealthOnRespawn)
             {
