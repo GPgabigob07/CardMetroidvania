@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -106,6 +107,23 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Attack shell tuning used by AttackAction.")] [SerializeField]
         private PlayerAttackDefinitionSO attackDefinition;
 
+        [Header("Progression")]
+        [Tooltip("Whether Card Time has been unlocked. Existing test scenes default to unlocked.")]
+        [SerializeField] private bool cardTimeUnlocked = true;
+
+        public bool CardTimeUnlocked => cardTimeUnlocked;
+
+        public void SetCardTimeUnlocked(bool unlocked)
+        {
+            cardTimeUnlocked = unlocked;
+            if (!unlocked)
+            {
+                cardTimeSource?.Cancel();
+                DisposeActiveCardSelection();
+            }
+            PublishCardTimeAvailability();
+        }
+
         private PlayerInputSnapshot input;
         private IPlayerAnimationSnapshotSource animationSnapshotSource;
         private readonly PlayerAttackComboRuntime attackCombo = new();
@@ -117,6 +135,7 @@ namespace TicGame.Architecture
         private InputAction resolvedCardTimeRightAction;
         private CardTimeSelectionTransaction activeCardSelection;
         private bool restoreNeutralCardTimeWhenGrounded;
+        private bool worldHeld;
 
         public PlayerContext Context { get; private set; }
         public PlayerLocomotionController Locomotion { get; private set; }
@@ -124,6 +143,8 @@ namespace TicGame.Architecture
         public PlayerAnimationSnapshotPublisher AnimationSnapshots { get; private set; }
         public ICardTimeSession CardTimeSession => gameplayServices?.CardTime;
         public PlayerCardTimeConfigSO CardTimeConfig => cardTimeSource?.Configuration;
+        public bool IsGameplayServicesReady => gameplayServices != null && cardTimeSource != null;
+        public event Action GameplayServicesReady;
 
         private void Awake() {
             if (motor == null) {
@@ -207,6 +228,10 @@ namespace TicGame.Architecture
         }
 
         private void OnEnable() {
+            if (worldHeld) {
+                return;
+            }
+
             EnableAction(reference: moveAction);
             EnableAction(reference: jumpAction);
             EnableAction(reference: attackAction);
@@ -231,6 +256,10 @@ namespace TicGame.Architecture
         }
 
         private void Update() {
+            if (worldHeld) {
+                return;
+            }
+
             attackCombo.Tick(deltaTime: Time.deltaTime);
             input = ReadInputActions();
             SetInputSnapshot(snapshot: input);
@@ -313,6 +342,7 @@ namespace TicGame.Architecture
             SubscribeCardTimeTransitions();
             attackHitDetector?.BindGameplayServices(services);
             cardTimePresenter?.Initialize(services?.CardTime);
+            NotifyGameplayServicesReady();
         }
 
         public void BindPlayerCardTimeSource(IPlayerCardTimeSource source) {
@@ -326,9 +356,15 @@ namespace TicGame.Architecture
             if (!isActiveAndEnabled) {
                 cardTimeSource?.PublishAvailability(state: PlayerCardTimeState.None);
             }
+
+            NotifyGameplayServicesReady();
         }
 
         private void FixedUpdate() {
+            if (worldHeld) {
+                return;
+            }
+
             sensors.Refresh();
             Locomotion.FixedTick(context: Context, fixedDeltaTime: Time.fixedDeltaTime);
             ActionRunner.FixedTick(
@@ -375,6 +411,32 @@ namespace TicGame.Architecture
             DisposeActiveCardSelection();
             input = PlayerInputSnapshot.None;
             SetInputSnapshot(snapshot: input);
+            Locomotion?.ConsumeJumpBuffer();
+            ResetCardTimeChord();
+        }
+
+        /// <summary>
+        /// Suppresses player-owned input and simulation ticks without changing the player object's lifetime.
+        /// </summary>
+        public void SetWorldHeld(bool held)
+        {
+            if (worldHeld == held)
+            {
+                return;
+            }
+
+            worldHeld = held;
+            if (worldHeld)
+            {
+                ResetTransientState();
+                DisablePlayerActions();
+                return;
+            }
+
+            if (isActiveAndEnabled)
+            {
+                EnablePlayerActions();
+            }
         }
 
         private void HandleAttackPressed() {
@@ -428,7 +490,7 @@ namespace TicGame.Architecture
 
             if (started) {
                 attackCombo.NotifyAttackStarted(state);
-                cardTimeSource?.PublishAvailability(attackCombo.AvailableCardTime);
+                PublishCardTimeAvailability();
                 combatEffects?.BeginAttack(attack.ExecutionId);
             }
 
@@ -449,7 +511,8 @@ namespace TicGame.Architecture
         }
 
         private void PublishCardTimeAvailability() {
-            cardTimeSource?.PublishAvailability(state: attackCombo.AvailableCardTime);
+            cardTimeSource?.PublishAvailability(state: cardTimeUnlocked
+                ? attackCombo.AvailableCardTime : PlayerCardTimeState.None);
         }
 
         private void RestoreNeutralCardTimeAfterTimeoutIfGrounded() {
@@ -459,7 +522,7 @@ namespace TicGame.Architecture
 
             restoreNeutralCardTimeWhenGrounded = false;
             attackCombo.RestoreNeutralCardTime();
-            cardTimeSource?.PublishAvailability(state: attackCombo.AvailableCardTime);
+            PublishCardTimeAvailability();
         }
 
         private void SubscribeCardTimeTransitions() {
@@ -486,6 +549,7 @@ namespace TicGame.Architecture
         }
 
         private void HandleCardTimePressed() {
+            if (!cardTimeUnlocked) return;
             var result = cardTimeSource?.RequestActivation()
                 ?? CardTimeActivationRequestResult.Rejected;
             if (result == CardTimeActivationRequestResult.Rejected) {
@@ -498,6 +562,11 @@ namespace TicGame.Architecture
 
         private void HandleCardSlotCommand(CardTimeSelectionSlotCommand command)
         {
+            if (worldHeld)
+            {
+                return;
+            }
+
             if (CardTimeSession?.Current.IsActive != true)
             {
                 return;
@@ -685,6 +754,42 @@ namespace TicGame.Architecture
                 jumpReleased: WasReleased(reference: jumpAction),
                 attackPressed: WasPressed(reference: attackAction),
                 dashPressed: WasPressed(reference: dashAction));
+        }
+
+        private void NotifyGameplayServicesReady()
+        {
+            if (IsGameplayServicesReady)
+            {
+                GameplayServicesReady?.Invoke();
+            }
+        }
+
+        private void ResetCardTimeChord()
+        {
+            var sourceConfig = cardTimeSource?.Configuration;
+            cardTimeChord = sourceConfig != null
+                ? new PlayerCardTimeChordRuntime(sourceConfig.ChordInputGraceDuration)
+                : null;
+        }
+
+        private void EnablePlayerActions()
+        {
+            EnableAction(reference: moveAction);
+            EnableAction(reference: jumpAction);
+            EnableAction(reference: attackAction);
+            EnableAction(reference: dashAction);
+            EnableAction(action: resolvedCardTimeLeftAction);
+            EnableAction(action: resolvedCardTimeRightAction);
+        }
+
+        private void DisablePlayerActions()
+        {
+            DisableAction(reference: moveAction);
+            DisableAction(reference: jumpAction);
+            DisableAction(reference: attackAction);
+            DisableAction(reference: dashAction);
+            DisableAction(action: resolvedCardTimeLeftAction);
+            DisableAction(action: resolvedCardTimeRightAction);
         }
 
         private static void EnableAction(

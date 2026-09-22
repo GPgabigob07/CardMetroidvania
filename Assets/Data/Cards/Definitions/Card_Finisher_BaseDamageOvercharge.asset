@@ -15,6 +15,7 @@ MonoBehaviour:
   id: card.finisher.base-damage-overcharge
   displayName: Base Damage Overcharge
   description: Arms attack-scoped supplemental damage using a variable Energy spend.
+  icon: {fileID: 0}
   category: 30
   fixedCosts:
   - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}

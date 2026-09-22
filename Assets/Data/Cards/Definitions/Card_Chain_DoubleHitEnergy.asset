@@ -15,6 +15,7 @@ MonoBehaviour:
   id: card.chain.double-hit-energy
   displayName: Double Hit Energy
   description: Doubles successful hit Energy gains for the next five effective hits.
+  icon: {fileID: 0}
   category: 20
   fixedCosts:
   - resource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}

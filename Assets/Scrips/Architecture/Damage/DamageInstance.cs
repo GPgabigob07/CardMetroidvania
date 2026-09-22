@@ -18,6 +18,7 @@ namespace TicGame.Architecture
         public float PoiseDamage;
         public DamageProvenance Provenance;
         public DamageProcPolicy ProcPolicy;
+        public bool IsCardEnhancedMelee;
 
         public DamageInstance(
             string instanceId,
@@ -31,7 +32,8 @@ namespace TicGame.Architecture
             float knockbackForce = 0f,
             DamageProvenance? provenance = null,
             DamageProcPolicy procPolicy = DamageProcPolicy.PrimaryAttack,
-            float poiseDamage = 0f)
+            float poiseDamage = 0f,
+            bool isCardEnhancedMelee = false)
         {
             InstanceId = string.IsNullOrWhiteSpace(value: instanceId) ? Guid.NewGuid().ToString(format: "N") : instanceId;
             SourceObject = sourceObject;
@@ -45,6 +47,7 @@ namespace TicGame.Architecture
             PoiseDamage = Mathf.Max(a: 0f, b: poiseDamage);
             Provenance = provenance ?? DamageProvenance.Primary(instanceId: InstanceId);
             ProcPolicy = procPolicy;
+            IsCardEnhancedMelee = isCardEnhancedMelee;
         }
     }
 }

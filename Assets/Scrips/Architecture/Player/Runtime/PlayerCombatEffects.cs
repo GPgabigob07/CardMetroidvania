@@ -142,7 +142,12 @@ namespace TicGame.Architecture
                 attackExecutionId: attackExecutionId,
                 knockbackForce: appliedKnockback,
                 procPolicy: DamageProcPolicy.PrimaryAttack,
-                poiseDamage: poiseDamage);
+                poiseDamage: poiseDamage,
+                isCardEnhancedMelee: (knockbackCharges > 0 && knockbackMultiplier > 1f)
+                    || (chainIncrements > 0 && chainDamagePercentPerIncrement > 0f)
+                    || (armedSupplemental.IsArmed
+                        && armedSupplemental.AttackExecutionId == attackExecutionId
+                        && armedSupplemental.TotalMultiplier > 1f));
         }
 
         public void BeginAttack(string executionId)

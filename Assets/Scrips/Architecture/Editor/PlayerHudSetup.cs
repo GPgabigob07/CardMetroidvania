@@ -42,6 +42,11 @@ namespace TicGame.Architecture.EditorTools
         public static void CreateOrUpdateSampleSceneHud()
         {
             var scene = OpenTargetScene();
+            CreateOrUpdateHud(scene);
+        }
+
+        public static void CreateOrUpdateHud(Scene scene)
+        {
             if (!scene.IsValid())
             {
                 return;
@@ -68,7 +73,7 @@ namespace TicGame.Architecture.EditorTools
                 .FirstOrDefault();
             if (player == null)
             {
-                Debug.LogError($"No PlayerController exists in {ScenePath}.");
+                Debug.LogError($"No PlayerController exists in {scene.path}.");
                 return;
             }
 
@@ -165,7 +170,7 @@ namespace TicGame.Architecture.EditorTools
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             Selection.activeGameObject = root;
-            Debug.Log("Created compact player HUD in SampleScene.");
+            Debug.Log($"Created compact player HUD in {scene.name}.");
         }
 
         private static Scene OpenTargetScene()
