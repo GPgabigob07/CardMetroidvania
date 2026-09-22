@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace TicGame.Architecture.Tests
 {
@@ -92,6 +93,66 @@ namespace TicGame.Architecture.Tests
                 .Invoke(zone, null);
 
             Assert.IsNull(resolved);
+        }
+
+        [Test]
+        public void CheckpointActivationUpdatesRespawnAddressAndIsIdempotent()
+        {
+            var progress = new RunProgress(new SpawnAddress("blue", "start"));
+            var player = Create("Player").AddComponent<PlayerController>();
+            var volume = Create("Checkpoint");
+            volume.AddComponent<BoxCollider2D>().isTrigger = true;
+            var checkpoint = volume.AddComponent<AreaRespawnCheckpoint>();
+            var markerObject = Create("Pink Spawn");
+            var marker = markerObject.AddComponent<AreaSpawnPoint>();
+            marker.Configure("pink-corridor-begin");
+            checkpoint.Configure(marker);
+            checkpoint.Bind(progress, "pink", player);
+
+            Assert.IsTrue(checkpoint.TryActivate(player));
+            Assert.AreEqual(new SpawnAddress("pink", "pink-corridor-begin"), progress.Respawn);
+            Assert.IsTrue(checkpoint.TryActivate(player));
+            Assert.AreEqual(new SpawnAddress("pink", "pink-corridor-begin"), progress.Respawn);
+        }
+
+        [Test]
+        public void CheckpointRejectsForeignPlayerWithoutChangingRespawnAddress()
+        {
+            var progress = new RunProgress(new SpawnAddress("blue", "start"));
+            var player = Create("Player").AddComponent<PlayerController>();
+            var foreignPlayer = Create("Foreign Player").AddComponent<PlayerController>();
+            var volume = Create("Checkpoint");
+            volume.AddComponent<BoxCollider2D>().isTrigger = true;
+            var checkpoint = volume.AddComponent<AreaRespawnCheckpoint>();
+            var marker = Create("Pink Spawn").AddComponent<AreaSpawnPoint>();
+            marker.Configure("pink-corridor-begin");
+            checkpoint.Configure(marker);
+            checkpoint.Bind(progress, "pink", player);
+
+            Assert.IsFalse(checkpoint.TryActivate(foreignPlayer));
+            Assert.AreEqual(new SpawnAddress("blue", "start"), progress.Respawn);
+        }
+
+        [Test]
+        public void CheckpointRejectsMarkerFromAnotherSceneWithoutChangingRespawnAddress()
+        {
+            var progress = new RunProgress(new SpawnAddress("blue", "start"));
+            var player = Create("Player").AddComponent<PlayerController>();
+            var volume = Create("Checkpoint");
+            volume.AddComponent<BoxCollider2D>().isTrigger = true;
+            var checkpoint = volume.AddComponent<AreaRespawnCheckpoint>();
+            var markerObject = Create("Pink Spawn");
+            var marker = markerObject.AddComponent<AreaSpawnPoint>();
+            marker.Configure("pink-corridor-begin");
+            var foreignScene = SceneManager.CreateScene("Checkpoint Foreign Scene");
+            SceneManager.MoveGameObjectToScene(markerObject, foreignScene);
+            checkpoint.Configure(marker);
+            checkpoint.Bind(progress, "pink", player);
+
+            Assert.IsFalse(checkpoint.TryActivate(player));
+            Assert.AreEqual(new SpawnAddress("blue", "start"), progress.Respawn);
+
+            SceneManager.UnloadSceneAsync(foreignScene);
         }
 
         private GameObject Create(string name)

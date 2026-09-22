@@ -437,6 +437,11 @@ namespace TicGame.Architecture
                     gate.BindProgress(progress, area.AreaId);
                 }
 
+                foreach (var checkpoint in root.GetComponentsInChildren<AreaRespawnCheckpoint>(includeInactive: true))
+                {
+                    checkpoint.Bind(progress, area.AreaId, player);
+                }
+
                 foreach (var zone in root.GetComponentsInChildren<CardTimeTutorialZone>(includeInactive: true))
                 {
                     zone.ConfigureForStreamedComposition();
