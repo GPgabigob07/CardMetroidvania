@@ -155,6 +155,38 @@ namespace TicGame.Architecture.Tests
             SceneManager.UnloadSceneAsync(foreignScene);
         }
 
+        [Test]
+        public void CoordinatorBindsCheckpointInLoadedAreaToSessionPlayerAndProgress()
+        {
+            var activeScene = SceneManager.GetActiveScene();
+            var progress = new RunProgress(new SpawnAddress("blue", "start"));
+            var player = Create("Player").AddComponent<PlayerController>();
+            var composition = Create("Gameplay");
+            var coordinator = composition.AddComponent<GameplayAreaCoordinator>();
+            var definition = ScriptableObject.CreateInstance<AreaDefinition>();
+            definition.Configure("pink", "Assets/Scenes/PinkArea_Perimeters.unity", "pink-start");
+            var volume = Create("Pink Checkpoint");
+            volume.AddComponent<BoxCollider2D>().isTrigger = true;
+            var checkpoint = volume.AddComponent<AreaRespawnCheckpoint>();
+            var marker = Create("Pink Spawn").AddComponent<AreaSpawnPoint>();
+            marker.Configure("pink-corridor-begin");
+            checkpoint.Configure(marker);
+
+            try
+            {
+                coordinator.Configure(player, null, null, new[] { definition }, progress, null);
+                typeof(GameplayAreaCoordinator).GetMethod("BindLoadedArea", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .Invoke(coordinator, new object[] { activeScene, definition });
+
+                Assert.IsTrue(checkpoint.TryActivate(player));
+                Assert.AreEqual(new SpawnAddress("pink", "pink-corridor-begin"), progress.Respawn);
+            }
+            finally
+            {
+                Object.DestroyImmediate(definition);
+            }
+        }
+
         private GameObject Create(string name)
         {
             var value = new GameObject(name);
