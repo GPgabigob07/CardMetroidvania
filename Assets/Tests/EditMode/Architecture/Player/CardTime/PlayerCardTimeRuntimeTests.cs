@@ -62,14 +62,18 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
-        public void TimedOutNeutral_ReopensFromRepeatedNeutralPublication()
+        public void TimedOutNeutral_ReopensOnlyForNewOpportunity()
         {
             var runtime = new PlayerCardTimeRuntime(maximumActiveDuration: 1f);
-            runtime.PublishAvailability(cardTimeState: PlayerCardTimeState.Neutral);
+            runtime.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Neutral, 1));
             runtime.TryActivate();
 
             runtime.Tick(unscaledDeltaTime: 1f);
-            runtime.PublishAvailability(cardTimeState: PlayerCardTimeState.Neutral);
+            runtime.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Neutral, 1));
+
+            Assert.AreEqual(CardTimeSessionState.Unavailable, runtime.Current.State);
+
+            runtime.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Neutral, 2));
 
             Assert.AreEqual(CardTimeSessionState.Available, runtime.Current.State);
             Assert.AreEqual(PlayerCardTimeState.Neutral, runtime.Current.AvailableCardTime);

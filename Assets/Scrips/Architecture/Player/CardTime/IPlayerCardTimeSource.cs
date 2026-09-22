@@ -8,9 +8,9 @@ namespace TicGame.Architecture
         PlayerCardTimeConfigSO Configuration { get; }
 
         /// <summary>
-        /// Publishes the Card Time opportunity currently offered by the player.
+        /// Publishes a player-owned opportunity with an identity that remains stable across frames.
         /// </summary>
-        void PublishAvailability(PlayerCardTimeState state);
+        void PublishAvailability(CardTimeOpportunity opportunity);
 
         /// <summary>
         /// Requests activation from the current player-owned opportunity.

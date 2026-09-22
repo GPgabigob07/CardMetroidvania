@@ -142,7 +142,6 @@ namespace TicGame.Architecture
         private InputAction resolvedCardTimeLeftAction;
         private InputAction resolvedCardTimeRightAction;
         private CardTimeSelectionTransaction activeCardSelection;
-        private bool restoreNeutralCardTimeWhenGrounded;
         private bool worldHeld;
 
         public PlayerContext Context { get; private set; }
@@ -261,7 +260,7 @@ namespace TicGame.Architecture
             DisableAction(action: resolvedCardTimeLeftAction);
             DisableAction(action: resolvedCardTimeRightAction);
             cardTimeSource?.Cancel();
-            cardTimeSource?.PublishAvailability(state: PlayerCardTimeState.None);
+            cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
             DisposeActiveCardSelection();
             CompleteCurrentAttack();
         }
@@ -281,7 +280,6 @@ namespace TicGame.Architecture
             }
 
             PublishCardTimeAvailability();
-            RestoreNeutralCardTimeAfterTimeoutIfGrounded();
 
             if (cardTimeChord != null && cardTimeChord.Tick(
                     unscaledDeltaTime: Time.unscaledDeltaTime,
@@ -367,7 +365,7 @@ namespace TicGame.Architecture
             }
 
             if (!isActiveAndEnabled) {
-                cardTimeSource?.PublishAvailability(state: PlayerCardTimeState.None);
+                cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
             }
 
             NotifyGameplayServicesReady();
@@ -379,6 +377,7 @@ namespace TicGame.Architecture
             }
 
             sensors.Refresh();
+            attackCombo.NotifyGrounded(sensors.IsGrounded);
             Locomotion.FixedTick(context: Context, fixedDeltaTime: Time.fixedDeltaTime);
             ActionRunner.FixedTick(
                 context: Context,
@@ -422,11 +421,20 @@ namespace TicGame.Architecture
             ActionRunner?.Clear(context: Context);
             attackCombo.Clear();
             cardTimeSource?.Cancel();
-            cardTimeSource?.PublishAvailability(state: PlayerCardTimeState.None);
+            cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
             DisposeActiveCardSelection();
             input = PlayerInputSnapshot.None;
             SetInputSnapshot(snapshot: input);
             Locomotion?.ConsumeJumpBuffer();
+            ResetCardTimeChord();
+        }
+
+        public void ResetCardTimeForFullRun()
+        {
+            cardTimeSource?.Cancel();
+            cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
+            DisposeActiveCardSelection();
+            attackCombo.ResetForFullRun();
             ResetCardTimeChord();
         }
 
@@ -526,18 +534,8 @@ namespace TicGame.Architecture
         }
 
         private void PublishCardTimeAvailability() {
-            cardTimeSource?.PublishAvailability(state: cardTimeUnlocked
-                ? attackCombo.AvailableCardTime : PlayerCardTimeState.None);
-        }
-
-        private void RestoreNeutralCardTimeAfterTimeoutIfGrounded() {
-            if (!restoreNeutralCardTimeWhenGrounded || sensors?.IsGrounded != true) {
-                return;
-            }
-
-            restoreNeutralCardTimeWhenGrounded = false;
-            attackCombo.RestoreNeutralCardTime();
-            PublishCardTimeAvailability();
+            cardTimeSource?.PublishAvailability(cardTimeUnlocked
+                ? attackCombo.AvailableOpportunity : CardTimeOpportunity.None);
         }
 
         private void SubscribeCardTimeTransitions() {
@@ -558,8 +556,10 @@ namespace TicGame.Architecture
         }
 
         private void HandleCardTimeTransition(CardTimeSessionTransition transition) {
-            if (transition.Outcome == CardTimeSessionOutcome.TimedOut) {
-                restoreNeutralCardTimeWhenGrounded = true;
+            if (transition.Outcome == CardTimeSessionOutcome.TimedOut
+                && transition.Previous.SessionCardTime == PlayerCardTimeState.Neutral) {
+                attackCombo.RequestNeutralRearmAfterTimeout(
+                    transition.Previous.ActiveOpportunityId);
             }
         }
 
@@ -639,7 +639,11 @@ namespace TicGame.Architecture
                 feedbackSlotIndex,
                 CardTimeSelectionSlotAnimation.Committed);
             DisposeActiveCardSelection();
-            ConsumeCardTimeOpportunity();
+            attackCombo.NotifyCardCommitted(
+                snapshot.SessionCardTime,
+                snapshot.ActiveOpportunityId,
+                sensors?.IsGrounded == true);
+            PublishCardTimeAvailability();
         }
 
         private void RejectAndCloseCardTime(string reason, int slotIndex = -1)
@@ -649,9 +653,11 @@ namespace TicGame.Architecture
                 slotIndex,
                 CardTimeSelectionSlotAnimation.Invalid);
             cardTimePresenter?.ShowRejectedCommit(reason);
+            var snapshot = CardTimeSession?.Current ?? default;
             cardTimeSource?.Cancel();
             DisposeActiveCardSelection();
-            ConsumeCardTimeOpportunity();
+            attackCombo.NotifyCardCancelled(snapshot.ActiveOpportunityId);
+            cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
         }
 
         private void PublishRejectedCardFeedback()
@@ -673,6 +679,7 @@ namespace TicGame.Architecture
         private void CancelActiveCardSelection()
         {
             var hadSelection = activeCardSelection != null;
+            var snapshot = CardTimeSession?.Current ?? default;
             var cancelled = cardTimeSource?.Cancel() == true;
             if (!cancelled && !hadSelection)
             {
@@ -680,7 +687,8 @@ namespace TicGame.Architecture
             }
 
             DisposeActiveCardSelection();
-            ConsumeCardTimeOpportunity();
+            attackCombo.NotifyCardCancelled(snapshot.ActiveOpportunityId);
+            cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
         }
 
         private void SynchronizeActiveCardSelection(CardTimeSessionSnapshot snapshot)
@@ -697,11 +705,6 @@ namespace TicGame.Architecture
             {
                 DisposeActiveCardSelection();
             }
-        }
-
-        private void ConsumeCardTimeOpportunity() {
-            attackCombo.ConsumeCardTime();
-            cardTimeSource?.PublishAvailability(PlayerCardTimeState.None);
         }
 
         private bool TryCreateActiveCardSelection()

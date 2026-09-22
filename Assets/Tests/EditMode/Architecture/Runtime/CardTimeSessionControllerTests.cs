@@ -47,7 +47,7 @@ namespace TicGame.Architecture.Tests
         {
             var controller = CreateController();
             var source = controller.RegisterPlayerSource(owner);
-            source.PublishAvailability(PlayerCardTimeState.Chain);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Chain, 1));
 
             var activation = source.RequestActivation();
 
@@ -92,7 +92,7 @@ namespace TicGame.Architecture.Tests
         {
             var controller = CreateController();
             var source = controller.RegisterPlayerSource(owner);
-            source.PublishAvailability(PlayerCardTimeState.Chain);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Chain, 1));
             source.RequestActivation();
             var transaction = new StubCommitTransaction(shouldApply: false);
             var committedCount = 0;
@@ -117,12 +117,12 @@ namespace TicGame.Architecture.Tests
         {
             var controller = CreateController();
             var source = controller.RegisterPlayerSource(owner);
-            source.PublishAvailability(PlayerCardTimeState.Finisher);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Finisher, 1));
             source.RequestActivation();
             Assert.IsTrue(source.TryCommit());
 
-            source.PublishAvailability(PlayerCardTimeState.None);
-            source.PublishAvailability(PlayerCardTimeState.Finisher);
+            source.PublishAvailability(CardTimeOpportunity.None);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Finisher, 1));
 
             Assert.AreEqual(CardTimeSessionState.Unavailable, controller.Current.State);
             Assert.AreEqual(
@@ -138,12 +138,12 @@ namespace TicGame.Architecture.Tests
         {
             var controller = CreateController();
             var source = controller.RegisterPlayerSource(owner);
-            source.PublishAvailability(PlayerCardTimeState.Finisher);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Finisher, 1));
             source.RequestActivation();
 
             Assert.IsTrue(source.Cancel());
-            source.PublishAvailability(PlayerCardTimeState.None);
-            source.PublishAvailability(PlayerCardTimeState.Finisher);
+            source.PublishAvailability(CardTimeOpportunity.None);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Finisher, 1));
 
             Assert.AreEqual(CardTimeSessionState.Unavailable, controller.Current.State);
             Assert.AreEqual(
@@ -175,7 +175,7 @@ namespace TicGame.Architecture.Tests
         {
             var controller = CreateController();
             var source = controller.RegisterPlayerSource(owner);
-            source.PublishAvailability(PlayerCardTimeState.Finisher);
+            source.PublishAvailability(new CardTimeOpportunity(PlayerCardTimeState.Finisher, 1));
             source.RequestActivation();
 
             source.Unregister();
