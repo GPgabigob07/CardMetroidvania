@@ -7,15 +7,18 @@ namespace TicGame.Architecture
         public CardTimeActiveSession(
             long id,
             PlayerCardTimeState category,
+            long opportunityId,
             float maximumDuration)
         {
             Id = id;
             Category = category;
+            OpportunityId = opportunityId;
             MaximumDuration = maximumDuration;
         }
 
         public long Id { get; }
         public PlayerCardTimeState Category { get; }
+        public long OpportunityId { get; }
         public float Elapsed { get; private set; }
         public float MaximumDuration { get; }
 

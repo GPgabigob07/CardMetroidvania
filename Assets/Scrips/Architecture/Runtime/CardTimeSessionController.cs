@@ -148,6 +148,16 @@ namespace TicGame.Architecture
             }
         }
 
+        private void PublishAvailability(
+            PlayerSourceToken source,
+            CardTimeOpportunity opportunity)
+        {
+            if (IsAuthorized(source))
+            {
+                runtime.PublishAvailability(opportunity);
+            }
+        }
+
         private CardTimeActivationRequestResult RequestActivation(PlayerSourceToken source)
         {
             return IsAuthorized(source)
@@ -180,7 +190,7 @@ namespace TicGame.Architecture
             }
 
             runtime.Cancel();
-            runtime.PublishAvailability(cardTimeState: PlayerCardTimeState.None);
+            runtime.ClearSource();
             source.Invalidate();
             activeSource = null;
         }
@@ -204,6 +214,11 @@ namespace TicGame.Architecture
             public void PublishAvailability(PlayerCardTimeState state)
             {
                 service?.PublishAvailability(source: this, state: state);
+            }
+
+            public void PublishAvailability(CardTimeOpportunity opportunity)
+            {
+                service?.PublishAvailability(source: this, opportunity: opportunity);
             }
 
             public CardTimeActivationRequestResult RequestActivation()
