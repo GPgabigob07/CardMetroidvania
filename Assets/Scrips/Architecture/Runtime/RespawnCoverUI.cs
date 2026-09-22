@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace TicGame.Architecture
         private readonly List<PendingWait> waits = new();
         private TaskCompletionSource<bool> fadeCompletion;
         private float fadeTarget;
+        private int operationGeneration;
 
         public float FadeSeconds => fadeSeconds;
         public bool IsOpaque => group != null && group.alpha >= 1f;
@@ -36,12 +38,12 @@ namespace TicGame.Architecture
 
         private void OnDisable()
         {
-            CompletePendingOperations();
+            CancelPendingOperations();
         }
 
         private void OnDestroy()
         {
-            CompletePendingOperations();
+            CancelPendingOperations();
         }
 
         public Task FadeToOpaqueAsync() => FadeToAsync(1f);
@@ -50,25 +52,35 @@ namespace TicGame.Architecture
 
         public Task WaitUnscaledAsync(float seconds)
         {
+            if (!isActiveAndEnabled)
+            {
+                return CreateCanceledTask();
+            }
+
             if (seconds <= 0f)
             {
                 return Task.CompletedTask;
             }
 
-            var completion = new TaskCompletionSource<bool>();
-            waits.Add(new PendingWait(seconds, completion));
+            var completion = CreateCompletionSource();
+            waits.Add(new PendingWait(seconds, operationGeneration, completion));
             return completion.Task;
         }
 
         private Task FadeToAsync(float target)
         {
+            if (!isActiveAndEnabled)
+            {
+                return CreateCanceledTask();
+            }
+
             group ??= GetComponent<CanvasGroup>();
             if (group == null)
             {
-                return Task.CompletedTask;
+                return CreateCanceledTask();
             }
 
-            fadeCompletion?.TrySetResult(true);
+            fadeCompletion?.TrySetCanceled();
             fadeCompletion = null;
             fadeTarget = target;
             if (Mathf.Approximately(group.alpha, fadeTarget) || fadeSeconds <= 0f)
@@ -77,7 +89,7 @@ namespace TicGame.Architecture
                 return Task.CompletedTask;
             }
 
-            fadeCompletion = new TaskCompletionSource<bool>();
+            fadeCompletion = CreateCompletionSource();
             return fadeCompletion.Task;
         }
 
@@ -105,6 +117,13 @@ namespace TicGame.Architecture
             for (var index = waits.Count - 1; index >= 0; index--)
             {
                 var pending = waits[index];
+                if (pending.Generation != operationGeneration)
+                {
+                    waits.RemoveAt(index);
+                    pending.Completion.TrySetCanceled();
+                    continue;
+                }
+
                 pending.RemainingSeconds -= Time.unscaledDeltaTime;
                 if (pending.RemainingSeconds > 0f)
                 {
@@ -117,17 +136,24 @@ namespace TicGame.Architecture
             }
         }
 
-        private void CompletePendingOperations()
+        private void CancelPendingOperations()
         {
-            fadeCompletion?.TrySetResult(true);
+            operationGeneration++;
+            fadeCompletion?.TrySetCanceled();
             fadeCompletion = null;
             foreach (var pending in waits)
             {
-                pending.Completion.TrySetResult(true);
+                pending.Completion.TrySetCanceled();
             }
 
             waits.Clear();
         }
+
+        private static TaskCompletionSource<bool> CreateCompletionSource() =>
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        private static Task CreateCanceledTask() =>
+            Task.FromCanceled(new CancellationToken(canceled: true));
 
         private void SetAlpha(float alpha)
         {
@@ -139,13 +165,15 @@ namespace TicGame.Architecture
 
         private struct PendingWait
         {
-            public PendingWait(float remainingSeconds, TaskCompletionSource<bool> completion)
+            public PendingWait(float remainingSeconds, int generation, TaskCompletionSource<bool> completion)
             {
                 RemainingSeconds = remainingSeconds;
+                Generation = generation;
                 Completion = completion;
             }
 
             public float RemainingSeconds { get; set; }
+            public int Generation { get; }
             public TaskCompletionSource<bool> Completion { get; }
         }
     }
