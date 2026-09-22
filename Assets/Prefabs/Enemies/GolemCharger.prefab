@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 8880678255514840275}
   - component: {fileID: 322318147581116278}
   - component: {fileID: 8657949537195792202}
+  - component: {fileID: 637487402272466343}
+  - component: {fileID: 5357305490095725602}
   m_Layer: 8
   m_Name: GolemCharger
   m_TagString: Untagged
@@ -182,6 +184,7 @@ MonoBehaviour:
   actor: {fileID: 7234678410213884168}
   chargeAttack: {fileID: 754372715450329214}
   body: {fileID: 6508310254988638894}
+  poise: {fileID: 637487402272466343}
   target: {fileID: 0}
   targetLayers:
     serializedVersion: 2
@@ -207,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.GolemChargerDamagePolicy
   health: {fileID: 2251423822895355658}
   brain: {fileID: 3887647201358479871}
+  poise: {fileID: 637487402272466343}
   impactTag: {fileID: 11400000, guid: be34621849fd2ec4286841746294d70b, type: 2}
   cardTag: {fileID: 11400000, guid: c5f0c1814fd9a814daf687d851aea77e, type: 2}
   idleDamageMultiplier: 0.15
@@ -251,6 +255,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.GolemChargerAnimationPresenter
   brain: {fileID: 3887647201358479871}
   animator: {fileID: 322318147581116278}
+  body: {fileID: 0}
+  visualRenderer: {fileID: 0}
+--- !u!114 &637487402272466343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee7f798ab8e29f49bc6516f89ffb74d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyPoise
+  fallbackMaximumPoise: 10
+  fallbackRegenerationPerSecond: 0.33
+--- !u!114 &5357305490095725602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61442252d5cd4b04ad34e0a3043294fb, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyPoiseDebugPresentation
 --- !u!1 &1217232361589571127
 GameObject:
   m_ObjectHideFlags: 0

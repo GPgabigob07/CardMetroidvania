@@ -12,6 +12,9 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Golem state provider that determines armor and interrupt rules.")]
         [SerializeField] private GolemChargerBrain brain;
 
+        [Tooltip(tooltip: "Optional posture capability that receives poise only after accepted health damage.")]
+        [SerializeField] private EnemyPoise poise;
+
         [Header(header: "Interrupt Tags")]
         [Tooltip(tooltip: "Damage tag that individually interrupts the windup and combines with Card during charge.")]
         [SerializeField] private GameplayTagSO impactTag;
@@ -79,8 +82,16 @@ namespace TicGame.Architecture
                 amount: requestedAmount * multiplier,
                 hitPoint: context.HitPoint,
                 direction: context.Direction,
-                tags: context.Tags);
-            return health.ApplyDamage(adjustedContext);
+                tags: context.Tags,
+                isCardEnhancedMelee: context.IsCardEnhancedMelee,
+                poiseDamage: context.PoiseDamage);
+            var result = health.ApplyDamage(adjustedContext);
+            if (result.Accepted && result.AppliedAmount > 0f)
+            {
+                poise?.ApplyPoiseDamage(adjustedContext.PoiseDamage);
+            }
+
+            return result;
         }
 
         public void ConfigureForTests(
@@ -182,6 +193,11 @@ namespace TicGame.Architecture
             if (brain == null)
             {
                 brain = GetComponent<GolemChargerBrain>();
+            }
+
+            if (poise == null)
+            {
+                poise = GetComponent<EnemyPoise>();
             }
         }
     }

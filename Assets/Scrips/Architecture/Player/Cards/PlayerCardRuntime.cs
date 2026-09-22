@@ -14,6 +14,9 @@ namespace TicGame.Architecture
 
         [SerializeField] private PlayerCombatEffects combatEffects;
         [SerializeField] private PlayerExtraJumpRuntime extraJump;
+        [SerializeField] private PlayerGroundedJumpBoostRuntime groundedJumpBoost;
+        [SerializeField] private PlayerDashPermissionRuntime dashPermission;
+        [SerializeField] private PlayerSensors2D sensors;
 
         [Header("Equipped Cards")] [SerializeField]
         private CardDefinitionSO neutralCardDefinition;
@@ -187,11 +190,24 @@ namespace TicGame.Architecture
         public void Configure(
             PlayerResourceWallet resourceWallet,
             PlayerCombatEffects effects,
-            PlayerExtraJumpRuntime extraJumpRuntime
+            PlayerExtraJumpRuntime extraJumpRuntime,
+            PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime = null,
+            PlayerDashPermissionRuntime dashPermissionRuntime = null
         ) {
             wallet = resourceWallet;
             combatEffects = effects;
             extraJump = extraJumpRuntime;
+            groundedJumpBoost = groundedJumpBoostRuntime;
+            dashPermission = dashPermissionRuntime;
+        }
+
+        public void ClearNewCardEffects()
+        {
+            extraJump?.Clear();
+            groundedJumpBoost?.Clear();
+            dashPermission?.Clear();
+            combatEffects?.ClearPoiseHits();
+            combatEffects?.ClearGrowingReach();
         }
 
         public void ConfigureCardDefinitions(
@@ -220,6 +236,19 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            var context = new ExecutionContext(
+                commit.Snapshot.AttackExecutionId,
+                commit.Snapshot.IsAirborne);
+            if (!CanExecuteOperations(commit.Card.Effect, context)) {
+                commit.SetFailure(CardCommitFailure.UnsupportedEffect);
+                return false;
+            }
+
+            if (!AreLiveGroundedConditionsMet(commit.Card.Effect.ActivationConditions)) {
+                commit.SetFailure(CardCommitFailure.UnmetCondition);
+                return false;
+            }
+
             if (!wallet.TrySpend(commit.Costs)) {
                 commit.SetFailure(CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, CardFeedbackKind.Failed);
@@ -229,10 +258,29 @@ namespace TicGame.Architecture
             ApplyOperations(
                 commit.Card,
                 commit.Card.Effect,
-                new ExecutionContext(
-                    commit.Snapshot.AttackExecutionId,
-                    commit.Snapshot.IsAirborne));
+                context);
             PublishCommitFeedback(commit.Card, CardFeedbackKind.Activated);
+            return true;
+        }
+
+        private bool AreLiveGroundedConditionsMet(
+            IReadOnlyList<CardConditionDefinition> conditions
+        ) {
+            if (conditions == null) {
+                return true;
+            }
+
+            foreach (var condition in conditions) {
+                if (condition.Kind != CardConditionKind.IsGrounded) {
+                    continue;
+                }
+
+                sensors ??= GetComponent<PlayerSensors2D>();
+                if (sensors == null || !sensors.IsGrounded) {
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -321,6 +369,31 @@ namespace TicGame.Architecture
                         }
 
                         break;
+                    case CardOperationKind.ArmGroundedJumpBoost:
+                        if (groundedJumpBoost == null || !groundedJumpBoost.CanArm) {
+                            return false;
+                        }
+
+                        break;
+                    case CardOperationKind.GrantTimedDash:
+                        dashPermission ??= GetComponent<PlayerDashPermissionRuntime>();
+                        if (dashPermission == null || !dashPermission.CanActivate) {
+                            return false;
+                        }
+
+                        break;
+                    case CardOperationKind.ArmPoiseHits:
+                        if (!combatEffects.CanArmPoiseHits) {
+                            return false;
+                        }
+
+                        break;
+                    case CardOperationKind.ArmGrowingReach:
+                        if (!combatEffects.CanArmGrowingReach) {
+                            return false;
+                        }
+
+                        break;
                     default: return false;
                 }
             }
@@ -334,7 +407,11 @@ namespace TicGame.Architecture
             foreach (var operation in effect.CommitOperations) {
                 if (operation.Kind is CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
-                    or CardOperationKind.InvokeAbility) {
+                    or CardOperationKind.InvokeAbility
+                    or CardOperationKind.ArmGroundedJumpBoost
+                    or CardOperationKind.GrantTimedDash
+                    or CardOperationKind.ArmPoiseHits
+                    or CardOperationKind.ArmGrowingReach) {
                     return true;
                 }
 
@@ -384,6 +461,25 @@ namespace TicGame.Architecture
                             operation.PoiseDamage);
                         break;
                     case CardOperationKind.InvokeAbility: extraJump.Invoke(operation.Ability, card); break;
+                    case CardOperationKind.ArmGroundedJumpBoost:
+                        groundedJumpBoost.Arm(operation.Multiplier, card);
+                        break;
+                    case CardOperationKind.GrantTimedDash:
+                        dashPermission.Activate(operation.Amount, operation.Multiplier, card);
+                        break;
+                    case CardOperationKind.ArmPoiseHits:
+                        combatEffects.ArmPoiseHits(
+                            operation.ChargeCount,
+                            operation.Amount,
+                            operation.Multiplier,
+                            card);
+                        break;
+                    case CardOperationKind.ArmGrowingReach:
+                        combatEffects.ArmGrowingReach(
+                            operation.Amount,
+                            operation.ChargeCount,
+                            card);
+                        break;
                 }
             }
         }

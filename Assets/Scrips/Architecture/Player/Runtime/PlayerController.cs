@@ -76,6 +76,14 @@ namespace TicGame.Architecture
         [SerializeField]
         private PlayerExtraJumpRuntime extraJumpRuntime;
 
+        [Tooltip(tooltip: "One-use card modifier applied only when a grounded jump begins.")]
+        [SerializeField]
+        private PlayerGroundedJumpBoostRuntime groundedJumpBoostRuntime;
+
+        [Tooltip(tooltip: "Time-limited card permission that gates dash activation.")]
+        [SerializeField]
+        private PlayerDashPermissionRuntime dashPermission;
+
         [Header(header: "Input Actions")]
         [Tooltip(tooltip: "Input System action used for player movement.")]
         [SerializeField]
@@ -169,9 +177,12 @@ namespace TicGame.Architecture
             cardRuntime ??= GetComponent<PlayerCardRuntime>();
             cardSnapshotSource ??= GetComponent<PlayerCardCommitSnapshotSource>();
             extraJumpRuntime ??= GetComponent<PlayerExtraJumpRuntime>();
+            groundedJumpBoostRuntime ??= GetComponent<PlayerGroundedJumpBoostRuntime>();
+            dashPermission ??= GetComponent<PlayerDashPermissionRuntime>();
             Context = new PlayerContext(motor: motor, sensors: sensors, movementConfig: movementConfig,
                 dashDefinition: dashDefinition, attackDefinition: attackDefinition,
-                extraJumpRuntime: extraJumpRuntime);
+                extraJumpRuntime: extraJumpRuntime,
+                groundedJumpBoostRuntime: groundedJumpBoostRuntime);
             sensors.Refresh();
             Locomotion = new PlayerLocomotionController(context: Context);
             ActionRunner = new PlayerActionRunner();
@@ -256,6 +267,7 @@ namespace TicGame.Architecture
         }
 
         private void Update() {
+            dashPermission?.Tick(Time.deltaTime);
             if (worldHeld) {
                 return;
             }
@@ -298,7 +310,7 @@ namespace TicGame.Architecture
                 cardTimeSnapshot = CardTimeSession?.Current ?? default;
             }
 
-            if (input.DashPressed) {
+            if (input.DashPressed && dashPermission != null && dashPermission.IsEnabled) {
                 if (ActionRunner.TryStartAction(
                         context: Context,
                         action: new DashAction(),
@@ -341,6 +353,7 @@ namespace TicGame.Architecture
             cardTimeTransitionEvent = services?.CardTimeTransitions;
             SubscribeCardTimeTransitions();
             attackHitDetector?.BindGameplayServices(services);
+            dashPermission?.BindGameplayServices(services);
             cardTimePresenter?.Initialize(services?.CardTime);
             NotifyGameplayServicesReady();
         }
@@ -403,7 +416,9 @@ namespace TicGame.Architecture
         }
 
         public void ResetTransientState() {
-            CompleteCurrentAttack();
+            if (ActionRunner?.CurrentAction is IPlayerAttackExecution attackExecution) {
+                combatEffects?.CancelAttack(attackExecution.ExecutionId);
+            }
             ActionRunner?.Clear(context: Context);
             attackCombo.Clear();
             cardTimeSource?.Cancel();

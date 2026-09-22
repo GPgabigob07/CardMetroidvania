@@ -27,10 +27,39 @@ namespace TicGame.Architecture.EditorTools
 
             var cards = LoadCardDefinitions();
             profile.EnsureDefaultLoadouts();
+            var existingFinishers = profile
+                .GetEquippedCards(PlayerCardTimeState.Finisher)
+                .Where(card => card != null)
+                .ToArray();
             foreach (var card in cards)
             {
                 profile.TryAddOwnedCard(card);
-                profile.TryEquip(card);
+            }
+
+            foreach (var loadout in profile.Loadouts)
+            {
+                foreach (var card in loadout.EquippedCards.ToArray())
+                {
+                    profile.TryUnequip(card);
+                }
+            }
+
+            EquipById(profile, cards, "card.neutral.grounded-double-jump");
+            EquipById(profile, cards, "card.neutral.dash-enabler");
+            EquipById(profile, cards, "card.neutral.jump-boost");
+            EquipById(profile, cards, "card.chain.poise-damage");
+            EquipById(profile, cards, "card.chain.growing-reach");
+
+            var finishers = existingFinishers.Length > 0
+                ? existingFinishers
+                : cards.Where(card =>
+                        card.Id == "card.finisher.extra-jump"
+                        || card.Id == "card.finisher.base-damage-overcharge")
+                    .OrderBy(card => card.Id)
+                    .ToArray();
+            foreach (var finisher in finishers)
+            {
+                profile.TryEquip(finisher);
             }
 
             EditorUtility.SetDirty(profile);
@@ -53,6 +82,18 @@ namespace TicGame.Architecture.EditorTools
             }
 
             return profile;
+        }
+
+        private static void EquipById(
+            PlayerCardInventoryProfileSO profile,
+            IReadOnlyList<CardDefinitionSO> cards,
+            string id)
+        {
+            var card = cards.FirstOrDefault(candidate => candidate.Id == id);
+            if (card == null || !profile.TryEquip(card))
+            {
+                Debug.LogError($"Could not equip required prototype card '{id}'.");
+            }
         }
 
         private static IReadOnlyList<CardDefinitionSO> LoadCardDefinitions()

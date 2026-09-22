@@ -10,34 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01a9f4633aff4f11ad716b9219b43c62, type: 3}
-  m_Name: Effect_ExtraJump
+  m_Name: Effect_JumpBoost
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardEffectDefinitionSO
   status: {fileID: 0}
-  activationConditions:
-  - kind: 0
+  activationConditions: []
+  commitOperations:
+  - kind: 100
+    status: {fileID: 0}
     resource: {fileID: 0}
     ability: {fileID: 0}
     amount: 0
-  - kind: 70
-    resource: {fileID: 0}
-    ability: {fileID: 11400000, guid: b1346c7e2be6b19408b0a4922af5c39b, type: 2}
-    amount: 0
-  - kind: 80
-    resource: {fileID: 0}
-    ability: {fileID: 11400000, guid: b1346c7e2be6b19408b0a4922af5c39b, type: 2}
-    amount: 0
-  commitOperations:
-  - kind: 90
-    status: {fileID: 0}
-    resource: {fileID: 0}
-    ability: {fileID: 11400000, guid: b1346c7e2be6b19408b0a4922af5c39b, type: 2}
-    amount: 0
-    multiplier: 1
-    effectId: 
+    multiplier: 2
+    effectId:
     chargeCount: 0
   reactiveRules: []
   lifetimes:
-  - kind: 0
+  - kind: 50
   stacking:
     kind: 0
     maximumCharges: 0

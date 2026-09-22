@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 6620674461630436288}
   - component: {fileID: 7112107312921303334}
   - component: {fileID: 3959589887960197771}
+  - component: {fileID: 7896860679630138069}
+  - component: {fileID: 7839087103476644820}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -78,6 +80,8 @@ MonoBehaviour:
   cardInventoryProfile: {fileID: 11400000, guid: d0c088546181bed4f8a68be3860e5661, type: 2}
   cardSnapshotSource: {fileID: 3959589887960197771}
   extraJumpRuntime: {fileID: 8465056942987945424}
+  groundedJumpBoostRuntime: {fileID: 7896860679630138069}
+  dashPermission: {fileID: 7839087103476644820}
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   attackAction: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
@@ -87,6 +91,7 @@ MonoBehaviour:
   movementConfig: {fileID: 11400000, guid: ede4714dc3a2e5148adf7ac543fc9fb4, type: 2}
   dashDefinition: {fileID: 11400000, guid: fbab667b618b3f64fac2381dfcc0d020, type: 2}
   attackDefinition: {fileID: 11400000, guid: dc0f8700a46ca2d4b9b0f3e615663b43, type: 2}
+  cardTimeUnlocked: 1
 --- !u!114 &1454719245246763991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +267,9 @@ MonoBehaviour:
   wallet: {fileID: 7988086486144116433}
   combatEffects: {fileID: 3196812354320785694}
   extraJump: {fileID: 8465056942987945424}
+  groundedJumpBoost: {fileID: 7896860679630138069}
+  dashPermission: {fileID: 7839087103476644820}
+  sensors: {fileID: 1352026579056141999}
   neutralCardDefinition: {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
   chainCardDefinition: {fileID: 11400000, guid: 69b7538b5530f7243bc8c6af5b981d83, type: 2}
   finisherCardDefinition: {fileID: 11400000, guid: d3498f7b2cab6574db03a47f7d7ec218, type: 2}
@@ -327,6 +335,7 @@ MonoBehaviour:
   health: {fileID: 4741787736900105630}
   playerController: {fileID: 6561663536484996329}
   motor: {fileID: 1454719245246763991}
+  cardRuntime: {fileID: 3252436216368141210}
   respawnTarget: {fileID: 0}
   fallbackRespawnPosition: {x: 0, y: 0, z: 0}
   restoreHealthOnRespawn: 1
@@ -364,6 +373,31 @@ MonoBehaviour:
   health: {fileID: 4741787736900105630}
   capturedResources:
   - {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+--- !u!114 &7896860679630138069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f6a3fe73f9b45d7b1bf26d8c535b868, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerGroundedJumpBoostRuntime
+--- !u!114 &7839087103476644820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb4263ac1004c54808aaeaee18b8f95, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerDashPermissionRuntime
+  combatEffects: {fileID: 3196812354320785694}
 --- !u!1 &2405205695851386503
 GameObject:
   m_ObjectHideFlags: 0

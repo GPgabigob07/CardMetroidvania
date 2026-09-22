@@ -22,6 +22,7 @@ MonoBehaviour:
     amount: 3
     multiplier: 1
     effectId: 
+    chargeCount: 0
   reactiveRules:
   - trigger: 10
     conditions:
@@ -37,6 +38,7 @@ MonoBehaviour:
       amount: 0
       multiplier: 2
       effectId: 
+      chargeCount: 0
     consumesCharge: 1
   lifetimes:
   - kind: 10
