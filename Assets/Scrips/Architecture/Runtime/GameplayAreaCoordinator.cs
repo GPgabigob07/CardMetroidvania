@@ -19,6 +19,7 @@ namespace TicGame.Architecture
         private AreaDefinition[] areaDefinitions;
         private RunProgress progress;
         private GameplayServicesRoot servicesRoot;
+        private RespawnCoverUI respawnCover;
         private IDisposable startupHold;
         private IDisposable respawnHold;
         private SpawnAddress lastAddress;
@@ -40,7 +41,8 @@ namespace TicGame.Architecture
             CardTimeGuideUI configuredGuide,
             AreaDefinition[] configuredAreas,
             RunProgress configuredProgress,
-            GameplayServicesRoot configuredServicesRoot)
+            GameplayServicesRoot configuredServicesRoot,
+            RespawnCoverUI configuredCover = null)
         {
             SceneManager.sceneLoaded -= HandleSceneLoaded;
             sessionGeneration++;
@@ -52,6 +54,7 @@ namespace TicGame.Architecture
             areaDefinitions = configuredAreas;
             progress = configuredProgress;
             servicesRoot = configuredServicesRoot;
+            respawnCover = configuredCover;
             IsReady = false;
             LastError = null;
             SceneManager.sceneLoaded += HandleSceneLoaded;
