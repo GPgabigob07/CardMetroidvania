@@ -589,7 +589,7 @@ namespace TicGame.Architecture
 
             if (!command.Selected)
             {
-                RejectAndCloseCardTime("invalid slot", command.SlotIndex);
+                RejectCardCommit("invalid slot", command.SlotIndex);
                 return;
             }
 
@@ -626,12 +626,15 @@ namespace TicGame.Architecture
                 activeCardSelection,
                 commitSnapshot);
             if (!readiness.Succeeded) {
-                RejectAndCloseCardTime(readiness.Failure.ToString(), feedbackSlotIndex);
+                RejectCardCommit(readiness.Failure.ToString(), feedbackSlotIndex);
                 return;
             }
 
             if (cardTimeSource?.TryCommit(readiness.Commit) != true) {
-                RejectAndCloseCardTime("did not commit", feedbackSlotIndex);
+                var reason = readiness.Commit.Failure == CardCommitFailure.None
+                    ? "did not commit"
+                    : readiness.Commit.Failure.ToString();
+                RejectCardCommit(reason, feedbackSlotIndex);
                 return;
             }
 
@@ -644,6 +647,15 @@ namespace TicGame.Architecture
                 snapshot.ActiveOpportunityId,
                 grounded: !isAirborne);
             PublishCardTimeAvailability();
+        }
+
+        private void RejectCardCommit(string reason, int slotIndex)
+        {
+            PublishRejectedCardFeedback();
+            cardSelectionHud?.PlaySlotAnimation(
+                slotIndex,
+                CardTimeSelectionSlotAnimation.Invalid);
+            cardTimePresenter?.ShowRejectedCommit(reason);
         }
 
         private void RejectAndCloseCardTime(string reason, int slotIndex = -1)
