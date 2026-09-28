@@ -236,6 +236,15 @@ namespace TicGame.Architecture
             IsReady = false;
             EnsureRespawnHeld();
             var startedAt = Time.unscaledTime;
+            if (respawnCover != null)
+            {
+                await respawnCover.FadeToOpaqueAsync();
+                if (!IsCurrent(generation))
+                {
+                    return false;
+                }
+            }
+
             if (player == null || progress == null)
             {
                 return Fail(generation, "Respawn requires a configured player and run progress.");
@@ -245,15 +254,6 @@ namespace TicGame.Architecture
             if (!TryGetArea(address.AreaId, out var destination, out var areaError))
             {
                 return Fail(generation, areaError);
-            }
-
-            if (respawnCover != null)
-            {
-                await respawnCover.FadeToOpaqueAsync();
-                if (!IsCurrent(generation))
-                {
-                    return false;
-                }
             }
 
             resolvedRespawnSpawn = null;
