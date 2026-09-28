@@ -13,6 +13,10 @@ namespace TicGame.Architecture
         [Tooltip("Maximum time to wait for the persistent services to bind the player after the scene is available.")]
         [SerializeField, Min(0.1f)] private float serviceReadyTimeoutSeconds = 5f;
 
+        [Header("Recovery")]
+        [Tooltip("Minimum total seconds from recovery contact until the player can move again, including the cover fades.")]
+        [SerializeField, Min(0f)] private float minimumRecoverySeconds = 0.75f;
+
         private PlayerController player;
         private PlayerWorldHold playerHold;
         private CardTimeGuideUI guide;
@@ -303,7 +307,8 @@ namespace TicGame.Architecture
 
             if (respawnCover != null)
             {
-                var clearDelay = Mathf.Max(0f, startedAt + 2f - respawnCover.FadeSeconds - Time.unscaledTime);
+                var clearDelay = Mathf.Max(0f,
+                    startedAt + Mathf.Max(0f, minimumRecoverySeconds) - respawnCover.FadeSeconds - Time.unscaledTime);
                 await respawnCover.WaitUnscaledAsync(clearDelay);
                 if (!IsCurrent(generation))
                 {
