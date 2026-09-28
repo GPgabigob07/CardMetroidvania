@@ -134,6 +134,25 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void DisabledCheckpointLeavesRespawnAddressUnchanged()
+        {
+            var initialAddress = new SpawnAddress("blue", "start");
+            var progress = new RunProgress(initialAddress);
+            var player = Create("Player").AddComponent<PlayerController>();
+            var volume = Create("Disabled Checkpoint");
+            volume.AddComponent<BoxCollider2D>().isTrigger = true;
+            var checkpoint = volume.AddComponent<AreaRespawnCheckpoint>();
+            var marker = Create("Pink Spawn").AddComponent<AreaSpawnPoint>();
+            marker.Configure("pink-corridor-begin");
+            checkpoint.Configure(marker);
+            checkpoint.Bind(progress, "pink", player);
+            checkpoint.enabled = false;
+
+            Assert.IsFalse(checkpoint.TryActivate(player));
+            Assert.AreEqual(initialAddress, progress.Respawn);
+        }
+
+        [Test]
         public void CheckpointRejectsMarkerFromAnotherSceneWithoutChangingRespawnAddress()
         {
             var progress = new RunProgress(new SpawnAddress("blue", "start"));

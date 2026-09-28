@@ -38,7 +38,7 @@ namespace TicGame.Architecture
         public bool TryActivate(PlayerController candidate)
         {
             var trigger = GetComponent<Collider2D>();
-            if (progress == null || candidate == null || candidate != boundPlayer
+            if (!isActiveAndEnabled || progress == null || candidate == null || candidate != boundPlayer
                 || spawn == null || spawn.gameObject.scene != gameObject.scene
                 || string.IsNullOrWhiteSpace(spawn.SpawnId)
                 || trigger == null || !trigger.isTrigger
