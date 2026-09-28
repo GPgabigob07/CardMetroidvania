@@ -66,7 +66,14 @@ namespace TicGame.Architecture
             IsReady = false;
             LastError = null;
             SceneManager.sceneLoaded += HandleSceneLoaded;
-            player?.GetComponent<PlayerDeathRespawn>()?.BindCoordinator(this);
+            if (player != null)
+            {
+                var deathRespawn = player.GetComponent<PlayerDeathRespawn>();
+                if (deathRespawn != null)
+                {
+                    deathRespawn.BindCoordinator(this);
+                }
+            }
         }
 
         /// <summary>
@@ -190,11 +197,21 @@ namespace TicGame.Architecture
         public void CancelSession()
         {
             sessionGeneration++;
-            respawnCover?.CancelPendingRecoveryOperations();
+            if (respawnCover != null)
+            {
+                respawnCover.CancelPendingRecoveryOperations();
+            }
             InvalidateRespawnOperation();
             IsReady = false;
             SceneManager.sceneLoaded -= HandleSceneLoaded;
-            player?.GetComponent<PlayerDeathRespawn>()?.BindCoordinator(null);
+            if (player != null)
+            {
+                var deathRespawn = player.GetComponent<PlayerDeathRespawn>();
+                if (deathRespawn != null)
+                {
+                    deathRespawn.BindCoordinator(null);
+                }
+            }
             ReleaseRespawnHold();
         }
 
