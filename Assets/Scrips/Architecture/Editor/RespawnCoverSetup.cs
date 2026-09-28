@@ -95,13 +95,6 @@ namespace TicGame.Architecture.EditorTools
             AssignGroup(presenter, group);
             ConfigureBlackScreen(cover.transform);
             AssignCover(root, presenter);
-            if (!cover.TryGetComponent<RectTransform>(out var coverRect))
-            {
-                throw new InvalidOperationException($"{CoverName} requires a RectTransform.");
-            }
-
-            coverRect.localScale = Vector3.one;
-            EditorUtility.SetDirty(coverRect);
             EditorUtility.SetDirty(cover);
             EditorUtility.SetDirty(root);
         }
