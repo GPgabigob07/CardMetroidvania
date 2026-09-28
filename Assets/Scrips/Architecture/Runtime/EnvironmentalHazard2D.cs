@@ -15,6 +15,7 @@ namespace TicGame.Architecture
         private PlayerController boundPlayer;
         private bool contactLatched;
         private int contactGeneration;
+        private bool hasReportedInvalidColliderConfiguration;
 
         /// <summary>
         /// Binds this area hazard to the persistent gameplay coordinator and player.
@@ -38,8 +39,8 @@ namespace TicGame.Architecture
         /// </summary>
         public bool TryContact(PlayerController candidate)
         {
-            var trigger = GetComponent<Collider2D>();
-            if (!isActiveAndEnabled || trigger == null || !trigger.enabled || !trigger.isTrigger
+            var trigger = GetValidatedTrigger(reportError: true);
+            if (!isActiveAndEnabled || trigger == null
                 || coordinator == null || candidate == null || candidate != boundPlayer
                 || !coordinator.IsConfiguredPlayer(candidate) || float.IsNaN(damageAmount)
                 || float.IsInfinity(damageAmount) || damageAmount <= 0f
@@ -87,6 +88,40 @@ namespace TicGame.Architecture
         private void OnTriggerEnter2D(Collider2D other)
         {
             TryContact(other.GetComponentInParent<PlayerController>());
+        }
+
+        private void OnValidate()
+        {
+            GetValidatedTrigger(reportError: true);
+        }
+
+        private Collider2D GetValidatedTrigger(bool reportError)
+        {
+            var colliders = GetComponents<Collider2D>();
+            string error = null;
+            if (colliders.Length != 1)
+            {
+                error = "EnvironmentalHazard2D requires exactly one Collider2D on its GameObject. "
+                    + "Move it to a separate trigger child if the hazard needs multiple colliders.";
+            }
+            else if (!colliders[0].enabled || !colliders[0].isTrigger)
+            {
+                error = "EnvironmentalHazard2D requires its single Collider2D to be enabled and marked as a trigger.";
+            }
+
+            if (error == null)
+            {
+                hasReportedInvalidColliderConfiguration = false;
+                return colliders[0];
+            }
+
+            if (reportError && !hasReportedInvalidColliderConfiguration)
+            {
+                Debug.LogError(error, this);
+                hasReportedInvalidColliderConfiguration = true;
+            }
+
+            return null;
         }
 
         private async Task RecoverAndReleaseLatchAsync(int generation)
