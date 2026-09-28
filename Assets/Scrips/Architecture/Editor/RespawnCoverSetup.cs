@@ -50,7 +50,7 @@ namespace TicGame.Architecture.EditorTools
             }
             catch (Exception exception)
             {
-                Debug.LogError($"Respawn cover setup failed: {exception.Message}");
+                Debug.LogError($"Respawn cover setup failed:\n{exception}");
             }
         }
 
@@ -69,17 +69,29 @@ namespace TicGame.Architecture.EditorTools
             }
 
             var cover = FindOrCreateCover(composition.transform);
-            var canvas = cover.GetComponent<Canvas>() ?? Undo.AddComponent<Canvas>(cover);
+            if (!cover.TryGetComponent<Canvas>(out var canvas))
+            {
+                canvas = Undo.AddComponent<Canvas>(cover);
+            }
+
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.overrideSorting = true;
             canvas.sortingOrder = FindHudSortingOrder(gameplay) + 1;
 
-            var group = cover.GetComponent<CanvasGroup>() ?? Undo.AddComponent<CanvasGroup>(cover);
+            if (!cover.TryGetComponent<CanvasGroup>(out var group))
+            {
+                group = Undo.AddComponent<CanvasGroup>(cover);
+            }
+
             group.alpha = 0f;
             group.interactable = false;
             group.blocksRaycasts = false;
 
-            var presenter = cover.GetComponent<RespawnCoverUI>() ?? Undo.AddComponent<RespawnCoverUI>(cover);
+            if (!cover.TryGetComponent<RespawnCoverUI>(out var presenter))
+            {
+                presenter = Undo.AddComponent<RespawnCoverUI>(cover);
+            }
+
             AssignGroup(presenter, group);
             ConfigureBlackScreen(cover.transform);
             AssignCover(root, presenter);
@@ -135,7 +147,11 @@ namespace TicGame.Architecture.EditorTools
             rect.anchorMax = Vector2.one;
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
-            var image = imageObject.GetComponent<Image>() ?? Undo.AddComponent<Image>(imageObject);
+            if (!imageObject.TryGetComponent<Image>(out var image))
+            {
+                image = Undo.AddComponent<Image>(imageObject);
+            }
+
             image.color = Color.black;
             image.raycastTarget = false;
             EditorUtility.SetDirty(imageObject);
