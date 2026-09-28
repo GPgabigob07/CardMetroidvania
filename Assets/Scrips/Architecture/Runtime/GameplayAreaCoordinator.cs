@@ -507,6 +507,11 @@ namespace TicGame.Architecture
                     checkpoint.Bind(progress, area.AreaId, player);
                 }
 
+                foreach (var hazard in root.GetComponentsInChildren<EnvironmentalHazard2D>(includeInactive: true))
+                {
+                    hazard.Bind(this, player);
+                }
+
                 foreach (var zone in root.GetComponentsInChildren<CardTimeTutorialZone>(includeInactive: true))
                 {
                     zone.ConfigureForStreamedComposition();
