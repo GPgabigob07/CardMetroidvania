@@ -1,0 +1,7 @@
+{
+ "name": "TicGame.Architecture.PlayModeTests",
+ "rootNamespace": "TicGame.Architecture.Tests",
+ "references": ["TicGame.Architecture", "UnityEngine.UI", "Unity.InputSystem"],
+ "optionalUnityReferences": ["TestAssemblies"],
+ "autoReferenced": false
+}

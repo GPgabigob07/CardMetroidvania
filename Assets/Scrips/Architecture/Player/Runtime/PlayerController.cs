@@ -265,9 +265,12 @@ namespace TicGame.Architecture
             CompleteCurrentAttack();
         }
 
+        private bool menuInputSuppressed;
+        public void SetMenuInputSuppressed(bool suppressed) => menuInputSuppressed = suppressed;
+
         private void Update() {
             dashPermission?.Tick(Time.deltaTime);
-            if (worldHeld) {
+            if (worldHeld || menuInputSuppressed) {
                 return;
             }
 
@@ -372,7 +375,7 @@ namespace TicGame.Architecture
         }
 
         private void FixedUpdate() {
-            if (worldHeld) {
+            if (worldHeld || menuInputSuppressed) {
                 return;
             }
 

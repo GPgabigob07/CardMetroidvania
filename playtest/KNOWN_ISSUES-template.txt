@@ -1,0 +1,15 @@
+PLAYTEST LIMITATIONS
+- Prototype artwork, menus and level content are unfinished.
+- No disk saves. Return to title or Quit discards the current run.
+- This slice is exploratory; a complete ending is not included.
+- No rebinding or graphics/audio settings menu in this build.
+
+VALIDATION STATUS — CANDIDATE BUILD
+- Automated title/start/pause/return flow, three fresh runs, return during area
+  streaming, preserved airborne velocity, and paused Card Time passed.
+- Title and controls layouts were rendered and inspected at 1280 x 720.
+- Hands-on route traversal, combat feel, controller hardware, focus loss,
+  death/hazard recovery and additional resolutions still need verification.
+- The full EditMode suite has 20 inherited failures and 3 skipped tests, also
+  reproduced on the original master version. No additional failures were found.
+- Independent code review was unavailable; this candidate received author review.

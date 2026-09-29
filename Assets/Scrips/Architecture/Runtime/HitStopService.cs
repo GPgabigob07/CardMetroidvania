@@ -25,7 +25,7 @@ namespace TicGame.Architecture
 
         private void Update()
         {
-            if (!IsInitialized || remaining <= 0f)
+            if (!IsInitialized || remaining <= 0f || PlaytestPauseController.IsGamePaused)
             {
                 return;
             }

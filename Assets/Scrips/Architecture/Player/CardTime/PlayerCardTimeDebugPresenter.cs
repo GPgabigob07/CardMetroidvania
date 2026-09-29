@@ -40,6 +40,7 @@ namespace TicGame.Architecture
 
         private void OnGUI()
         {
+            if (!Debug.isDebugBuild || PlaytestSessionController.Instance != null) return;
             EnsureStyles();
 
             if (feedbackRemaining > 0f)

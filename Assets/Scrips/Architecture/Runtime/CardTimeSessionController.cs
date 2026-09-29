@@ -28,7 +28,7 @@ namespace TicGame.Architecture
         {
             if (IsInitialized)
             {
-                runtime.Tick(unscaledDeltaTime: Time.unscaledDeltaTime);
+                if (!PlaytestPauseController.IsGamePaused) runtime.Tick(unscaledDeltaTime: Time.unscaledDeltaTime);
             }
         }
 

@@ -49,7 +49,7 @@ namespace TicGame.Architecture
 
         private void Update()
         {
-            if (playerController?.ActionRunner == null)
+            if (PlaytestPauseController.IsGamePaused || playerController?.ActionRunner == null)
             {
                 return;
             }

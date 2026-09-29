@@ -45,6 +45,13 @@ namespace TicGame.Architecture
 
         public RunProgress Progress { get; private set; }
         public string LastError => startupError ?? coordinator?.LastError;
+        public bool IsReady => startupHold == null && coordinator != null && coordinator.IsReady;
+        public bool IsRecovering => coordinator != null && coordinator.IsRecovering;
+        public PlayerController Player => player;
+        public CardTimeGuideUI Guide => guide;
+        private Task startupTask;
+        private bool startupSucceeded;
+        private int startupGeneration;
 
         private void Awake()
         {
@@ -77,11 +84,12 @@ namespace TicGame.Architecture
             }
 
             EnsurePlayerHeld();
-            _ = BeginStartupAsync();
+            startupTask = BeginStartupAsync();
         }
 
         private async Task BeginStartupAsync()
         {
+            var generation = ++startupGeneration;
             coordinator ??= GetComponent<GameplayAreaCoordinator>();
             if (coordinator == null || player == null)
             {
@@ -107,13 +115,14 @@ namespace TicGame.Architecture
 
             startupError = null;
             var started = await coordinator.StartAtAsync(initialAddress);
-            if (!ownsAuthority)
+            if (!ownsAuthority || generation != startupGeneration)
             {
                 return;
             }
 
             if (started)
             {
+                startupSucceeded = true;
                 startupHold?.Dispose();
                 startupHold = null;
                 return;
@@ -141,8 +150,27 @@ namespace TicGame.Architecture
         [ContextMenu("Retry Gameplay Startup")]
         private void RetryStartup()
         {
+            _ = RetryStartupAsync();
+        }
+
+        /// <summary>Retries readiness while retaining ownership of the root's input/physics hold.</summary>
+        public async Task<bool> RetryStartupAsync()
+        {
+            if (startupTask != null && !startupTask.IsCompleted) await startupTask;
+            if (!ownsAuthority) return false;
+            if (IsReady) return true;
+            if (startupSucceeded) return await coordinator.RetryRecoveryAsync();
             EnsurePlayerHeld();
-            _ = BeginStartupAsync();
+            startupTask = BeginStartupAsync();
+            await startupTask;
+            return ownsAuthority && IsReady;
+        }
+
+        /// <summary>Invalidates async area work before the front end unloads the run.</summary>
+        public void CancelSession()
+        {
+            startupGeneration++;
+            coordinator?.CancelSession();
         }
 
         private void EnsurePlayerHeld()

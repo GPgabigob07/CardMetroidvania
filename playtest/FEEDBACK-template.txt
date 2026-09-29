@@ -1,0 +1,20 @@
+PLAYTEST FEEDBACK
+Build ID:
+Windows version / graphics card:
+Keyboard + mouse or controller model:
+Resolution:
+Approximate play time:
+
+1. Where did you first feel unsure about what to do or which button to press?
+2. Did movement and melee feel responsive? Describe the situation.
+3. When did Card Time make sense? What was still confusing?
+4. Where did you get stuck, die unexpectedly, or lose track of the route?
+5. What would you most want improved before playing again?
+
+BUG REPORT (repeat for each issue)
+Area / landmark:
+Steps to reproduce:
+What you expected:
+What happened:
+Does it happen every time?
+Optional screenshot / short recording / Player.log:

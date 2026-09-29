@@ -26,6 +26,7 @@ namespace TicGame.Architecture
 
         private void OnGUI()
         {
+            if (!Debug.isDebugBuild || PlaytestSessionController.Instance != null) return;
             if (wallet == null || energyResource == null)
             {
                 return;

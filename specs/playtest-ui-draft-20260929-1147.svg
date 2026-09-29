@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120">
+<defs>
+ <linearGradient id="sky" x2="1" y2="1"><stop stop-color="#101521"/><stop offset="1" stop-color="#263146"/></linearGradient>
+ <linearGradient id="card" x2="1" y2="1"><stop stop-color="#7cd8eb" stop-opacity=".3"/><stop offset="1" stop-color="#d78fb5" stop-opacity=".12"/></linearGradient>
+ <style>text{font-family:Segoe UI,Arial,sans-serif;fill:#f3efe5}.muted{fill:#b6c0d1}.cyan{fill:#7cd8eb}.pink{fill:#d78fb5}.label{font-size:14px;letter-spacing:2px}.body{font-size:17px}.small{font-size:14px}.button{fill:#1a2938;stroke:#7cd8eb;stroke-width:2}</style>
+</defs>
+<rect width="1440" height="1120" fill="#090d15"/>
+<text x="48" y="48" class="label cyan">CARD METROIDVANIA / EXTERNAL PLAYTEST</text>
+<text x="48" y="91" font-size="32">Front-end concept · draft 01</text>
+<text x="48" y="123" class="body muted">Editable UI over restrained castle silhouettes. Blue focus, pink accents, readable controls.</text>
+
+<text x="48" y="169" class="label">01 / TITLE SCREEN</text>
+<g transform="translate(48 186)">
+ <rect width="650" height="365" rx="12" fill="url(#sky)"/>
+ <circle cx="503" cy="88" r="40" fill="#7cd8eb" opacity=".12"/>
+ <path d="M365 365V220H397V133H417V109H437V133H449V194H474V165H495V104L512 77L529 104V165H550V221H584V159H612V241H650V365Z" fill="#111b2c"/>
+ <path d="M452 280L485 167L553 190L519 303Z" fill="url(#card)" stroke="#7cd8eb" opacity=".65"/>
+ <path d="M474 294L494 181L563 194L543 307Z" fill="#202a40" stroke="#d78fb5"/>
+ <path d="M505 218L526 202L547 225L525 253Z" fill="none" stroke="#d78fb5"/>
+ <text x="32" y="49" class="label cyan">PLAYTEST 01</text>
+ <text x="32" y="94" font-size="31" font-weight="600">CARD</text>
+ <text x="32" y="132" font-size="31" font-weight="600">METROIDVANIA</text>
+ <rect x="32" y="160" width="265" height="44" rx="4" class="button"/>
+ <text x="47" y="189" class="cyan body">▸  Start playtest</text>
+ <text x="48" y="239" class="body">Controls</text><text x="48" y="283" class="body">Quit</text>
+ <text x="32" y="335" class="small muted">Progress is not saved.</text>
+ <text x="473" y="335" class="small muted">build &lt;version&gt;</text>
+</g>
+
+<text x="742" y="169" class="label">02 / PAUSE OVER GAMEPLAY</text>
+<g transform="translate(742 186)">
+ <rect width="650" height="365" rx="12" fill="#1d2838"/>
+ <path d="M0 320H190V245H270V302H387V203H490V276H650V365H0Z" fill="#334456"/>
+ <path d="M55 270V90H80V270M535 220V57H560V220" stroke="#7cd8eb" stroke-width="2" opacity=".3"/>
+ <rect width="650" height="365" rx="12" fill="#090d15" opacity=".72"/>
+ <rect x="160" y="22" width="330" height="320" rx="8" fill="#101521" stroke="#334456"/>
+ <text x="325" y="64" text-anchor="middle" font-size="27">Paused</text>
+ <rect x="189" y="89" width="272" height="42" rx="4" class="button"/>
+ <text x="211" y="117" class="body cyan">▸  Resume</text>
+ <text x="211" y="163" class="body">Controls / Card Time guide</text>
+ <text x="211" y="209" class="body">Return to title</text>
+ <text x="211" y="255" class="body">Quit</text>
+ <text x="325" y="313" text-anchor="middle" class="small muted">Esc / Start · resume</text>
+</g>
+
+<text x="48" y="598" class="label">03 / CONTROLS PANEL</text>
+<g transform="translate(48 615)">
+ <rect width="650" height="365" rx="12" fill="#101521" stroke="#263146"/>
+ <text x="30" y="44" font-size="26">Before you begin</text>
+ <text x="30" y="73" class="small muted">Explore the tutorial and follow the route into the pink area.</text>
+ <path d="M30 93H620" stroke="#334456"/>
+ <text x="30" y="124" class="label cyan">ACTION</text><text x="226" y="124" class="label cyan">KEYBOARD</text><text x="442" y="124" class="label cyan">GAMEPAD</text>
+ <text x="30" y="165" class="body">Jump</text><text x="226" y="165" class="body">Space</text><text x="442" y="165" class="body">South button</text>
+ <text x="30" y="203" class="body">Melee</text><text x="226" y="203" class="body">LMB / Enter</text><text x="442" y="203" class="body">West button</text>
+ <text x="30" y="241" class="body">Pause</text><text x="226" y="241" class="body">Escape</text><text x="442" y="241" class="body">Start</text>
+ <text x="30" y="278" class="small muted">Draft excerpt. Full movement / Card Time rows verified in implementation.</text>
+ <rect x="30" y="302" width="130" height="39" rx="4" class="button"/><text x="51" y="328" class="body cyan">‹  Back</text>
+</g>
+
+<text x="742" y="598" class="label">04 / TRANSITION FAILURE</text>
+<g transform="translate(742 615)">
+ <rect width="650" height="365" rx="12" fill="url(#sky)"/>
+ <path d="M312 49L333 84H291Z" fill="none" stroke="#d78fb5" stroke-width="2"/>
+ <text x="312" y="77" text-anchor="middle" class="pink body">!</text>
+ <text x="325" y="130" text-anchor="middle" font-size="25">The area could not be loaded.</text>
+ <text x="325" y="165" text-anchor="middle" class="body muted">Try again, or return to the title screen.</text>
+ <rect x="155" y="197" width="340" height="44" rx="4" class="button"/>
+ <text x="325" y="226" text-anchor="middle" class="body cyan">▸  Retry</text>
+ <text x="325" y="274" text-anchor="middle" class="body">Return to title</text>
+ <text x="325" y="324" text-anchor="middle" class="small muted">Include build &lt;version&gt; and Player.log in your report.</text>
+</g>
+<text x="48" y="1024" class="label pink">SUPPORTING STATES</text>
+<text x="48" y="1054" class="body muted">Loading: “Preparing the area…” · Leave confirmation: “Progress will be reset.” · Cancel selected by default.</text>
+<text x="48" y="1086" class="small muted">Concept only · Working title · English assumed · Not a Unity screenshot · Optional generated background after functional validation</text>
+</svg>

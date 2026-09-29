@@ -26,6 +26,7 @@ namespace TicGame.Architecture
         private bool visible;
         public bool IsDiscovered => discovered;
         public bool IsVisible => visible;
+        public string Content => guide;
 
         /// <summary>
         /// Binds the presentation to in-memory progress for the current run.
@@ -50,20 +51,20 @@ namespace TicGame.Architecture
 
         private void Update()
         {
-            if (discovered && (Keyboard.current?.f1Key.wasPressedThisFrame == true
-                || Gamepad.current?.startButton.wasPressedThisFrame == true)) visible = !visible;
+            if (PlaytestSessionController.Instance != null) return;
+            if (discovered && Keyboard.current?.f1Key.wasPressedThisFrame == true) visible = !visible;
         }
 
         private void OnGUI()
         {
-            if (!discovered) return;
+            if (!discovered || PlaytestSessionController.Instance != null) return;
             var previous = GUI.matrix;
             GUI.matrix = Matrix4x4.Scale(new Vector3(Screen.width / 1280f, Screen.height / 720f, 1));
             if (GUI.Button(new Rect(1060, 20, 200, 34), visible ? "Close Card Time guide" : "Card Time guide"))
                 visible = !visible;
             if (visible)
             {
-                GUI.Box(new Rect(660, 70, 590, 580), "Card Time unlocked - F1 / Start to close or reopen");
+                GUI.Box(new Rect(660, 70, 590, 580), "Card Time unlocked - F1 to close or reopen");
                 var style = new GUIStyle(GUI.skin.label) { wordWrap = true, fontSize = 18 };
                 GUI.Label(new Rect(680, 110, 550, 530), guide, style);
             }
