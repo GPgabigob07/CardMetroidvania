@@ -59,3 +59,20 @@ User must verify physical keyboard/gamepad navigation, focus loss, Blue/Pink rou
 - `TicGame.Architecture.Tests.GameplayTimeCoordinatorTests.Shutdown_RestoresCapturedBaseline`
 - `TicGame.Architecture.Tests.PlayerMovementControllerTests.PlayerDeathRespawn_ResetsPositionVelocityAndHealth_WhenHealthReachesZero`
 
+
+## Candidate artifact
+
+Unity BuildReport succeeded for Windows x64 using the installed Mono backend.
+Code checkpoint: `8bd8b7d`. Build ID: `playtest-20260929-170922`.
+ZIP: `Builds/playtest-20260929-170922/CardMetroidvania-Windows.zip`.
+Size: 42,691,856 bytes. SHA-256: `D078A8F150DAF48377B54AA1D3A7E54DF4F3A54835C24CCD9C73B528426BDCB3`.
+
+The ZIP includes executable, data, runtime dependencies and tester documents; the generated Burst DoNotShip debug folder was excluded. Extracted to a fresh OS temporary folder outside the project and launched in headless mode. Process remained responsive with no reported startup errors/exceptions, then the agent stopped its own smoke-test process. This verifies runtime packaging/startup, not graphical input or a full playthrough.
+
+Manifest correctly reports dirty=true: the builder applied its timestamped version and windowed 1280x720 settings after the code checkpoint. Those exact settings are retained in the branch. Full build log is `.utmp/playtest/build.log`; standalone log is `.utmp/playtest/standalone.log`.
+
+The only whitespace warnings during staging were Unity-generated empty YAML values. No gameplay geometry was changed. No push, merge, upload or external message occurred.
+
+## Handoff
+
+Extract the ZIP, launch `CardMetroidvania.exe`, and check title → Start → Blue/Pink route → pause/resume → death/hazard recovery → title → fresh run. Try the intended controller and verify menus at the tester's resolution. Send any Console/Player.log errors or observed blockers before calling this candidate ready to share.
