@@ -31,7 +31,6 @@ namespace TicGame.Architecture.Tests
         {
             var trace = new List<string>();
             var sequence = new GameplayAreaCoordinator.RespawnSequence(
-                hold: () => trace.Add("hold"),
                 suspendTriggers: () => new TraceLease(trace, "suspend-triggers", "resume-triggers"),
                 settleRequests: () => Complete(trace, "settle-requests"),
                 unloadOtherAreas: () => Complete(trace, "unload-other-areas"),
@@ -40,17 +39,16 @@ namespace TicGame.Architecture.Tests
                 resolveSpawn: () => Complete(trace, "resolve-spawn"),
                 teleport: () => trace.Add("teleport"),
                 restoreHealth: () => trace.Add("restore-health"),
-                resetCrossings: () => trace.Add("reset-crossings"),
-                releaseHold: () => trace.Add("release-hold"));
+                resetCrossings: () => trace.Add("reset-crossings"));
 
             var respawned = await sequence.RunAsync();
 
             Assert.IsTrue(respawned);
             CollectionAssert.AreEqual(new[]
             {
-                "hold", "suspend-triggers", "settle-requests", "unload-other-areas",
+                "suspend-triggers", "settle-requests", "unload-other-areas",
                 "load-destination", "restore-progress", "resolve-spawn", "teleport",
-                "restore-health", "reset-crossings", "resume-triggers", "release-hold"
+                "restore-health", "reset-crossings", "resume-triggers"
             }, trace);
         }
 
@@ -59,7 +57,6 @@ namespace TicGame.Architecture.Tests
         {
             var trace = new List<string>();
             var sequence = new GameplayAreaCoordinator.RespawnSequence(
-                hold: () => trace.Add("hold"),
                 suspendTriggers: () => new TraceLease(trace, "suspend-triggers", "resume-triggers"),
                 settleRequests: () => Complete(trace, "settle-requests"),
                 unloadOtherAreas: () => Complete(trace, "unload-other-areas"),
@@ -68,17 +65,35 @@ namespace TicGame.Architecture.Tests
                 resolveSpawn: () => Complete(trace, "resolve-spawn"),
                 teleport: () => trace.Add("teleport"),
                 restoreHealth: () => trace.Add("restore-health"),
-                resetCrossings: () => trace.Add("reset-crossings"),
-                releaseHold: () => trace.Add("release-hold"));
+                resetCrossings: () => trace.Add("reset-crossings"));
 
             var respawned = await sequence.RunAsync();
 
             Assert.IsFalse(respawned);
             CollectionAssert.AreEqual(new[]
             {
-                "hold", "suspend-triggers", "settle-requests", "unload-other-areas",
+                "suspend-triggers", "settle-requests", "unload-other-areas",
                 "load-destination", "resume-triggers"
             }, trace);
+        }
+
+        [Test]
+        public async Task RespawnSequenceLeavesHealthAloneWhenNoRestorePolicyIsSupplied()
+        {
+            var trace = new List<string>();
+            var sequence = new GameplayAreaCoordinator.RespawnSequence(
+                () => new TraceLease(trace, "suspend-triggers", "resume-triggers"),
+                () => Complete(trace, "settle-requests"),
+                () => Complete(trace, "unload-other-areas"),
+                () => Complete(trace, "load-destination"),
+                () => Complete(trace, "restore-progress"),
+                () => Complete(trace, "resolve-spawn"),
+                () => trace.Add("teleport"),
+                restoreHealth: null,
+                resetCrossings: () => trace.Add("reset-crossings"));
+
+            Assert.IsTrue(await sequence.RunAsync());
+            CollectionAssert.DoesNotContain(trace, "restore-health");
         }
 
         [Test]
@@ -187,7 +202,7 @@ namespace TicGame.Architecture.Tests
             var retried = CreateSequence(trace, () => Complete(trace, "resolve-spawn"));
             Assert.IsTrue(await retried.RunAsync());
             CollectionAssert.Contains(trace, "teleport");
-            CollectionAssert.Contains(trace, "release-hold");
+            CollectionAssert.DoesNotContain(trace, "release-hold");
         }
 
         [Test]
@@ -196,7 +211,6 @@ namespace TicGame.Architecture.Tests
             var trace = new List<string>();
             var spawnStillExists = true;
             var sequence = new GameplayAreaCoordinator.RespawnSequence(
-                () => trace.Add("hold"),
                 () => new TraceLease(trace, "suspend-triggers", "resume-triggers"),
                 () => Complete(trace, "settle-requests"),
                 () => Complete(trace, "unload-other-areas"),
@@ -210,8 +224,7 @@ namespace TicGame.Architecture.Tests
                 () => Task.FromResult(spawnStillExists),
                 () => trace.Add("teleport"),
                 () => trace.Add("restore-health"),
-                () => trace.Add("reset-crossings"),
-                () => trace.Add("release-hold"));
+                () => trace.Add("reset-crossings"));
 
             Assert.IsFalse(await sequence.RunAsync());
             CollectionAssert.DoesNotContain(trace, "teleport");
@@ -223,7 +236,6 @@ namespace TicGame.Architecture.Tests
             Func<Task<bool>> resolveSpawn)
         {
             return new GameplayAreaCoordinator.RespawnSequence(
-                () => trace.Add("hold"),
                 () => new TraceLease(trace, "suspend-triggers", "resume-triggers"),
                 () => Complete(trace, "settle-requests"),
                 () => Complete(trace, "unload-other-areas"),
@@ -232,8 +244,7 @@ namespace TicGame.Architecture.Tests
                 resolveSpawn,
                 () => trace.Add("teleport"),
                 () => trace.Add("restore-health"),
-                () => trace.Add("reset-crossings"),
-                () => trace.Add("release-hold"));
+                () => trace.Add("reset-crossings"));
         }
 
         private GameObject CreateObject(string name)

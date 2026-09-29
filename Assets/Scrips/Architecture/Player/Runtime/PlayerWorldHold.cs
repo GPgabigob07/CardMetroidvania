@@ -39,7 +39,10 @@ namespace TicGame.Architecture
                     body.simulated = false;
                 }
 
-                player?.SetWorldHeld(true);
+                if (player != null)
+                {
+                    player.SetWorldHeld(true);
+                }
             }
 
             leaseCount++;
@@ -64,7 +67,10 @@ namespace TicGame.Architecture
                 body.simulated = simulatedBeforeHold;
             }
 
-            player?.SetWorldHeld(false);
+            if (player != null)
+            {
+                player.SetWorldHeld(false);
+            }
         }
 
         private sealed class HoldLease : IDisposable

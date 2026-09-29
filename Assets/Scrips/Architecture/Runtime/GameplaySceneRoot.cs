@@ -18,6 +18,9 @@ namespace TicGame.Architecture
         [Tooltip("Persistent Card Time guide presentation owned by Gameplay.")]
         [SerializeField] private CardTimeGuideUI guide;
 
+        [Tooltip("Persistent black cover used while a recovery changes areas.")]
+        [SerializeField] private RespawnCoverUI respawnCover;
+
         [Tooltip("Coordinates initial area readiness and explicit retries.")]
         [SerializeField] private GameplayAreaCoordinator coordinator;
 
@@ -96,7 +99,7 @@ namespace TicGame.Architecture
 
             InitializeRunProgress(initialAddress);
             var services = FindFirstObjectByType<GameplayServicesRoot>();
-            coordinator.Configure(player, playerHold, guide, areaDefinitions, Progress, services);
+            coordinator.Configure(player, playerHold, guide, areaDefinitions, Progress, services, respawnCover);
             if (services != null && services.IsInitialized)
             {
                 services.BindScene(gameObject.scene);

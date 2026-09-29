@@ -10,7 +10,8 @@ namespace TicGame.Architecture
             PlayerCardTimeState sessionCardTime,
             float activeElapsed,
             float maximumActiveDuration,
-            long activeSessionId = 0)
+            long activeSessionId = 0,
+            long activeOpportunityId = 0)
         {
             State = state;
             AvailableCardTime = availableCardTime;
@@ -18,6 +19,7 @@ namespace TicGame.Architecture
             ActiveElapsed = activeElapsed;
             MaximumActiveDuration = maximumActiveDuration;
             ActiveSessionId = activeSessionId;
+            ActiveOpportunityId = activeOpportunityId;
         }
 
         public CardTimeSessionState State { get; }
@@ -26,6 +28,7 @@ namespace TicGame.Architecture
         public float ActiveElapsed { get; }
         public float MaximumActiveDuration { get; }
         public long ActiveSessionId { get; }
+        public long ActiveOpportunityId { get; }
         public float ActiveRemaining => IsActive
             ? Math.Max(
                 val1: 0f,
@@ -41,7 +44,8 @@ namespace TicGame.Architecture
                 && SessionCardTime == other.SessionCardTime
                 && ActiveElapsed.Equals(other.ActiveElapsed)
                 && MaximumActiveDuration.Equals(other.MaximumActiveDuration)
-                && ActiveSessionId == other.ActiveSessionId;
+                && ActiveSessionId == other.ActiveSessionId
+                && ActiveOpportunityId == other.ActiveOpportunityId;
         }
 
         public override bool Equals(object obj)
@@ -59,6 +63,7 @@ namespace TicGame.Architecture
                 hashCode = (hashCode * 397) ^ ActiveElapsed.GetHashCode();
                 hashCode = (hashCode * 397) ^ MaximumActiveDuration.GetHashCode();
                 hashCode = (hashCode * 397) ^ ActiveSessionId.GetHashCode();
+                hashCode = (hashCode * 397) ^ ActiveOpportunityId.GetHashCode();
                 return hashCode;
             }
         }

@@ -89,7 +89,7 @@ namespace TicGame.Architecture
         public System.Threading.Tasks.Task<bool> RetryCoordinatedRespawnAsync()
         {
             return coordinator != null
-                ? coordinator.RespawnAsync()
+                ? coordinator.RetryRecoveryAsync()
                 : System.Threading.Tasks.Task.FromResult(false);
         }
 
@@ -130,6 +130,7 @@ namespace TicGame.Architecture
 
             cardRuntime ??= GetComponent<PlayerCardRuntime>();
             cardRuntime?.ClearNewCardEffects();
+            playerController?.ResetCardTimeForFullRun();
             if (coordinator == null)
             {
                 Respawn();

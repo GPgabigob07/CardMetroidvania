@@ -372,7 +372,7 @@ namespace TicGame.Architecture.Tests
         {
             public PlayerCardTimeConfigSO Configuration => null;
 
-            public void PublishAvailability(PlayerCardTimeState state) { }
+            public void PublishAvailability(CardTimeOpportunity opportunity) { }
             public CardTimeActivationRequestResult RequestActivation() => CardTimeActivationRequestResult.Rejected;
             public bool TryCommit() => false;
             public bool TryCommit(ICardCommitTransaction transaction) => false;

@@ -15,6 +15,8 @@ namespace TicGame.Architecture
         [Tooltip(tooltip: "Layers considered ground by the player controller.")]
         [SerializeField] private LayerMask groundLayer = ~0;
 
+        private readonly Collider2D[] groundHits = new Collider2D[1];
+
         private bool useManualGrounded;
         private bool manualGrounded;
 
@@ -29,7 +31,13 @@ namespace TicGame.Architecture
             }
 
             var origin = groundCheck != null ? groundCheck.position : transform.position;
-            IsGrounded = Physics2D.OverlapCircle(point: origin, radius: groundCheckRadius, layerMask: groundLayer) != null;
+            var groundFilter = new ContactFilter2D
+            {
+                useLayerMask = true,
+                layerMask = groundLayer,
+                useTriggers = false
+            };
+            IsGrounded = Physics2D.OverlapCircle(origin, groundCheckRadius, groundFilter, groundHits) > 0;
         }
 
         public void SetManualGrounded(bool enabled, bool grounded)

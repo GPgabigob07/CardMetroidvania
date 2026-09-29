@@ -9,17 +9,25 @@ namespace TicGame.Architecture
         private float postRecoveryGraceRemaining;
         private float restartCooldownRemaining;
         private bool isWaitingForRestart;
-        private bool cardTimeConsumed;
+        private long nextOpportunityId = 1;
+        private long consumedOpportunityId;
+        private CardTimeOpportunity currentOpportunity =
+            new CardTimeOpportunity(PlayerCardTimeState.Neutral, 1);
+        private bool neutralRearmPendingGrounding;
+        private bool isGrounded;
 
         public bool HasBufferedFollowUp => bufferedState != PlayerActionState.None;
         public bool HasPostRecoveryFollowUp => postRecoveryFollowUpState != PlayerActionState.None
             && postRecoveryGraceRemaining > 0f;
         public bool CanRestartSequence => restartCooldownRemaining <= 0f;
-        public PlayerCardTimeState CurrentCardTime { get; private set; } =
-            PlayerCardTimeState.Neutral;
-        public PlayerCardTimeState AvailableCardTime => cardTimeConsumed
-            ? PlayerCardTimeState.None
-            : CurrentCardTime;
+        public PlayerCardTimeState CurrentCardTime => currentOpportunity.Category;
+        public CardTimeOpportunity AvailableOpportunity =>
+            currentOpportunity.OpportunityId <= consumedOpportunityId
+            || neutralRearmPendingGrounding
+                && CurrentCardTime == PlayerCardTimeState.Neutral
+                ? CardTimeOpportunity.None
+                : currentOpportunity;
+        public PlayerCardTimeState AvailableCardTime => AvailableOpportunity.Category;
 
         public void Tick(float deltaTime)
         {
@@ -122,18 +130,52 @@ namespace TicGame.Architecture
         {
             ResetTiming();
             isWaitingForRestart = false;
-            SetCardTime(PlayerAttackSequence.GetCardTime(state));
+            BeginOpportunity(PlayerAttackSequence.GetCardTime(state));
         }
 
         public void ConsumeCardTime()
         {
-            cardTimeConsumed = true;
+            NotifyCardCancelled(currentOpportunity.OpportunityId);
+        }
+
+        public void NotifyCardCommitted(
+            PlayerCardTimeState committedCategory,
+            long committedOpportunityId,
+            bool grounded)
+        {
+            ConsumeOpportunity(committedOpportunityId);
+            isGrounded = grounded;
+            if (committedCategory != PlayerCardTimeState.Neutral)
+            {
+                return;
+            }
+
+            neutralRearmPendingGrounding = true;
+            TryRearmNeutral();
+        }
+
+        public void NotifyCardCancelled(long cancelledOpportunityId)
+        {
+            ConsumeOpportunity(cancelledOpportunityId);
+        }
+
+        public void RequestNeutralRearmAfterTimeout(long timedOutOpportunityId)
+        {
+            ConsumeOpportunity(timedOutOpportunityId);
+            neutralRearmPendingGrounding = true;
+            TryRearmNeutral();
+        }
+
+        public void NotifyGrounded(bool grounded)
+        {
+            isGrounded = grounded;
+            TryRearmNeutral();
         }
 
         public void RestoreNeutralCardTime()
         {
-            CurrentCardTime = PlayerCardTimeState.Neutral;
-            cardTimeConsumed = false;
+            neutralRearmPendingGrounding = false;
+            BeginOpportunity(PlayerCardTimeState.Neutral);
         }
 
         public void Clear()
@@ -141,8 +183,16 @@ namespace TicGame.Architecture
             bufferedState = PlayerActionState.None;
             ResetTiming();
             isWaitingForRestart = false;
-            cardTimeConsumed = false;
             SetCardTime(PlayerCardTimeState.Neutral);
+        }
+
+        public void ResetForFullRun()
+        {
+            bufferedState = PlayerActionState.None;
+            ResetTiming();
+            isWaitingForRestart = false;
+            neutralRearmPendingGrounding = false;
+            BeginOpportunity(PlayerCardTimeState.Neutral);
         }
 
         private void ResetTiming()
@@ -154,12 +204,46 @@ namespace TicGame.Architecture
 
         private void SetCardTime(PlayerCardTimeState next)
         {
-            if (CurrentCardTime != next)
+            if (CurrentCardTime == next)
             {
-                cardTimeConsumed = false;
+                return;
             }
 
-            CurrentCardTime = next;
+            if (next == PlayerCardTimeState.Neutral && neutralRearmPendingGrounding)
+            {
+                currentOpportunity = new CardTimeOpportunity(
+                    next, currentOpportunity.OpportunityId);
+                TryRearmNeutral();
+                return;
+            }
+
+            BeginOpportunity(next);
+        }
+
+        private void TryRearmNeutral()
+        {
+            if (!isGrounded
+                || !neutralRearmPendingGrounding
+                || CurrentCardTime != PlayerCardTimeState.Neutral)
+            {
+                return;
+            }
+
+            neutralRearmPendingGrounding = false;
+            BeginOpportunity(PlayerCardTimeState.Neutral);
+        }
+
+        private void ConsumeOpportunity(long opportunityId)
+        {
+            if (opportunityId > consumedOpportunityId)
+            {
+                consumedOpportunityId = opportunityId;
+            }
+        }
+
+        private void BeginOpportunity(PlayerCardTimeState category)
+        {
+            currentOpportunity = new CardTimeOpportunity(category, ++nextOpportunityId);
         }
     }
 }
