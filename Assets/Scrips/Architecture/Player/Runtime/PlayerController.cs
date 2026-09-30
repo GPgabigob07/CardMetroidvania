@@ -151,6 +151,7 @@ namespace TicGame.Architecture
         public ICardTimeSession CardTimeSession => gameplayServices?.CardTime;
         public PlayerCardTimeConfigSO CardTimeConfig => cardTimeSource?.Configuration;
         public bool IsGameplayServicesReady => gameplayServices != null && cardTimeSource != null;
+        public bool CanRecoverEnergy => IsGameplayServicesReady && !worldHeld && !menuInputSuppressed;
         public event Action GameplayServicesReady;
 
         private void Awake() {
@@ -732,8 +733,11 @@ namespace TicGame.Architecture
             }
 
             var category = snapshot.SessionCardTime;
-            var ids = cardInventoryProfile != null
-                ? cardInventoryProfile.GetEquippedCardIds(category)
+            var runInventory = GetComponent<PlayerCardInventoryRuntime>();
+            runInventory?.Initialize(cardInventoryProfile);
+            var ids = runInventory != null && runInventory.IsInitialized
+                ? runInventory.GetEquippedCardIds(category)
+                : cardInventoryProfile != null ? cardInventoryProfile.GetEquippedCardIds(category)
                 : null;
             var catalog = (ICardCatalog)cardCatalog;
             if (catalog == null)

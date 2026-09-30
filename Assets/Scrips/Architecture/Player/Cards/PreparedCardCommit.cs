@@ -7,13 +7,15 @@ namespace TicGame.Architecture
         private readonly PlayerCardRuntime owner;
         private readonly IReadOnlyList<ResourceAmount> costs;
         private readonly PlayerCardCommitSnapshot snapshot;
+        private bool isApplying;
 
         internal PreparedCardCommit(
             PlayerCardRuntime owner,
             CardDefinitionSO card,
             long sessionId,
             IReadOnlyList<ResourceAmount> costs,
-            PlayerCardCommitSnapshot snapshot)
+            PlayerCardCommitSnapshot snapshot,
+            RecoveryCardQuote? recoveryQuote = null)
         {
             this.owner = owner;
             Card = card;
@@ -21,6 +23,7 @@ namespace TicGame.Architecture
             SessionId = sessionId;
             this.costs = costs ?? System.Array.Empty<ResourceAmount>();
             this.snapshot = snapshot;
+            RecoveryQuote = recoveryQuote;
         }
 
         public CardDefinitionSO Card { get; }
@@ -28,30 +31,32 @@ namespace TicGame.Architecture
         public long SessionId { get; }
         public IReadOnlyList<ResourceAmount> Costs => costs;
         public PlayerCardCommitSnapshot Snapshot => snapshot;
+        public RecoveryCardQuote? RecoveryQuote { get; }
         public bool IsApplied { get; private set; }
         public CardCommitFailure Failure { get; private set; }
 
         public bool TryApply()
         {
-            if (IsApplied)
+            if (IsApplied || isApplying)
             {
                 Failure = CardCommitFailure.AlreadyApplied;
                 return false;
             }
 
-            if (owner == null || !owner.TryApplyPreparedCommit(this))
+            isApplying = true;
+            try
             {
-                if (Failure == CardCommitFailure.None)
+                if (owner == null || !owner.TryApplyPreparedCommit(this))
                 {
-                    Failure = CardCommitFailure.InsufficientLiveResources;
+                    if (Failure == CardCommitFailure.None)
+                        Failure = CardCommitFailure.InsufficientLiveResources;
+                    return false;
                 }
-
-                return false;
+                IsApplied = true;
+                Failure = CardCommitFailure.None;
+                return true;
             }
-
-            IsApplied = true;
-            Failure = CardCommitFailure.None;
-            return true;
+            finally { isApplying = false; }
         }
 
         internal void SetFailure(CardCommitFailure failure)

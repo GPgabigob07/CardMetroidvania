@@ -145,6 +145,16 @@ namespace TicGame.Architecture
             return applied;
         }
 
+        internal Action ChangeRecoveryDeferred(ResourceDefinitionSO resource, float delta)
+        {
+            var balance = FindBalance(resource);
+            if (balance == null) return null;
+            var previous = balance.CurrentAmount;
+            balance.CurrentAmount = Mathf.Clamp(previous + delta, 0, balance.MaximumAmount);
+            var current = balance.CurrentAmount;
+            return Mathf.Approximately(previous, current) ? null : () => Changed?.Invoke(resource, previous, current);
+        }
+
         private Balance FindBalance(ResourceDefinitionSO resource)
         {
             return balances.Find(match: balance => balance.Resource == resource);

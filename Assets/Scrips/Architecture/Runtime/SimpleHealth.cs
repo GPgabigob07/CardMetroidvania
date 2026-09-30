@@ -38,6 +38,31 @@ namespace TicGame.Architecture
                 maximum: MaximumHealth));
         }
 
+        public float Heal(float amount)
+        {
+            if (IsDead || !float.IsFinite(amount) || amount <= 0) return 0;
+            var previous = CurrentHealth;
+            var publish = ChangeRecoveryDeferred(amount);
+            publish?.Invoke();
+            return CurrentHealth - previous;
+        }
+
+        public bool TrySpendNonlethal(float amount, float minimumRemainingHealth = 1f)
+        {
+            if (!float.IsFinite(amount) || amount <= 0 || !float.IsFinite(minimumRemainingHealth)
+                || minimumRemainingHealth < 1 || CurrentHealth - amount < minimumRemainingHealth) return false;
+            ChangeRecoveryDeferred(-amount)?.Invoke();
+            return true;
+        }
+
+        internal Action ChangeRecoveryDeferred(float delta)
+        {
+            var previous = CurrentHealth;
+            CurrentHealth = Mathf.Clamp(CurrentHealth + delta, 0, MaximumHealth);
+            var change = new SimpleHealthChanged(previous, CurrentHealth, MaximumHealth);
+            return Mathf.Approximately(previous, CurrentHealth) ? null : () => Changed?.Invoke(change);
+        }
+
         public DamageResult ApplyDamage(in DamageContext context)
         {
             if (IsDead)

@@ -21,19 +21,14 @@ namespace TicGame.Architecture
         private const string ReachFeedbackId = "reach";
 
         [Header("Resources")]
-        [Tooltip("Wallet that receives Energy from hit rolls and enemy defeats.")]
+        [Tooltip("Wallet that receives Energy from enemy hits and defeats.")]
         [SerializeField] private PlayerResourceWallet wallet;
 
         [Tooltip("Energy resource used by prototype combat rewards.")]
         [SerializeField] private ResourceDefinitionSO energyResource;
 
-        [Range(0f, 1f)]
-        [Tooltip("Base chance to gain Energy from an effective primary attack request.")]
-        [SerializeField] private float hitEnergyChance = 0.3f;
-
-        [Min(0f)]
-        [Tooltip("Energy granted when the hit-gain roll succeeds.")]
-        [SerializeField] private float hitEnergyAmount = 1f;
+        [Tooltip("Guaranteed energy reward per effective primary enemy attack request.")]
+        [SerializeField] private PlayerRecoveryTuningSO recoveryTuning;
 
         [Header("Chain Damage")]
         [Min(0f)]
@@ -512,7 +507,7 @@ namespace TicGame.Architecture
 
         private void ResolveHitEnergy(DamageResolutionReport report)
         {
-            if (report.EffectiveHitCount <= 0
+            if (!report.IsPrimary || !report.TargetResults.Any(result => IsEligibleEnemyHit(result))
                 || !report.Allows(DamageProcPolicy.RollHitResourceGain))
             {
                 return;
@@ -520,19 +515,15 @@ namespace TicGame.Architecture
 
             var hadCharges = energyGainCharges > 0;
             var multiplier = hadCharges ? energyGainMultiplier : 1f;
-            var succeeded = randomRollSource.NextNormalized() < hitEnergyChance;
-            if (succeeded)
-            {
-                wallet?.Gain(energyResource, hitEnergyAmount * multiplier);
-            }
+            wallet?.Gain(energyResource, (recoveryTuning != null ? recoveryTuning.EnergyPerEnemyHit : 3f) * multiplier);
 
             if (hadCharges)
             {
                 PublishWorldFeedback(
                     energyGainCard,
-                    succeeded ? CardFeedbackKind.Triggered : CardFeedbackKind.Failed,
-                    succeeded ? CardFeedbackAnchor.HitPoint : CardFeedbackAnchor.SourceHead,
-                    succeeded ? TryGetFirstEffectiveHitPoint(report) : null);
+                    CardFeedbackKind.Triggered,
+                    CardFeedbackAnchor.HitPoint,
+                    TryGetFirstEffectiveHitPoint(report));
                 energyGainCharges--;
                 RefreshChargeHud(
                     EnergyGainFeedbackId,

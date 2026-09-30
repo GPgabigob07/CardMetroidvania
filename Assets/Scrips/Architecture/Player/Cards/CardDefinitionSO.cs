@@ -31,6 +31,11 @@ namespace TicGame.Architecture
         [Header("Effect")]
         [SerializeField] private CardEffectDefinitionSO effect;
 
+        [Header("Inventory")]
+        [SerializeField] private CardConsumptionPolicy consumptionPolicy;
+        public CardConsumptionPolicy ConsumptionPolicy => consumptionPolicy;
+        public void ConfigureConsumption(CardConsumptionPolicy policy) => consumptionPolicy = policy;
+
         public string Id => string.IsNullOrWhiteSpace(id) ? name : id;
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? Id : displayName;
         public string Description => description;

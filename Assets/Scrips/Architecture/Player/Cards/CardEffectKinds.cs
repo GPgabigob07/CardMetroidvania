@@ -40,7 +40,10 @@ namespace TicGame.Architecture
         ArmGroundedJumpBoost = 100,
         GrantTimedDash = 110,
         ArmPoiseHits = 120,
-        ArmGrowingReach = 130
+        ArmGrowingReach = 130,
+        SacrificeHealthForEnergy = 140,
+        ConvertEnergyToHealth = 150,
+        Heal = 160
     }
 
     public enum CardLifetimeKind

@@ -27,6 +27,8 @@ GameObject:
   - component: {fileID: 3959589887960197771}
   - component: {fileID: 7896860679630138069}
   - component: {fileID: 7839087103476644820}
+  - component: {fileID: 6863152883008667092}
+  - component: {fileID: 739535287382128567}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -248,8 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCombatEffects
   wallet: {fileID: 7988086486144116433}
   energyResource: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
-  hitEnergyChance: 0.3
-  hitEnergyAmount: 1
+  recoveryTuning: {fileID: 11400000, guid: 82cf140ca854fd849a2505de80db14e0, type: 2}
   chainDamagePercentPerIncrement: 0.1
   supplementalDamageProfile: {fileID: 11400000, guid: cd78942afb8ff034f9cc4139283a65a0, type: 2}
 --- !u!114 &3252436216368141210
@@ -383,7 +384,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f6a3fe73f9b45d7b1bf26d8c535b868, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerGroundedJumpBoostRuntime
 --- !u!114 &7839087103476644820
 MonoBehaviour:
@@ -395,9 +396,39 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8eb4263ac1004c54808aaeaee18b8f95, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerDashPermissionRuntime
   combatEffects: {fileID: 3196812354320785694}
+--- !u!114 &6863152883008667092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d39561d7b86ab37419456c40b529de6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardInventoryRuntime
+  profile: {fileID: 11400000, guid: d0c088546181bed4f8a68be3860e5661, type: 2}
+--- !u!114 &739535287382128567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21618e58bb8898d469f0e233f2520a33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerRecoveryController
+  tuning: {fileID: 11400000, guid: 82cf140ca854fd849a2505de80db14e0, type: 2}
+  energy: {fileID: 11400000, guid: ff14e39d5ea322c48bcf4e3ddb326fec, type: 2}
+  wallet: {fileID: 7988086486144116433}
+  health: {fileID: 4741787736900105630}
+  inventory: {fileID: 6863152883008667092}
 --- !u!1 &2405205695851386503
 GameObject:
   m_ObjectHideFlags: 0

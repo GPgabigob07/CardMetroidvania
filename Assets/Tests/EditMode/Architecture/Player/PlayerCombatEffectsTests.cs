@@ -58,7 +58,7 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(4f, effects.LastSupplementalReport.TotalAppliedAmount);
             Assert.IsFalse(effects.LastSupplementalReport.Allows(DamageProcPolicy.AdvanceChain));
             Assert.AreEqual(4f, health.CurrentHealth);
-            Assert.AreEqual(1f, wallet.GetCurrent(energy));
+            Assert.AreEqual(0f, wallet.GetCurrent(energy), "A generic damage target is not an enemy hit reward.");
         }
 
         [Test]
@@ -165,7 +165,8 @@ namespace TicGame.Architecture.Tests
 
             effects.BeginAttack("hit");
             var target = CreateObject("Target");
-            var health = target.AddComponent<EnemyHealth>();
+            target.AddComponent<EnemyActor>();
+            var health = target.GetComponent<EnemyHealth>();
             health.Initialize(maximumHealth: 10f);
 
             DamageResolver.Resolve(new DamageRequest(
@@ -185,7 +186,7 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(CardFeedbackKind.Triggered, worldFeedback[1].Kind);
             Assert.AreEqual(CardFeedbackAnchor.HitPoint, worldFeedback[1].Anchor);
             Assert.IsTrue(worldFeedback[1].HasExplicitWorldPosition);
-            Assert.AreEqual(2f, wallet.GetCurrent(energy));
+            Assert.AreEqual(6f, wallet.GetCurrent(energy));
         }
 
         [Test]

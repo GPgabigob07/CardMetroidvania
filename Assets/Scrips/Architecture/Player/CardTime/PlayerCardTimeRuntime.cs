@@ -223,6 +223,13 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            if (transaction is PreparedCardCommit prepared
+                && (prepared.SessionId != activeSession.Id || prepared.Category != activeSession.Category))
+            {
+                prepared.SetFailure(CardCommitFailure.InvalidSelection);
+                return false;
+            }
+
             if (transaction == null || !transaction.TryApply()) {
                 return false;
             }

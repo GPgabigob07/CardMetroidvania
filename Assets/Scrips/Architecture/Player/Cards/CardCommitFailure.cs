@@ -12,6 +12,11 @@ namespace TicGame.Architecture
         UnsupportedEffect = 70,
         InsufficientSnapshotResources = 80,
         InsufficientLiveResources = 90,
-        AlreadyApplied = 100
+        AlreadyApplied = 100,
+        FullHealth = 110,
+        InsufficientHealth = 120,
+        InsufficientEnergyCapacity = 130,
+        DepletedStock = 140,
+        StaleRecoveryQuote = 150
     }
 }

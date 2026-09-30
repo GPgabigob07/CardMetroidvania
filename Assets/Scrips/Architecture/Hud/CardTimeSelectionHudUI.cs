@@ -232,7 +232,11 @@ namespace TicGame.Architecture
                 var card = snapshot.Candidates[index];
                 var commandLabel = ResolveCommandLabel(scheme, snapshot.Category, index);
                 BindSlot(index, card, commandLabel);
-                SetLabel(index, card != null ? card.DisplayName : string.Empty);
+                var recovery = wallet != null ? wallet.GetComponent<PlayerRecoveryController>() : null;
+                var text = recovery != null && PlayerRecoveryController.IsRecoveryCard(card)
+                    ? recovery.GetPresentation(card) : card != null ? card.DisplayName : string.Empty;
+                SetLabel(index, text);
+                if (index < slotViews.Count && slotViews[index] != null) slotViews[index].SetCardText(text);
                 SetFrameColor(
                     index,
                     index == snapshot.SelectedIndex

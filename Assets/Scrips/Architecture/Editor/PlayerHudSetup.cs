@@ -106,6 +106,7 @@ namespace TicGame.Architecture.EditorTools
                 position: new Vector2(32f, -32f),
                 size: new Vector2(250f, 60f));
 
+            topLeft.localScale = Vector3.one * 2f;
             var chevrons = CreateHealthChevrons(topLeft, healthChevron);
             var energyElements = CreateEnergyDisplay(
                 topLeft,
@@ -128,6 +129,7 @@ namespace TicGame.Architecture.EditorTools
                 pivot: new Vector2(1f, 0f),
                 position: new Vector2(-32f, 32f),
                 size: new Vector2(68f, 72f));
+            cardTimeRoot.localScale = Vector3.one * 2f;
             var cardGraphics = CreateCardTimeCards(cardTimeRoot, cardFrame);
             var cardTimeInput = CreateCardTimeInputIndicator(cardTimeRoot);
             var cardTimeHud = cardTimeRoot.gameObject.AddComponent<CardTimeHudUI>();

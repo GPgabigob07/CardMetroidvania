@@ -53,7 +53,12 @@ namespace TicGame.Architecture
                 return false;
             }
 
-            return wallet.CanSpend(BuildCosts(card));
+            if (PlayerRecoveryController.IsRecoveryCard(card))
+            {
+                var recovery = GetComponent<PlayerRecoveryController>();
+                return recovery != null && recovery.TryQuote(card, null, out _);
+            }
+            return card.ConsumptionPolicy == CardConsumptionPolicy.Reusable && wallet.CanSpend(BuildCosts(card));
         }
 
         public bool Commit(
@@ -66,6 +71,11 @@ namespace TicGame.Architecture
             }
 
             var card = GetEquippedCard(category);
+            if (PlayerRecoveryController.IsRecoveryCard(card))
+            {
+                var recovery = GetComponent<PlayerRecoveryController>();
+                return recovery != null && recovery.TryQuote(card, null, out var quote) && recovery.TryApply(card, quote);
+            }
             var costs = BuildCosts(card);
             if (!wallet.TrySpend(costs)) {
                 return false;
@@ -134,6 +144,16 @@ namespace TicGame.Architecture
                     card);
             }
 
+            if (PlayerRecoveryController.IsRecoveryCard(card))
+            {
+                var recovery = GetComponent<PlayerRecoveryController>();
+                if (recovery == null) return CardReadinessResult.Failed(CardCommitFailure.MissingDependency, card);
+                if (!recovery.TryQuote(card, snapshot, out var quote)) return CardReadinessResult.Failed(recovery.Failure, card);
+                var recoveryCommit = new PreparedCardCommit(this, card, selection.SessionId, Array.Empty<ResourceAmount>(), snapshot, quote);
+                return CardReadinessResult.Success(card, recoveryCommit.Costs, recoveryCommit);
+            }
+            if (card.ConsumptionPolicy != CardConsumptionPolicy.Reusable)
+                return CardReadinessResult.Failed(CardCommitFailure.UnsupportedEffect, card);
             var costs = snapshot.BuildAdjustedCosts(BuildCosts(card));
             if (!snapshot.CanSpend(BuildCosts(card))) {
                 return CardReadinessResult.Failed(
@@ -249,6 +269,14 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            if (commit.RecoveryQuote.HasValue)
+            {
+                var recovery = GetComponent<PlayerRecoveryController>();
+                var success = recovery != null && recovery.TryApply(commit.Card, commit.RecoveryQuote.Value);
+                if (!success) commit.SetFailure(recovery != null ? recovery.Failure : CardCommitFailure.MissingDependency);
+                PublishCommitFeedback(commit.Card, success ? CardFeedbackKind.Activated : CardFeedbackKind.Failed);
+                return success;
+            }
             if (!wallet.TrySpend(commit.Costs)) {
                 commit.SetFailure(CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, CardFeedbackKind.Failed);
@@ -353,6 +381,9 @@ namespace TicGame.Architecture
         ) {
             foreach (var operation in effect.CommitOperations) {
                 switch (operation.Kind) {
+                    case CardOperationKind.SacrificeHealthForEnergy:
+                    case CardOperationKind.ConvertEnergyToHealth:
+                    case CardOperationKind.Heal: break;
                     case CardOperationKind.GainResource:
                     case CardOperationKind.AddStatusCharges:
                     case CardOperationKind.AddStatusCapacity:
@@ -405,7 +436,10 @@ namespace TicGame.Architecture
             CardEffectDefinitionSO effect
         ) {
             foreach (var operation in effect.CommitOperations) {
-                if (operation.Kind is CardOperationKind.GainResource
+                if (operation.Kind is CardOperationKind.SacrificeHealthForEnergy
+                    or CardOperationKind.ConvertEnergyToHealth
+                    or CardOperationKind.Heal
+                    or CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
                     or CardOperationKind.InvokeAbility
                     or CardOperationKind.ArmGroundedJumpBoost

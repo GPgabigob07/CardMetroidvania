@@ -78,6 +78,9 @@ namespace TicGame.Architecture
             return kind switch
             {
                 CardOperationKind.GainResource => resource != null,
+                CardOperationKind.SacrificeHealthForEnergy => true,
+                CardOperationKind.ConvertEnergyToHealth => true,
+                CardOperationKind.Heal => true,
                 CardOperationKind.AddStatusCharges => status != null,
                 CardOperationKind.AddStatusCapacity => status != null,
                 CardOperationKind.AddStatusStacks => status != null,

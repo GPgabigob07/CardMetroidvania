@@ -60,6 +60,15 @@ namespace TicGame.Architecture
             }
         }
 
+        public void SetCardText(string text)
+        {
+            if (cardLabel == null) return;
+            cardLabel.text = text;
+            cardLabel.resizeTextForBestFit = true;
+            cardLabel.resizeTextMinSize = 10;
+            cardLabel.resizeTextMaxSize = 13;
+        }
+
         public void ConfigureCommandStyle(
             Graphic background,
             Color backgroundColor,

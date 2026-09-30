@@ -33,6 +33,12 @@ MonoBehaviour:
     count: 1
   - card: {fileID: 11400000, guid: aa394aa5fde14cd4f9a7eaed79ca156c, type: 2}
     count: 1
+  - card: {fileID: 11400000, guid: ac02bd8bb39379c4b92e905ad844119b, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: 94031f9c1bee038458f829e22ef894de, type: 2}
+    count: 1
+  - card: {fileID: 11400000, guid: 6abf5342f128cef449f08d54560f4582, type: 2}
+    count: 2
   loadouts:
   - category: 10
     capacity: 8
@@ -40,6 +46,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 210e4842044c66143b257597c5838f9c, type: 2}
     - {fileID: 11400000, guid: d44c1387eb89b174d8378b6e5139e1ac, type: 2}
     - {fileID: 11400000, guid: f4039b383545cba44b224127552b952b, type: 2}
+    - {fileID: 11400000, guid: ac02bd8bb39379c4b92e905ad844119b, type: 2}
+    - {fileID: 11400000, guid: 94031f9c1bee038458f829e22ef894de, type: 2}
+    - {fileID: 11400000, guid: 6abf5342f128cef449f08d54560f4582, type: 2}
   - category: 20
     capacity: 6
     equippedCards:
