@@ -16,6 +16,7 @@ namespace TicGame.Architecture
         [SerializeField] private GargoyleTuningSO tuning;
         [SerializeField] private GroundedEnemyPatrolMotor2D groundedMotor;
         [SerializeField] private EnemyMeleeAttack2D melee;
+        [SerializeField] private EnemyProjectilePatternLauncher volley;
         [SerializeField] private GargoyleDamagePolicy damagePolicy;
         [SerializeField, Tooltip("Optional player health root supplied by gameplay composition.")]
         private GameObject target;
@@ -57,12 +58,15 @@ namespace TicGame.Architecture
         public bool CanEmit => IsInitialized && isActiveAndEnabled && actor.IsOperational && pendingInterrupt == 0
             && CurrentState == GargoyleState.Attack && runner.Current.IsRunning && Time.timeScale > 0 && TargetAvailable();
         public int FacingDirection => motor?.FacingDirection ?? 1;
+        public bool CanSimulateProjectiles => IsInitialized && isActiveAndEnabled && actor.IsOperational
+            && pendingInterrupt == 0 && Time.timeScale > 0 && TargetAvailable();
 
         private void Awake()
         {
             actor ??= GetComponent<EnemyActor>(); poise ??= GetComponent<EnemyPoise>();
             groundedMotor ??= GetComponent<GroundedEnemyPatrolMotor2D>(); melee ??= GetComponent<EnemyMeleeAttack2D>();
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>();
+            volley ??= GetComponent<EnemyProjectilePatternLauncher>();
         }
         private void Start()
         {
@@ -86,6 +90,7 @@ namespace TicGame.Architecture
             if (!IsInitialized) poise.Initialize(live.Values.MaximumPoise, live.Values.PoiseRegeneration);
             melee ??= GetComponent<EnemyMeleeAttack2D>(); melee?.Initialize(actor, this);
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>(); damagePolicy?.Initialize(actor, poise, tuning);
+            volley ??= GetComponent<EnemyProjectilePatternLauncher>(); volley?.Initialize(actor, tuning, this);
             subscribedActor = actor; subscribedPoise = poise;
             actor.Defeated += OnDefeated; poise.Depleted += RequestStun;
             if (!statesRegistered)
@@ -242,6 +247,8 @@ namespace TicGame.Architecture
             }
             else motor.Stop();
             if (execution.Kind == EnemyAttackPayloadKind.Melee) melee?.Sample(execution);
+            else if (execution.Kind == EnemyAttackPayloadKind.Volley && runner.TryConsumeRelease(execution.ExecutionToken, execution.StepId))
+                volley?.Release(execution, motor.Position + new Vector2(payload.Offset.x * FacingDirection, payload.Offset.y));
             if (CanEmit) runner.ConfirmPhysicsSample(execution.ExecutionToken, execution.StepId);
         }
 

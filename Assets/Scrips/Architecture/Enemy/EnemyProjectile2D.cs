@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -32,10 +33,18 @@ namespace TicGame.Architecture
         public DamageProvenance Provenance { get; private set; }
         public DamageProcPolicy ProcPolicy { get; private set; }
         public bool IsLaunched { get; private set; }
+        public EnemyProjectilePatternLauncher Owner { get; private set; }
 
         private string instanceId;
         private DamageFormulaValues healthFormula;
         private float lifetimeRemaining;
+        private DamageProfileSO activeProfile;
+        private EnemyCastHitBudget hitBudget;
+        private LayerMask environmentLayers;
+        private bool authoredLaunch;
+        private bool resolvingHit;
+        private bool warnedDamage;
+        private readonly List<RaycastHit2D> terrainHits = new();
 
         private void Awake()
         {
@@ -49,6 +58,7 @@ namespace TicGame.Architecture
 
         private void OnDisable()
         {
+            IsLaunched = false;
             if (body != null)
             {
                 body.linearVelocity = Vector2.zero;
@@ -57,7 +67,7 @@ namespace TicGame.Architecture
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other == null || !IsTargetLayer(other.gameObject.layer))
+            if (other == null || (!authoredLaunch && !IsTargetLayer(other.gameObject.layer)))
             {
                 return;
             }
@@ -67,6 +77,21 @@ namespace TicGame.Architecture
 
         public void Launch(Vector2 direction, GameObject sourceObject, float speed)
         {
+            BeginLaunch(direction, sourceObject, speed, lifetimeSeconds, damageProfile, false);
+            Owner = null; hitBudget = null;
+        }
+
+        public void Launch(Vector2 direction, GameObject sourceObject, float speed, float lifetime,
+            DamageProfileSO profile, LayerMask environment, EnemyCastHitBudget budget, EnemyProjectilePatternLauncher owner)
+        {
+            if (!float.IsFinite(speed) || speed <= 0 || !float.IsFinite(lifetime) || lifetime <= 0 || profile == null)
+                throw new ArgumentException("Authored projectile motion and damage-profile bindings must be valid.");
+            Owner = owner; hitBudget = budget; environmentLayers = environment;
+            BeginLaunch(direction, sourceObject, speed, lifetime, profile, true);
+        }
+
+        private void BeginLaunch(Vector2 direction, GameObject sourceObject, float speed, float lifetime, DamageProfileSO profile, bool authored)
+        {
             ResolveDependencies();
             Direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector2.right;
             SourceObject = sourceObject;
@@ -75,8 +100,9 @@ namespace TicGame.Architecture
             ProcPolicy = DamageProcPolicy.None;
             instanceId = Guid.NewGuid().ToString(format: "N");
             Provenance = DamageProvenance.Primary(instanceId);
-            healthFormula = CreateHealthFormula(damageProfile);
-            lifetimeRemaining = Mathf.Max(0f, lifetimeSeconds);
+            authoredLaunch = authored; activeProfile = profile; warnedDamage = resolvingHit = false;
+            healthFormula = CreateHealthFormula(profile);
+            lifetimeRemaining = Mathf.Max(0f, lifetime);
             IsLaunched = true;
             gameObject.SetActive(true);
         }
@@ -96,6 +122,7 @@ namespace TicGame.Architecture
                 rootInstanceId: Provenance.RootInstanceId,
                 effectId: DeflectEffectId);
             ProcPolicy = DamageProcPolicy.None;
+            Owner = null; hitBudget = null;
         }
 
         public void FixedTick(float fixedDeltaTime)
@@ -104,6 +131,27 @@ namespace TicGame.Architecture
             if (!IsLaunched)
             {
                 return;
+            }
+
+            if (Time.timeScale <= 0 || (Owner != null && !Owner.CanSimulateProjectiles) || fixedDeltaTime <= 0)
+            {
+                if (body != null) body.linearVelocity = Vector2.zero;
+                return;
+            }
+            if (authoredLaunch && body != null)
+            {
+                var filter = new ContactFilter2D { useTriggers = false };
+                filter.SetLayerMask(environmentLayers);
+                terrainHits.Clear();
+                // Rigidbody casts ignore attached trigger shapes; sweep the projectile's shape explicitly.
+                var circle = GetComponent<CircleCollider2D>();
+                var hits = circle != null
+                    ? Physics2D.CircleCast(circle.transform.TransformPoint(circle.offset),
+                        circle.radius * Mathf.Max(Mathf.Abs(circle.transform.lossyScale.x), Mathf.Abs(circle.transform.lossyScale.y)),
+                        Direction, filter, terrainHits, Speed * fixedDeltaTime)
+                    : body.Cast(Direction, filter, terrainHits, Speed * fixedDeltaTime);
+                if (hits > 0)
+                { DisableProjectile(); return; }
             }
 
             if (body != null)
@@ -120,16 +168,33 @@ namespace TicGame.Architecture
 
         public bool TryResolveHit(GameObject target)
         {
-            if (!IsLaunched || target == null || target == SourceObject)
+            if (!IsLaunched || resolvingHit || Time.timeScale <= 0 || target == null || target == SourceObject
+                || (Owner != null && !Owner.CanSimulateProjectiles))
             {
                 return false;
             }
+
+            if (authoredLaunch && Provenance.OriginKind != DamageOriginKind.Converted)
+            {
+                var health = target.GetComponentInParent<SimpleHealth>();
+                if (health == null || !EnemyPlayerTargeting.IsAvailable(health.gameObject)) return false;
+                target = health.gameObject;
+            }
+            if (hitBudget != null && !hitBudget.TryReserve(target)) { DisableProjectile(); return false; }
+            if (authoredLaunch)
+            {
+                if (activeProfile != null && float.IsFinite(activeProfile.BaseDamage) && activeProfile.BaseDamage >= 0)
+                { healthFormula = CreateHealthFormula(activeProfile); warnedDamage = false; }
+                else if (!warnedDamage)
+                { warnedDamage = true; Debug.LogWarning("Invalid live enemy projectile damage profile; retaining last valid damage.", this); }
+            }
+            resolvingHit = true;
 
             var report = DamageResolver.Resolve(new DamageRequest(
                 instance: new DamageInstance(
                     instanceId: instanceId,
                     sourceObject: SourceObject,
-                    profile: damageProfile,
+                    profile: activeProfile,
                     formula: healthFormula,
                     provenance: Provenance,
                     procPolicy: ProcPolicy,
@@ -137,7 +202,10 @@ namespace TicGame.Architecture
                 candidateTargets: new[] { target },
                 hitPoint: transform.position,
                 direction: Direction));
-            if (!report.TargetResults.Any(targetResult => targetResult.Result.Accepted))
+            resolvingHit = false;
+            var accepted = report.TargetResults.Any(targetResult => targetResult.Result.Accepted);
+            hitBudget?.Complete(target, accepted);
+            if (!accepted)
             {
                 return false;
             }
@@ -148,7 +216,17 @@ namespace TicGame.Architecture
 
         public bool TryResolveCollision(GameObject collisionObject)
         {
+            if (collisionObject != null && authoredLaunch && (environmentLayers.value & (1 << collisionObject.layer)) != 0)
+            {
+                if (Time.timeScale > 0 && (Owner == null || Owner.CanSimulateProjectiles)) DisableProjectile();
+                return false;
+            }
             return TryResolveHit(ResolveDamageTarget(collisionObject));
+        }
+
+        public void CancelOwnedLaunch(EnemyProjectilePatternLauncher owner)
+        {
+            if (Owner == owner) DisableProjectile();
         }
 
         private static DamageFormulaValues CreateHealthFormula(DamageProfileSO profile)

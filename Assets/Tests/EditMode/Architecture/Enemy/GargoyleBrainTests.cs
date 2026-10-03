@@ -192,6 +192,29 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(9, poise.CurrentPoise);
         }
 
+        [Test]
+        public void VolleyIsReleasedOnce_NormalCompletionKeepsShots_AndTargetLossCleansThem()
+        {
+            JsonUtility.FromJsonOverwrite("{\"families\":[1,0]}", tuning);
+            var volley = tuning.GetAttackDefinition(GargoyleAttackFamily.Volley);
+            JsonUtility.FromJsonOverwrite("{\"payload\":{\"kind\":1}}", volley.Steps[0]);
+            volley.SetPatterns(new[] { new EnemyProjectilePattern(1, .45f, new[] { 0f }),
+                new EnemyProjectilePattern(3, .55f, new[] { -12f, 0, 12f }),
+                new EnemyProjectilePattern(5, .65f, new[] { -30f, -15f, 0, 15f, 30f }) });
+            var template = Track(new GameObject("ProjectileTemplate")); template.AddComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+            template.AddComponent<CircleCollider2D>().isTrigger = true;
+            Set(volley, "projectilePrefab", template.AddComponent<EnemyProjectile2D>()); template.SetActive(false);
+            var launcher = actor.gameObject.AddComponent<EnemyProjectilePatternLauncher>(); launcher.Initialize(actor, tuning, brain); Set(brain, "volley", launcher);
+            var shots = new List<EnemyProjectile2D>(); launcher.ProjectileLaunched += shot => { shots.Add(shot); Track(shot.gameObject); };
+            brain.ResetEncounter(); StartBasic(); CompleteAttack(); brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0);
+            Assert.AreEqual(EnemyAttackPayloadKind.Volley, brain.CurrentAttack.Kind);
+            brain.Tick(10); brain.TickPhysics(.02f); var count = shots.Count; Assert.Greater(count, 0);
+            brain.TickPhysics(.02f); Assert.AreEqual(count, shots.Count);
+            brain.Tick(0); Assert.AreEqual(GargoyleState.FamilyRecovery, brain.CurrentState);
+            Assert.That(shots, Has.All.Matches<EnemyProjectile2D>(shot => shot.IsLaunched));
+            brain.SetTarget(null); Assert.That(shots, Has.All.Matches<EnemyProjectile2D>(shot => !shot.IsLaunched));
+        }
+
         private sealed class FakeMotor : IEnemyPatrolMotor2D
         {
             public Vector2 Position => Vector2.zero;
