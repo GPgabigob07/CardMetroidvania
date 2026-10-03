@@ -19,7 +19,11 @@ namespace TicGame.Architecture
 
             foreach (var target in targets)
             {
-                var damageable = FindFirst<IDamageable>(owner: target);
+                // Enemies with explicit child regions cannot expose root EnemyHealth as a bypass.
+                var actor = target.GetComponent<EnemyActor>();
+                var requiresRegion = actor != null && actor.GetComponentsInChildren<MonoBehaviour>(true)
+                    .OfType<IEnemyDamageRegion>().Any(region => region.Owner == actor);
+                var damageable = requiresRegion ? null : FindFirst<IDamageable>(owner: target);
                 if (damageable == null)
                 {
                     if (!request.AllowPartialResolution)
@@ -55,7 +59,9 @@ namespace TicGame.Architecture
                     direction: request.Direction,
                     tags: instance.Tags,
                     poiseDamage: poiseDamage,
-                    isCardEnhancedMelee: instance.IsCardEnhancedMelee);
+                    isCardEnhancedMelee: instance.IsCardEnhancedMelee,
+                    provenance: instance.Provenance,
+                    attackExecutionId: instance.AttackExecutionId);
 
                 var result = damageable.ApplyDamage(context: context);
                 var targetResult = new DamageTargetResult(

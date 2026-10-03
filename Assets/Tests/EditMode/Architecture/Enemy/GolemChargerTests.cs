@@ -33,6 +33,34 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(10.5f, rig.Health.CurrentHealth);
         }
 
+        [Test]
+        public void DamagePolicy_PreservesPrimaryExecutionEvidence_WhenAdjustingContext()
+        {
+            var rig = CreateGolem();
+            DamageContext? observed = null;
+            rig.Health.Damaged += damage => observed = damage.Context;
+            rig.Policy.ApplyDamage(new DamageContext(null, rig.Root, null, 2, Vector2.zero, Vector2.right,
+                provenance: DamageProvenance.Primary("primary"), attackExecutionId: "slash-1"));
+            Assert.IsTrue(observed.HasValue);
+            Assert.AreEqual(DamageOriginKind.Primary, observed.Value.Provenance.Value.OriginKind);
+            Assert.AreEqual("slash-1", observed.Value.AttackExecutionId);
+        }
+
+        [Test]
+        public void RegionSelection_PreservesGolemHeadPriorityAndRootRecipientPreference()
+        {
+            var rig = CreateGolem();
+            var rootCollider = rig.Root.AddComponent<BoxCollider2D>();
+            var rootSelection = EnemyDamageRegionSelection.ResolveTargets(new[] { rootCollider });
+            Assert.AreSame(rig.Policy, rootSelection[0].Recipient);
+            var head = CreateObject("Golem Head"); head.transform.SetParent(rig.Root.transform);
+            head.AddComponent<EnemyHurtboxRegion>().Configure(rig.Policy, EnemyHurtboxRegionType.HeadWeakPoint);
+            var headCollider = head.AddComponent<BoxCollider2D>();
+            var selected = EnemyDamageRegionSelection.ResolveTargets(new[] { rootCollider, headCollider });
+            Assert.AreEqual(1, selected.Count);
+            Assert.AreSame(head, selected[0].Recipient.gameObject);
+        }
+
         [TestCase(true, false)]
         [TestCase(false, true)]
         public void DamagePolicy_WindupImpactOrCardInterruptsAndAppliesDamage(bool includeImpact, bool includeCard)

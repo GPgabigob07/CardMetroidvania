@@ -82,51 +82,9 @@ namespace TicGame.Architecture
                 angle: 0f,
                 layerMask: targetLayers);
 
-            var candidates = new List<HitCandidate>();
-            var candidateIndexByOwner = new Dictionary<MonoBehaviour, int>();
-            foreach (var collider in colliders)
-            {
-                var damageable = collider
-                    .GetComponentsInParent<MonoBehaviour>(includeInactive: false)
-                    .FirstOrDefault(component => component is IDamageable);
-                if (damageable == null
-                    || damageable.transform.IsChildOf(transform))
-                {
-                    continue;
-                }
-
-                var actor = collider.GetComponentInParent<EnemyActor>();
-                var region = collider.GetComponentInParent<EnemyHurtboxRegion>();
-                if (actor != null && region == null)
-                {
-                    // The Golem's root EnemyHealth must not bypass its armor policy.
-                    damageable = actor.GetComponent<GolemChargerDamagePolicy>()
-                        ?? damageable;
-                }
-
-                var owner = actor != null ? (MonoBehaviour)actor : damageable;
-                if (hitTargets.Contains(owner))
-                {
-                    continue;
-                }
-
-                var priority = region != null
-                    ? region.Region == EnemyHurtboxRegionType.HeadWeakPoint ? 2 : 1
-                    : 0;
-                var candidate = new HitCandidate(owner, damageable, collider, priority);
-                if (candidateIndexByOwner.TryGetValue(owner, out var index))
-                {
-                    if (priority > candidates[index].Priority)
-                    {
-                        candidates[index] = candidate;
-                    }
-
-                    continue;
-                }
-
-                candidateIndexByOwner.Add(owner, candidates.Count);
-                candidates.Add(candidate);
-            }
+            var candidates = EnemyDamageRegionSelection.ResolveTargets(colliders)
+                .Where(candidate => !candidate.Recipient.transform.IsChildOf(transform) && !hitTargets.Contains(candidate.Owner))
+                .ToList();
 
             var newTargets = new List<MonoBehaviour>(candidates.Count);
             var firstHitPoint = center;
@@ -138,7 +96,7 @@ namespace TicGame.Architecture
                 }
 
                 hitTargets.Add(candidate.Owner);
-                newTargets.Add(candidate.Damageable);
+                newTargets.Add(candidate.Recipient);
             }
 
             if (newTargets.Count == 0)
@@ -225,26 +183,6 @@ namespace TicGame.Architecture
             center = (Vector2)transform.position
                 + new Vector2((front + rear) * 0.5f * facing, localOffset.y);
             querySize = new Vector2(width, size.y);
-        }
-
-        private readonly struct HitCandidate
-        {
-            public HitCandidate(
-                MonoBehaviour owner,
-                MonoBehaviour damageable,
-                Collider2D collider,
-                int priority)
-            {
-                Owner = owner;
-                Damageable = damageable;
-                Collider = collider;
-                Priority = priority;
-            }
-
-            public MonoBehaviour Owner { get; }
-            public MonoBehaviour Damageable { get; }
-            public Collider2D Collider { get; }
-            public int Priority { get; }
         }
 
         private static bool IsAttack(PlayerActionState state)

@@ -78,7 +78,7 @@ namespace TicGame.Architecture
             HealthChanged?.Invoke(healthChange);
             Damaged?.Invoke(damageEvent);
 
-            if (IsDefeated)
+            if (result.Killed)
             {
                 Defeated?.Invoke(damageEvent);
             }
@@ -108,6 +108,17 @@ namespace TicGame.Architecture
         public void RestoreToFull()
         {
             Restore(amount: MaximumHealth);
+        }
+
+        public void UpdateMaximumHealth(float maximum)
+        {
+            if (!float.IsFinite(maximum) || maximum < 1) throw new ArgumentOutOfRangeException(nameof(maximum));
+            if (!IsInitialized) throw new InvalidOperationException("Initialize health before updating its live ceiling.");
+            if (MaximumHealth == maximum) return;
+            var previous = CurrentHealth;
+            MaximumHealth = maximum;
+            CurrentHealth = Mathf.Min(CurrentHealth, maximum);
+            HealthChanged?.Invoke(new EnemyHealthChanged(previous, CurrentHealth, MaximumHealth));
         }
 
         private static float ResolveDamageAmount(in DamageContext context)

@@ -42,6 +42,8 @@ namespace TicGame.Architecture
         [SerializeField] private GameplayTagSet tags;
         [SerializeField] private float poiseDamage;
         [SerializeField] private bool isCardEnhancedMelee;
+        private DamageProvenance? provenance;
+        [SerializeField] private string attackExecutionId;
 
         public DamageContext(
             GameObject source,
@@ -52,7 +54,9 @@ namespace TicGame.Architecture
             Vector2 direction,
             GameplayTagSet tags = null,
             float poiseDamage = 0f,
-            bool isCardEnhancedMelee = false)
+            bool isCardEnhancedMelee = false,
+            DamageProvenance? provenance = null,
+            string attackExecutionId = null)
         {
             this.source = source;
             this.target = target;
@@ -63,6 +67,8 @@ namespace TicGame.Architecture
             this.tags = tags;
             this.poiseDamage = Mathf.Max(0f, poiseDamage);
             this.isCardEnhancedMelee = isCardEnhancedMelee;
+            this.provenance = provenance;
+            this.attackExecutionId = attackExecutionId;
         }
 
         public GameObject Source => source;
@@ -74,6 +80,8 @@ namespace TicGame.Architecture
         public GameplayTagSet Tags => tags;
         public float PoiseDamage => poiseDamage;
         public bool IsCardEnhancedMelee => isCardEnhancedMelee;
+        public DamageProvenance? Provenance => provenance;
+        public string AttackExecutionId => attackExecutionId;
     }
 
     [Serializable]

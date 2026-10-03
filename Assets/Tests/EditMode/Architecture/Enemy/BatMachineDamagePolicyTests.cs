@@ -39,6 +39,26 @@ namespace TicGame.Architecture.Tests
         }
 
         [Test]
+        public void RegionSelection_PreservesBatChildPolicyRecipient()
+        {
+            var actor = root.AddComponent<EnemyActor>();
+            var definition = ScriptableObject.CreateInstance<EnemyDefinitionSO>();
+            try
+            {
+                JsonUtility.FromJsonOverwrite("{\"maxHealth\":12}", definition);
+                actor.SetDefinition(definition); actor.Initialize();
+                var child = new GameObject("Bat Hurtbox"); child.transform.SetParent(root.transform);
+                child.AddComponent<BatMachineHurtbox>().Configure(policy);
+                var collider = child.AddComponent<BoxCollider2D>();
+                var selected = EnemyDamageRegionSelection.ResolveTargets(new[] { collider, collider });
+                Assert.AreEqual(1, selected.Count);
+                Assert.AreSame(actor, selected[0].Owner);
+                Assert.AreSame(child, selected[0].Recipient.gameObject);
+            }
+            finally { Object.DestroyImmediate(definition); }
+        }
+
+        [Test]
         public void DamageResolver_BatHurtboxCandidate_RoutesHealthAndPoiseThroughPolicy()
         {
             var hurtboxObject = new GameObject("Bat Hurtbox");

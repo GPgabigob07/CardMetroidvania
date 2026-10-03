@@ -84,7 +84,9 @@ namespace TicGame.Architecture
                 direction: context.Direction,
                 tags: context.Tags,
                 isCardEnhancedMelee: context.IsCardEnhancedMelee,
-                poiseDamage: context.PoiseDamage);
+                poiseDamage: context.PoiseDamage,
+                provenance: context.Provenance,
+                attackExecutionId: context.AttackExecutionId);
             var result = health.ApplyDamage(adjustedContext);
             if (result.Accepted && result.AppliedAmount > 0f)
             {

@@ -92,6 +92,22 @@ namespace TicGame.Architecture
             Restore(MaximumPoise);
         }
 
+        public void UpdateConfiguration(float maximum, float regenerationPerSecond)
+        {
+            if (!float.IsFinite(maximum) || maximum < 0) throw new ArgumentOutOfRangeException(nameof(maximum));
+            if (!float.IsFinite(regenerationPerSecond) || regenerationPerSecond < 0)
+                throw new ArgumentOutOfRangeException(nameof(regenerationPerSecond));
+            if (!IsInitialized) throw new InvalidOperationException("Initialize poise before updating its live configuration.");
+            MaximumPoise = maximum;
+            RegenerationPerSecond = regenerationPerSecond;
+            CurrentPoise = Mathf.Min(CurrentPoise, maximum);
+            if (CurrentPoise <= 0 && !hasDepleted)
+            {
+                hasDepleted = true;
+                Depleted?.Invoke();
+            }
+        }
+
         private void EnsureInitialized()
         {
             if (!IsInitialized)

@@ -48,6 +48,7 @@ namespace TicGame.Architecture
         private int energyGainCharges;
         private int knockbackCharges;
         private int remainingPoiseHits;
+        private readonly HashSet<(string execution, EnemyActor actor)> consumedPoiseHits = new();
         private int reachIncrements;
         private int reachLimit;
         private float reachPercentPerHit;
@@ -114,6 +115,9 @@ namespace TicGame.Architecture
         public void OnDamageDealt(in DamageContext context, in DamageResult result)
         {
             if (remainingPoiseHits <= 0
+                || context.Provenance?.OriginKind != DamageOriginKind.Primary
+                || !context.IsCardEnhancedMelee
+                || string.IsNullOrWhiteSpace(context.AttackExecutionId)
                 || context.PoiseDamage <= 0f
                 || !result.Accepted
                 || result.AppliedAmount <= 0f
@@ -122,6 +126,9 @@ namespace TicGame.Architecture
             {
                 return;
             }
+
+            var actor = context.Target.GetComponentInParent<EnemyActor>();
+            if (!consumedPoiseHits.Add((context.AttackExecutionId, actor))) return;
 
             remainingPoiseHits--;
             PublishWorldFeedback(
@@ -314,6 +321,7 @@ namespace TicGame.Architecture
             CardDefinitionSO card = null)
         {
             remainingPoiseHits = Mathf.Max(0, hits);
+            consumedPoiseHits.Clear();
             basePoiseDamage = Mathf.Max(0f, basePoise);
             poiseMultiplier = Mathf.Max(0f, multiplier);
             poiseCard = card != null ? card : poiseCard;
@@ -393,6 +401,7 @@ namespace TicGame.Architecture
         public void ClearPoiseHits()
         {
             remainingPoiseHits = 0;
+            consumedPoiseHits.Clear();
             basePoiseDamage = 0f;
             poiseMultiplier = 1f;
             cardFeedback?.RemoveHudEffect(BuildFeedbackKey(PoiseFeedbackId));
@@ -401,6 +410,8 @@ namespace TicGame.Architecture
         public float GetPoiseDamage(in DamageInstance instance, GameObject target) =>
             remainingPoiseHits > 0
             && instance.Provenance.OriginKind == DamageOriginKind.Primary
+            && instance.IsCardEnhancedMelee
+            && !string.IsNullOrWhiteSpace(instance.AttackExecutionId)
             && (instance.ProcPolicy & DamageProcPolicy.ConfirmAttackHit) != 0
             && target != null
             && target.GetComponentInParent<EnemyActor>() != null
