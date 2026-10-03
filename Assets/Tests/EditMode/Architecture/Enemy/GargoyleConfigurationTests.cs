@@ -65,5 +65,19 @@ namespace TicGame.Architecture.Tests
             JsonUtility.FromJsonOverwrite("{\"steps\":[{\"id\":\"sweep\"},{\"id\":\"sweep\"}]}", definition);
             CollectionAssert.Contains(definition.GetValidationErrors(), "Attack step IDs must be unique.");
         }
+
+        [Test]
+        public void EncounterTuning_RejectsMissingRepertoireAndPresentationBindings()
+        {
+            var tuning = ScriptableObject.CreateInstance<GargoyleTuningSO>();
+            try
+            {
+                CollectionAssert.Contains(tuning.GetValidationErrors(), "Basic attack definition is required.");
+                CollectionAssert.Contains(tuning.GetValidationErrors(), "Each attack family requires a definition.");
+                CollectionAssert.Contains(tuning.GetValidationErrors(), "Nova attack definition is required.");
+                CollectionAssert.Contains(tuning.GetValidationErrors(), "Presentation definition is required.");
+            }
+            finally { Object.DestroyImmediate(tuning); }
+        }
     }
 }
