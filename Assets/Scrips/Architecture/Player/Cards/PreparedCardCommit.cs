@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TicGame.Architecture
 {
@@ -15,15 +16,17 @@ namespace TicGame.Architecture
             long sessionId,
             IReadOnlyList<ResourceAmount> costs,
             PlayerCardCommitSnapshot snapshot,
-            RecoveryCardQuote? recoveryQuote = null)
+            RecoveryCardQuote? recoveryQuote = null,
+            PreparedWardQuote wardQuote = null)
         {
             this.owner = owner;
             Card = card;
             Category = card != null ? card.Category : PlayerCardTimeState.None;
             SessionId = sessionId;
-            this.costs = costs ?? System.Array.Empty<ResourceAmount>();
+            this.costs = System.Array.AsReadOnly(costs?.ToArray() ?? System.Array.Empty<ResourceAmount>());
             this.snapshot = snapshot;
             RecoveryQuote = recoveryQuote;
+            WardQuote = wardQuote;
         }
 
         public CardDefinitionSO Card { get; }
@@ -32,6 +35,7 @@ namespace TicGame.Architecture
         public IReadOnlyList<ResourceAmount> Costs => costs;
         public PlayerCardCommitSnapshot Snapshot => snapshot;
         public RecoveryCardQuote? RecoveryQuote { get; }
+        public PreparedWardQuote WardQuote { get; }
         public bool IsApplied { get; private set; }
         public CardCommitFailure Failure { get; private set; }
 

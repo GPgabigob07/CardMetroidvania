@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TicGame.Architecture
@@ -17,6 +18,8 @@ namespace TicGame.Architecture
         [SerializeField] private PlayerGroundedJumpBoostRuntime groundedJumpBoost;
         [SerializeField] private PlayerDashPermissionRuntime dashPermission;
         [SerializeField] private PlayerSensors2D sensors;
+        [SerializeField] private PlayerWardRuntime ward;
+        private bool applyingWard;
 
         [Header("Equipped Cards")] [SerializeField]
         private CardDefinitionSO neutralCardDefinition;
@@ -77,6 +80,8 @@ namespace TicGame.Architecture
                 return recovery != null && recovery.TryQuote(card, null, out var quote) && recovery.TryApply(card, quote);
             }
             var costs = BuildCosts(card);
+            if (IsWardCard(card))
+                return TryApplyWard(card, costs, new PreparedWardQuote(card, null));
             if (!wallet.TrySpend(costs)) {
                 return false;
             }
@@ -166,7 +171,8 @@ namespace TicGame.Architecture
                 card,
                 selection.SessionId,
                 costs,
-                snapshot);
+                snapshot,
+                wardQuote: IsWardCard(card) ? new PreparedWardQuote(card, selection) : null);
             return CardReadinessResult.Success(card, costs, commit);
         }
 
@@ -228,6 +234,7 @@ namespace TicGame.Architecture
             dashPermission?.Clear();
             combatEffects?.ClearPoiseHits();
             combatEffects?.ClearGrowingReach();
+            GetComponent<PlayerWardRuntime>()?.Clear();
         }
 
         public void ConfigureCardDefinitions(
@@ -259,6 +266,14 @@ namespace TicGame.Architecture
             var context = new ExecutionContext(
                 commit.Snapshot.AttackExecutionId,
                 commit.Snapshot.IsAirborne);
+            if (commit.WardQuote != null)
+            {
+                if (!IsWardCard(commit.Card) || commit.Card.GetValidationErrors().Count != 0)
+                { commit.SetFailure(CardCommitFailure.StaleWardQuote); return false; }
+                var currentCosts = commit.Snapshot.BuildAdjustedCosts(BuildCosts(commit.Card));
+                if (!commit.WardQuote.IsCurrent(commit.Card, commit.SessionId, commit.Costs, currentCosts))
+                { commit.SetFailure(CardCommitFailure.StaleWardQuote); return false; }
+            }
             if (!CanExecuteOperations(commit.Card.Effect, context)) {
                 commit.SetFailure(CardCommitFailure.UnsupportedEffect);
                 return false;
@@ -274,6 +289,13 @@ namespace TicGame.Architecture
                 var recovery = GetComponent<PlayerRecoveryController>();
                 var success = recovery != null && recovery.TryApply(commit.Card, commit.RecoveryQuote.Value);
                 if (!success) commit.SetFailure(recovery != null ? recovery.Failure : CardCommitFailure.MissingDependency);
+                PublishCommitFeedback(commit.Card, success ? CardFeedbackKind.Activated : CardFeedbackKind.Failed);
+                return success;
+            }
+            if (commit.WardQuote != null)
+            {
+                var success = TryApplyWard(commit.Card, commit.Costs, commit.WardQuote);
+                if (!success) commit.SetFailure(wallet.CanSpend(commit.Costs) ? CardCommitFailure.UnmetCondition : CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, success ? CardFeedbackKind.Activated : CardFeedbackKind.Failed);
                 return success;
             }
@@ -384,6 +406,10 @@ namespace TicGame.Architecture
                     case CardOperationKind.SacrificeHealthForEnergy:
                     case CardOperationKind.ConvertEnergyToHealth:
                     case CardOperationKind.Heal: break;
+                    case CardOperationKind.ArmDirectionalWard:
+                        ward ??= GetComponent<PlayerWardRuntime>();
+                        if (applyingWard || ward == null || !ward.CanArmDefinition(operation.Ward)) return false;
+                        break;
                     case CardOperationKind.GainResource:
                     case CardOperationKind.AddStatusCharges:
                     case CardOperationKind.AddStatusCapacity:
@@ -439,6 +465,7 @@ namespace TicGame.Architecture
                 if (operation.Kind is CardOperationKind.SacrificeHealthForEnergy
                     or CardOperationKind.ConvertEnergyToHealth
                     or CardOperationKind.Heal
+                    or CardOperationKind.ArmDirectionalWard
                     or CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
                     or CardOperationKind.InvokeAbility
@@ -516,6 +543,34 @@ namespace TicGame.Architecture
                         break;
                 }
             }
+        }
+
+        private static bool IsWardCard(CardDefinitionSO card) => card?.Effect != null
+            && card.Effect.CommitOperations.Count == 1 && card.Effect.CommitOperations[0].Kind == CardOperationKind.ArmDirectionalWard;
+
+        private bool TryApplyWard(CardDefinitionSO card, IReadOnlyList<ResourceAmount> costs, PreparedWardQuote quote)
+        {
+            ward ??= GetComponent<PlayerWardRuntime>();
+            if (applyingWard || ward == null || !wallet.CanSpend(costs)
+                || !ward.TryReserve(quote.Definition, quote.Configuration, out var lease)) return false;
+            applyingWard = true;
+            var amounts = costs.GroupBy(cost => cost.Resource).Select(group => new ResourceAmount(group.Key, group.Sum(cost => cost.Amount))).ToArray();
+            var notifications = new List<Action>();
+            try
+            {
+                foreach (var amount in amounts) notifications.Add(wallet.ChangeRecoveryDeferred(amount.Resource, -amount.Amount));
+                var facing = GetComponent<PlayerController>()?.Context?.FacingDirection ?? 1;
+                if (!ward.CommitReserved(lease, facing))
+                {
+                    foreach (var amount in amounts) wallet.ChangeRecoveryDeferred(amount.Resource, amount.Amount);
+                    return false;
+                }
+                // Every balance and guard is final before external observers may reenter.
+                ward.PublishArmed();
+                foreach (var notification in notifications) notification?.Invoke();
+                return true;
+            }
+            finally { ward.ReleaseReservation(lease); applyingWard = false; }
         }
 
         private void ApplyChargeOperation(

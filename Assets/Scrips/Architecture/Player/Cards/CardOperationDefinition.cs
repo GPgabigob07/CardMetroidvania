@@ -27,6 +27,8 @@ namespace TicGame.Architecture
         [Min(0)]
         [Tooltip("Authored hit count for charged primary-hit operations.")]
         [SerializeField] private int chargeCount;
+        [Tooltip("Live directional beam-guard settings, owned by a Ward asset.")]
+        [SerializeField] private WardDefinitionSO ward;
 
         public CardOperationDefinition(
             CardOperationKind kind,
@@ -37,7 +39,8 @@ namespace TicGame.Architecture
             float multiplier = 1f,
             string effectId = null,
             float poiseDamage = 0f,
-            int chargeCount = 0)
+            int chargeCount = 0,
+            WardDefinitionSO ward = null)
         {
             this.kind = kind;
             this.status = status;
@@ -48,6 +51,7 @@ namespace TicGame.Architecture
             this.effectId = effectId;
             this.poiseDamage = poiseDamage;
             this.chargeCount = chargeCount;
+            this.ward = ward;
         }
 
         public CardOperationKind Kind => kind;
@@ -59,6 +63,7 @@ namespace TicGame.Architecture
         public string EffectId => effectId;
         public float PoiseDamage => poiseDamage;
         public int ChargeCount => chargeCount;
+        public WardDefinitionSO Ward => ward;
 
         public bool IsValid()
         {
@@ -81,6 +86,7 @@ namespace TicGame.Architecture
                 CardOperationKind.SacrificeHealthForEnergy => true,
                 CardOperationKind.ConvertEnergyToHealth => true,
                 CardOperationKind.Heal => true,
+                CardOperationKind.ArmDirectionalWard => ward != null && ward.TryRead(out _),
                 CardOperationKind.AddStatusCharges => status != null,
                 CardOperationKind.AddStatusCapacity => status != null,
                 CardOperationKind.AddStatusStacks => status != null,

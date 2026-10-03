@@ -43,7 +43,8 @@ namespace TicGame.Architecture
         ArmGrowingReach = 130,
         SacrificeHealthForEnergy = 140,
         ConvertEnergyToHealth = 150,
-        Heal = 160
+        Heal = 160,
+        ArmDirectionalWard = 170
     }
 
     public enum CardLifetimeKind

@@ -105,6 +105,15 @@ namespace TicGame.Architecture
                 }
             }
 
+            if (effect != null)
+            {
+                foreach (var operation in effect.CommitOperations)
+                    if (operation.Kind == CardOperationKind.ArmDirectionalWard
+                        && (category != PlayerCardTimeState.Neutral || consumptionPolicy != CardConsumptionPolicy.Reusable
+                            || effect.CommitOperations.Count != 1 || effect.ReactiveRules.Count != 0))
+                        errors.Add("Ward requires one reusable Neutral guard operation and no reactive rules.");
+            }
+
             return errors;
         }
     }
