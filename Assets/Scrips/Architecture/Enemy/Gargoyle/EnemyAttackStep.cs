@@ -20,6 +20,7 @@ namespace TicGame.Architecture
         [Header("Payload")]
         [Tooltip("Single owner of authored health damage and hitstop; no copied damage amount.")]
         [SerializeField] private DamageProfileSO damageProfile;
+        [SerializeField] private EnemyAttackPayload payload = new EnemyAttackPayload();
 
         public EnemyAttackStep(string id, float windup, float active, float recovery, DamageProfileSO profile)
         {
@@ -35,6 +36,16 @@ namespace TicGame.Architecture
         public float ActiveDuration => activeDuration;
         public float RecoveryDuration => recoveryDuration;
         public DamageProfileSO DamageProfile => damageProfile;
+        public EnemyAttackPayload Payload => payload;
+
+        internal bool TryRead(out EnemyAttackStep snapshot)
+        {
+            snapshot = null;
+            if (GetValidationErrors().Count != 0) return false;
+            snapshot = (EnemyAttackStep)MemberwiseClone();
+            snapshot.payload = payload.Copy();
+            return true;
+        }
 
         public IReadOnlyList<string> GetValidationErrors()
         {
@@ -45,6 +56,8 @@ namespace TicGame.Architecture
                 || !float.IsFinite(recoveryDuration) || recoveryDuration < 0)
                 errors.Add("Step phase durations must be finite; windup and active must be positive, recovery non-negative.");
             if (damageProfile == null) errors.Add("Attack step requires a damage profile.");
+            if (payload == null) errors.Add("Attack step requires a payload definition.");
+            else foreach (var error in payload.GetValidationErrors(windupDuration, activeDuration)) errors.Add(error);
             return errors;
         }
     }

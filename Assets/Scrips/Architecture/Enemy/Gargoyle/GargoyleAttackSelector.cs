@@ -15,11 +15,13 @@ namespace TicGame.Architecture
         private GargoyleAttackFamily? previousFamily;
         private int? previousVolleyCount;
         private bool reportedInvalidConfiguration;
+        private int appliedSeed;
 
         public GargoyleAttackSelector(GargoyleTuningSO tuning, System.Random random)
         {
             this.tuning = tuning != null ? tuning : throw new ArgumentNullException(nameof(tuning));
             this.random = random ?? throw new ArgumentNullException(nameof(random));
+            appliedSeed = tuning.RandomSeed;
             if (!tuning.TryReadSelectorConfiguration(out validFamilies, out validVolleyCounts))
                 throw new ArgumentException("Gargoyle selector requires valid authored family and volley bags.", nameof(tuning));
         }
@@ -59,6 +61,7 @@ namespace TicGame.Architecture
         public void Reset(System.Random random)
         {
             this.random = random ?? throw new ArgumentNullException(nameof(random));
+            appliedSeed = tuning.RandomSeed;
             familyBag.Clear();
             volleyBag.Clear();
             previousFamily = null;
@@ -72,6 +75,11 @@ namespace TicGame.Architecture
             {
                 validFamilies = families;
                 validVolleyCounts = counts;
+                if (appliedSeed != tuning.RandomSeed)
+                {
+                    appliedSeed = tuning.RandomSeed;
+                    random = new System.Random(appliedSeed);
+                }
                 reportedInvalidConfiguration = false;
                 return;
             }

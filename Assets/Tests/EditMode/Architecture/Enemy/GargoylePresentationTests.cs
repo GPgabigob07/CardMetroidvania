@@ -47,5 +47,25 @@ namespace TicGame.Architecture.Tests
             Assert.IsEmpty(presentation.GetValidationErrors());
             Assert.AreEqual(authored, JsonUtility.ToJson(presentation));
         }
+
+        [Test]
+        public void RegionSnapshot_UsesAssetPriorities_AndKeepsPreviousGeometryAfterLiveEdit()
+        {
+            Assert.IsTrue(presentation.TryReadPresentation(out var previous));
+            Assert.Greater(previous.CoreRegion.Priority, previous.BodyRegion.Priority);
+            Assert.Greater(previous.HeadRegion.Priority, previous.BodyRegion.Priority);
+            JsonUtility.FromJsonOverwrite("{\"coreRegion\":{\"size\":{\"x\":0.8,\"y\":0.9},\"priority\":30}}", presentation);
+            Assert.IsTrue(presentation.TryReadPresentation(out var current));
+            Assert.AreEqual(30, current.CoreRegion.Priority);
+            Assert.AreEqual(new Vector2(.8f, .9f), current.CoreRegion.Size);
+            Assert.AreNotEqual(current.CoreRegion.Size, previous.CoreRegion.Size);
+        }
+
+        [Test]
+        public void InvalidRegionGeometry_RejectsPresentationRevision()
+        {
+            JsonUtility.FromJsonOverwrite("{\"headRegion\":{\"size\":{\"x\":-1,\"y\":1}}}", presentation);
+            Assert.IsFalse(presentation.TryReadPresentation(out _));
+        }
     }
 }
