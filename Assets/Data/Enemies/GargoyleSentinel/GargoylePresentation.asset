@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de179dcf7119684084ceffa1933dc0b, type: 3}
+  m_Name: GargoylePresentation
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.GargoylePresentationSO
+  frameSize: {x: 200, y: 200}
+  ordinaryPoseEnvelope: {x: 128, y: 128}
+  pixelPivot: {x: 100, y: 36}
+  pixelsPerUnit: 48
+  minimumBodyAreaRatio: 1.5
+  bodySize: {x: 1.8, y: 2.1}
+  bodyOffset: {x: 0, y: 1.05}
+  bodyPriority: 0
+  coreRegion:
+    size: {x: 0.55, y: 0.6}
+    offset: {x: 0, y: 1.2}
+    priority: 20
+  headRegion:
+    size: {x: 0.5, y: 0.5}
+    offset: {x: 0, y: 1.85}
+    priority: 10
+  idleSprite: {fileID: 21300000, guid: 2d7a6da9f6e858a458ad62ab6cdb6e38, type: 3}
+  animationBindings: []
+  frameRate: 8
+  flashDuration: 0.12
+  telegraphLineWidth: 0.05
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  windupColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+  activeColor: {r: 1, g: 0.45, b: 0.2, a: 1}
+  reactorColor: {r: 0, g: 1, b: 1, a: 1}
+  stunColor: {r: 0.65, g: 0.65, b: 0.65, a: 1}
+  hitColor: {r: 1, g: 0, b: 0, a: 1}
+  hitVfxPrefab: {fileID: 0}
+  attackAudio: {fileID: 0}

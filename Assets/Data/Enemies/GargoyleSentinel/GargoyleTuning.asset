@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632c286017bcda94480613a6b659347b, type: 3}
+  m_Name: GargoyleTuning
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.GargoyleTuningSO
+  basicAttack: {fileID: 11400000, guid: b596c08dd9d681a47a328afcd7dba1d3, type: 2}
+  wingbreakerAttack: {fileID: 11400000, guid: 01ba334e4c1d1ae47a21403b35ea814e, type: 2}
+  volleyAttack: {fileID: 11400000, guid: e0d9eb30fcfbbad4ebdd268c0286671a, type: 2}
+  beamAttack: {fileID: 11400000, guid: 82c6defb1bbd7c544b5e71d440d1ce9f, type: 2}
+  novaAttack: {fileID: 11400000, guid: f0d136da803db614ebb9d37a3b3848aa, type: 2}
+  presentation: {fileID: 11400000, guid: bdab5228f056c054689e3df22041d4dd, type: 2}
+  feintAttack: {fileID: 11400000, guid: 3780228ead2b29b45a8869658020509e, type: 2}
+  simulation:
+    maximumPoise: 12
+    poiseRegeneration: 0
+    restoredPoiseFraction: 1
+    stunDuration: 1.25
+    beamStaggerDuration: 0.65
+    poiseResistanceDuration: 0.75
+    movementSpeed: 2
+    arrivalTolerance: 0.1
+    monitorRange: 16
+    engageRange: 12
+    meleeDistance: 1.8
+    rangedDistance: 5
+    ledgeProbeOffset: {x: 1.05, y: -0.05}
+    wallProbeOffset: {x: 1, y: 1}
+    probeRadius: 0.08
+    blockedRepositionTimeout: 1.5
+    familyRecovery: 0.25
+    passRecovery: 0.8
+    novaBagCadence: 2
+    novaCooldown: 12
+    feintProbability: 0.2
+    feintBudget: 1
+    feintCueDelay: 0.15
+    feintResponseDuration: 0.35
+    bodyDamageMultiplier: 1
+    exposedHeadMultiplier: 1.5
+  environmentLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  families: 000000000100000002000000
+  volleyCounts: 010000000300000005000000
+  randomSeed: 0

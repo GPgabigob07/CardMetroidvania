@@ -59,6 +59,10 @@ namespace TicGame.Architecture
             {
                 if (revision != cancellationRevision || !CanSimulateProjectiles || (brain != null && !brain.CanEmit)) return;
                 var projectile = Instantiate(definition.ProjectilePrefab, origin, Quaternion.identity);
+                projectile.transform.localScale = Vector3.one;
+                var shape = projectile.GetComponent<CircleCollider2D>(); if (shape != null) shape.radius = payload.ProjectileRadius;
+                var sprite = projectile.GetComponent<SpriteRenderer>();
+                if (sprite != null) { sprite.drawMode = SpriteDrawMode.Sliced; sprite.size = Vector2.one * (payload.ProjectileRadius * 2); }
                 registry.Add(projectile);
                 var shotDirection = (Vector2)(Quaternion.Euler(0, 0, angle) * direction.normalized);
                 projectile.Launch(shotDirection, actor.gameObject, payload.ProjectileSpeed, payload.ProjectileLifetime,

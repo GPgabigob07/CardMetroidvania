@@ -33,6 +33,8 @@ namespace TicGame.Architecture
         [SerializeField, Min(0)] private float frameRate = 8;
         [SerializeField, Min(0)] private float flashDuration = .12f;
         [SerializeField, Min(0)] private float telegraphLineWidth = .05f;
+        [SerializeField, Range(8, 128)] private int circleSegments = 64;
+        [SerializeField] private Color feintColor = new Color(1, .2f, 1);
         [SerializeField] private Color normalColor = Color.white;
         [SerializeField] private Color windupColor = new Color(1, .8f, .2f);
         [SerializeField] private Color activeColor = new Color(1, .45f, .2f);
@@ -57,6 +59,8 @@ namespace TicGame.Architecture
         public float FrameRate => frameRate;
         public float FlashDuration => flashDuration;
         public float TelegraphLineWidth => telegraphLineWidth;
+        public int CircleSegments => circleSegments;
+        public Color FeintColor => feintColor;
         public Color NormalColor => normalColor;
         public Color WindupColor => windupColor;
         public Color ActiveColor => activeColor;
@@ -94,7 +98,8 @@ namespace TicGame.Architecture
             if (!float.IsFinite(frameRate) || frameRate <= 0 || !float.IsFinite(flashDuration) || flashDuration < 0
                 || !float.IsFinite(telegraphLineWidth) || telegraphLineWidth <= 0)
                 errors.Add("Playback and feedback durations/width must be finite and valid.");
-            foreach (var color in new[] { normalColor, windupColor, activeColor, reactorColor, stunColor, hitColor })
+            if (circleSegments < 8 || circleSegments > 128) errors.Add("Circle feedback needs between 8 and 128 segments.");
+            foreach (var color in new[] { normalColor, windupColor, activeColor, reactorColor, stunColor, hitColor, feintColor })
                 if (!float.IsFinite(color.r) || !float.IsFinite(color.g) || !float.IsFinite(color.b) || !float.IsFinite(color.a))
                     errors.Add("Feedback colors must be finite.");
             if (animationBindings != null && animationBindings.Any(binding => binding == null || binding.Frames.Any(frame => frame == null)))

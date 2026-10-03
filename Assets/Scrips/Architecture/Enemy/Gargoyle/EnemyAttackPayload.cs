@@ -24,6 +24,7 @@ namespace TicGame.Architecture
         [Header("Projectile Motion")]
         [SerializeField, Min(0)] private float projectileSpeed = 6;
         [SerializeField, Min(0)] private float projectileLifetime = 3;
+        [SerializeField, Min(0)] private float projectileRadius = .1f;
         [Header("Beam")]
         [SerializeField, Min(0)] private float beamLength = 10;
         [SerializeField, Min(0)] private float beamThickness = .3f;
@@ -42,6 +43,7 @@ namespace TicGame.Architecture
         public float LockedAimDuration => lockedAimDuration;
         public float ProjectileSpeed => projectileSpeed;
         public float ProjectileLifetime => projectileLifetime;
+        public float ProjectileRadius => projectileRadius;
         public float BeamLength => beamLength;
         public float BeamThickness => beamThickness;
         public float BeamOpeningDuration => beamOpeningDuration;
@@ -60,7 +62,7 @@ namespace TicGame.Architecture
                 || lockedAimDuration > windup || (advanceDistance > 0 && advanceSpeed <= 0))
                 errors.Add("Advance and aim-lock values must be finite and fit within the step.");
             if (kind == EnemyAttackPayloadKind.Volley
-                && (!Positive(projectileSpeed) || !Positive(projectileLifetime)))
+                && (!Positive(projectileSpeed) || !Positive(projectileLifetime) || !Positive(projectileRadius)))
                 errors.Add("Projectile motion values must be finite and positive.");
             if (kind == EnemyAttackPayloadKind.Beam
                 && (!Positive(beamLength) || !Positive(beamThickness) || !Positive(beamOpeningDuration) || beamOpeningDuration > active))

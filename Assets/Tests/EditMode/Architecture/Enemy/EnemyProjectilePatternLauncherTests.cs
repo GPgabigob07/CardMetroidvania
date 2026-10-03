@@ -51,6 +51,13 @@ namespace TicGame.Architecture.Tests
             launcher.Release(definition, count, 1, Vector2.zero, Vector2.up); Assert.AreEqual(count, shots.Count);
         }
 
+        [Test] public void AuthoredProjectileRadiusSetsColliderAtLaunch()
+        {
+            JsonUtility.FromJsonOverwrite("{\"payload\":{\"projectileRadius\":0.3}}", step);
+            launcher.Release(definition, 1, 1, Vector2.zero, Vector2.right);
+            Assert.That(shots[0].GetComponent<CircleCollider2D>().radius, Is.EqualTo(.3f));
+        }
+
         [Test]
         public void WholeVolleySharesOneAcceptedHitBudget_AcrossChildColliders()
         {

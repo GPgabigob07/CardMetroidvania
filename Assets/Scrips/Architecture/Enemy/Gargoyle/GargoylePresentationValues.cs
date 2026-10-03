@@ -11,6 +11,7 @@ namespace TicGame.Architecture
             FrameRate = source.FrameRate; FlashDuration = source.FlashDuration; TelegraphLineWidth = source.TelegraphLineWidth;
             NormalColor = source.NormalColor; WindupColor = source.WindupColor; ActiveColor = source.ActiveColor;
             ReactorColor = source.ReactorColor; StunColor = source.StunColor; HitColor = source.HitColor;
+            CircleSegments = source.CircleSegments; FeintColor = source.FeintColor;
             IdleSprite = source.IdleSprite; HitVfxPrefab = source.HitVfxPrefab; AttackAudio = source.AttackAudio;
             var bindings = new List<GargoyleAnimationBinding>();
             foreach (var binding in source.AnimationBindings) if (binding != null) bindings.Add(binding.Copy());
@@ -29,6 +30,8 @@ namespace TicGame.Architecture
         public Color ReactorColor { get; }
         public Color StunColor { get; }
         public Color HitColor { get; }
+        public Color FeintColor { get; }
+        public int CircleSegments { get; }
         public Sprite IdleSprite { get; }
         public GameObject HitVfxPrefab { get; }
         public AudioClip AttackAudio { get; }

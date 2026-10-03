@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75217c9d9e960b45b45e3e5ac6095e3, type: 3}
+  m_Name: Attack_Wingbreaker
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyAttackDefinitionSO
+  steps:
+  - id: wing-advance
+    windupDuration: 0.45
+    activeDuration: 0.2
+    recoveryDuration: 0.2
+    damageProfile: {fileID: 11400000, guid: 2fded963d7f94fb40827f3a3765b435a, type: 2}
+    payload:
+      kind: 0
+      acceptedHitLimit: 1
+      hitboxSize: {x: 1.5, y: 1}
+      offset: {x: 1, y: 1}
+      hitboxAngle: 0
+      advanceDistance: 0.8
+      advanceSpeed: 4
+      lockedAimDuration: 0
+      projectileSpeed: 6
+      projectileLifetime: 3
+      beamLength: 10
+      beamThickness: 0.3
+      beamOpeningDuration: 0.2
+      novaRadius: 3.5
+      reactorStability: 4.8
+  - id: wing-slam
+    windupDuration: 0.3
+    activeDuration: 0.15
+    recoveryDuration: 0.4
+    damageProfile: {fileID: 11400000, guid: 2fded963d7f94fb40827f3a3765b435a, type: 2}
+    payload:
+      kind: 0
+      acceptedHitLimit: 1
+      hitboxSize: {x: 1.5, y: 1}
+      offset: {x: 1, y: 1}
+      hitboxAngle: 0
+      advanceDistance: 0
+      advanceSpeed: 4
+      lockedAimDuration: 0
+      projectileSpeed: 6
+      projectileLifetime: 3
+      beamLength: 10
+      beamThickness: 0.3
+      beamOpeningDuration: 0.2
+      novaRadius: 3.5
+      reactorStability: 4.8
+  patterns: []
+  projectilePrefab: {fileID: 0}

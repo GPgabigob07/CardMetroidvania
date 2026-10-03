@@ -224,6 +224,7 @@ namespace TicGame.Architecture.EditorTools
                 energy,
                 cost: 40f,
                 reachEffect);
+            CreateOrUpdateWardAssets();
             UpdateTestCatalog();
 
             AssetDatabase.SaveAssets();
@@ -467,6 +468,37 @@ namespace TicGame.Architecture.EditorTools
             return effect;
         }
 
+        public static CardDefinitionSO CreateOrUpdateWardAssets()
+        {
+            EnsureFolder(EffectFolder);
+            EnsureFolder(DefinitionFolder);
+            var ward = CreateOrLoad<WardDefinitionSO>(EffectFolder + "/WardDefinition.asset", "WardDefinition");
+            var effectPath = EffectFolder + "/Effect_Ward.asset";
+            var effect = AssetDatabase.LoadAssetAtPath<CardEffectDefinitionSO>(effectPath);
+            if (effect == null)
+            {
+                effect = CreateOrLoad<CardEffectDefinitionSO>(effectPath, "Effect_Ward");
+                effect.Configure(null, null, new[] { new CardOperationDefinition(CardOperationKind.ArmDirectionalWard, ward: ward) }, null,
+                    new[] { new CardLifetimeDefinition(CardLifetimeKind.Immediate) }, new CardStackingDefinition(CardStackingKind.RejectIfActive));
+                EditorUtility.SetDirty(effect);
+            }
+            var cardPath = DefinitionFolder + "/Neutral_Ward.asset";
+            var card = AssetDatabase.LoadAssetAtPath<CardDefinitionSO>(cardPath);
+            if (card == null)
+            {
+                card = CreateCard("Neutral_Ward", "ward", "Ward", "Face the beam and guard its opening to stagger the Sentinel. A late guard clips the beam.",
+                    PlayerCardTimeState.Neutral, AssetDatabase.LoadAssetAtPath<ResourceDefinitionSO>(EnergyPath), 20, effect);
+                card.ConfigureConsumption(CardConsumptionPolicy.Reusable);
+            }
+            var catalog = AssetDatabase.LoadAssetAtPath<CardCatalogSO>(TestCatalogPath);
+            if (catalog != null && !catalog.Cards.Contains(card))
+            {
+                catalog.Configure(catalog.Cards.Append(card).ToArray());
+                EditorUtility.SetDirty(catalog);
+            }
+            return card;
+        }
+
         private static void UpdateTestCatalog()
         {
             const string inventoryFolder = CardFolder + "/Inventory";
@@ -482,7 +514,7 @@ namespace TicGame.Architecture.EditorTools
                 .Where(card => card != null)
                 .OrderBy(card => card.Id)
                 .ToArray();
-            catalog.Configure(cards);
+            catalog.Configure(catalog.Cards.Concat(cards).Where(card => card != null).Distinct().OrderBy(card => card.Id).ToArray());
             EditorUtility.SetDirty(catalog);
         }
 
