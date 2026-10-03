@@ -47,6 +47,13 @@ namespace TicGame.Architecture
             return true;
         }
 
+        internal EnemyAttackStep CopyForKind(EnemyAttackPayloadKind committedKind)
+        {
+            var copy = (EnemyAttackStep)MemberwiseClone();
+            copy.payload = payload.CopyForKind(committedKind);
+            return copy;
+        }
+
         public IReadOnlyList<string> GetValidationErrors()
         {
             var errors = new List<string>();

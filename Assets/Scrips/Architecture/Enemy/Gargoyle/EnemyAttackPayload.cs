@@ -71,6 +71,12 @@ namespace TicGame.Architecture
         }
 
         internal EnemyAttackPayload Copy() => (EnemyAttackPayload)MemberwiseClone();
+        internal EnemyAttackPayload CopyForKind(EnemyAttackPayloadKind committedKind)
+        {
+            var copy = Copy();
+            copy.kind = committedKind;
+            return copy;
+        }
         private static bool Positive(float value) => float.IsFinite(value) && value > 0;
         private static bool Finite(Vector2 value) => float.IsFinite(value.x) && float.IsFinite(value.y);
     }
