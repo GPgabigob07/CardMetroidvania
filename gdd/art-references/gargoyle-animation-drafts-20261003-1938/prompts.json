@@ -1,0 +1,154 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "reference": "gdd/art-references/gargoyle-idle-draft-200x200-20261003.png",
+  "atlases": [
+    {
+      "file": "01-movement-basic",
+      "rows": [
+        [
+          "idle",
+          "five distinct subtle breathing poses: neutral, chest rise, horn/core pulse, wing hinge settle, return close to neutral"
+        ],
+        [
+          "walk",
+          "five grounded walking poses, alternating claw-foot plants with weight shifting; no translation across cell"
+        ],
+        [
+          "claw-sweep",
+          "five attack poses: front claw draws back, crouched anticipation, forward horizontal sweep, full reach, follow-through"
+        ],
+        [
+          "claw-backhand",
+          "five attack poses: opposite claw crosses chest, torso coils, wide horizontal backhand, extended arc, recoil"
+        ],
+        [
+          "claw-heavy",
+          "five attack poses: claw rises, overhead heavy anticipation, downward slam, ground-contact compressed pose, recovery"
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: pixel-art gargoyle animation draft atlas for an artist; not a presentation board.\nReference image: the attached small orange-armored mechanical stone gargoyle, preserve its identity exactly: tan skull and claws, two cyan crystal horns, cyan ribcage reactor, charcoal joints, orange segmented folded bat wings with round mechanical hinges.\nCreate a square transparent PNG sprite atlas, exactly 1000 x 1000 pixels, precisely 5 columns by 5 rows of equal 200 x 200 pixel cells. No grid lines, labels, text, shadows, ground, decorative background or other creatures. EACH ROW is a distinct FIVE-FRAME animation, chronological LEFT TO RIGHT. Camera fixed, right-facing three-quarter view, same character scale and anatomy throughout. Crisp true pixel-art, hard pixel clusters, limited palette, no antialiasing, no smooth gradients. EVERY character fully fits within its own cell with margins, even extended attacks, absolutely no overlapping neighboring cells. Each character silhouette occupies at least 128 pixels in width and 128 pixels in height but stays under 184 x 164 pixels. Common ground/foot baseline 164 pixels from the top of each cell. No scaling between frames. No projectile, laser or nova effects beyond small attached core/throat glow; effects are separate. Keep armor proportions identical to reference. Wings stay grounded; no flight. Animation poses must actually change across five frames, readable anticipation, action and follow-through.\nRows TOP TO BOTTOM:\n1. idle: five distinct subtle breathing poses: neutral, chest rise, horn/core pulse, wing hinge settle, return close to neutral.\n2. walk: five grounded walking poses, alternating claw-foot plants with weight shifting; no translation across cell.\n3. claw-sweep: five attack poses: front claw draws back, crouched anticipation, forward horizontal sweep, full reach, follow-through.\n4. claw-backhand: five attack poses: opposite claw crosses chest, torso coils, wide horizontal backhand, extended arc, recoil.\n5. claw-heavy: five attack poses: claw rises, overhead heavy anticipation, downward slam, ground-contact compressed pose, recovery."
+    },
+    {
+      "file": "02-wing-feint",
+      "rows": [
+        [
+          "wing-advance",
+          "five attack poses: wing opens slightly, shoulder loads, grounded forward wing strike, braced follow-through, wing folds"
+        ],
+        [
+          "upward-claw",
+          "five attack poses: low claw load, crouch, powerful upward claw, high reach, recoil"
+        ],
+        [
+          "feint-cue",
+          "five fake attack poses: sweep anticipation, pause, abrupt recoil, conspicuous wing tuck, delayed loaded stance; do not execute swing"
+        ],
+        [
+          "delayed-claw",
+          "five attack poses: held claw coil, deeper anticipation, sudden forward strike, extended reach, follow-through"
+        ],
+        [
+          "melee-recovery",
+          "five poses smoothly relaxing an attack stance back into the idle silhouette"
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: pixel-art gargoyle animation draft atlas for an artist; not a presentation board.\nReference image: the attached small orange-armored mechanical stone gargoyle, preserve its identity exactly: tan skull and claws, two cyan crystal horns, cyan ribcage reactor, charcoal joints, orange segmented folded bat wings with round mechanical hinges.\nCreate a square transparent PNG sprite atlas, exactly 1000 x 1000 pixels, precisely 5 columns by 5 rows of equal 200 x 200 pixel cells. No grid lines, labels, text, shadows, ground, decorative background or other creatures. EACH ROW is a distinct FIVE-FRAME animation, chronological LEFT TO RIGHT. Camera fixed, right-facing three-quarter view, same character scale and anatomy throughout. Crisp true pixel-art, hard pixel clusters, limited palette, no antialiasing, no smooth gradients. EVERY character fully fits within its own cell with margins, even extended attacks, absolutely no overlapping neighboring cells. Each character silhouette occupies at least 128 pixels in width and 128 pixels in height but stays under 184 x 164 pixels. Common ground/foot baseline 164 pixels from the top of each cell. No scaling between frames. No projectile, laser or nova effects beyond small attached core/throat glow; effects are separate. Keep armor proportions identical to reference. Wings stay grounded; no flight. Animation poses must actually change across five frames, readable anticipation, action and follow-through.\nCRITICAL SPACING: generous empty transparent margin inside EVERY cell. Keep each pose centered with at least 24 pixels margin on all four sides in a 200x200 cell. Extended limbs must fit by changing the pose angle, never by overflowing the cell. The entire body including raised claws and wings is visible. Minimum silhouette 128x128, target 144x144. Never touch any cell edge.\nRows TOP TO BOTTOM:\n1. wing-advance: five attack poses: wing opens slightly, shoulder loads, grounded forward wing strike, braced follow-through, wing folds.\n2. upward-claw: five attack poses: low claw load, crouch, powerful upward claw, high reach, recoil.\n3. feint-cue: five fake attack poses: sweep anticipation, pause, abrupt recoil, conspicuous wing tuck, delayed loaded stance; do not execute swing.\n4. delayed-claw: five attack poses: held claw coil, deeper anticipation, sudden forward strike, extended reach, follow-through.\n5. melee-recovery: five poses smoothly relaxing an attack stance back into the idle silhouette."
+    },
+    {
+      "file": "03-ranged",
+      "rows": [
+        [
+          "volley-one",
+          "five cast poses: single horn glows, head rises, chest-to-mouth charge, one firing recoil, settle; no detached projectile"
+        ],
+        [
+          "volley-three",
+          "five cast poses: both horns glow, chest rises, throat charge, medium firing recoil, settle; no detached projectile"
+        ],
+        [
+          "volley-five",
+          "five cast poses: wings brace, reactor intensifies, bright throat charge, strong firing recoil, settle; no detached projectile"
+        ],
+        [
+          "beam-charge",
+          "five poses tracking then aiming straight right: throat begins lighting, jaw opens, neck extends, horns flare, fully charged locked aim"
+        ],
+        [
+          "beam-fire",
+          "five sustained beam-emission poses: mouth open, neck extended, feet firmly braced, small distinct recoil cycles, tiny bright cyan muzzle glow only; no actual beam"
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: pixel-art gargoyle animation draft atlas for an artist; not a presentation board.\nReference image: the attached small orange-armored mechanical stone gargoyle, preserve its identity exactly: tan skull and claws, two cyan crystal horns, cyan ribcage reactor, charcoal joints, orange segmented folded bat wings with round mechanical hinges.\nCreate a square transparent PNG sprite atlas, exactly 1000 x 1000 pixels, precisely 5 columns by 5 rows of equal 200 x 200 pixel cells. No grid lines, labels, text, shadows, ground, decorative background or other creatures. EACH ROW is a distinct FIVE-FRAME animation, chronological LEFT TO RIGHT. Camera fixed, right-facing three-quarter view, same character scale and anatomy throughout. Crisp true pixel-art, hard pixel clusters, limited palette, no antialiasing, no smooth gradients. EVERY character fully fits within its own cell with margins, even extended attacks, absolutely no overlapping neighboring cells. Each character silhouette occupies at least 128 pixels in width and 128 pixels in height but stays under 184 x 164 pixels. Common ground/foot baseline 164 pixels from the top of each cell. No scaling between frames. No projectile, laser or nova effects beyond small attached core/throat glow; effects are separate. Keep armor proportions identical to reference. Wings stay grounded; no flight. Animation poses must actually change across five frames, readable anticipation, action and follow-through.\nCRITICAL SPACING: generous empty transparent margin inside EVERY cell. Keep each pose centered with at least 24 pixels margin on all four sides in a 200x200 cell. Extended limbs must fit by changing the pose angle, never by overflowing the cell. The entire body including raised claws and wings is visible. Minimum silhouette 128x128, target 144x144. Never touch any cell edge.\nRows TOP TO BOTTOM:\n1. volley-one: five cast poses: single horn glows, head rises, chest-to-mouth charge, one firing recoil, settle; no detached projectile.\n2. volley-three: five cast poses: both horns glow, chest rises, throat charge, medium firing recoil, settle; no detached projectile.\n3. volley-five: five cast poses: wings brace, reactor intensifies, bright throat charge, strong firing recoil, settle; no detached projectile.\n4. beam-charge: five poses tracking then aiming straight right: throat begins lighting, jaw opens, neck extends, horns flare, fully charged locked aim.\n5. beam-fire: five sustained beam-emission poses: mouth open, neck extended, feet firmly braced, small distinct recoil cycles, tiny bright cyan muzzle glow only; no actual beam."
+    },
+    {
+      "file": "04-reactor-counters",
+      "rows": [
+        [
+          "beam-recovery",
+          "five poses closing mouth and lowering a heated throat back to idle"
+        ],
+        [
+          "nova-charge",
+          "five poses opening rib plates to expose the blue reactor, wings spread slightly, crouched braced charge, growing attached core light, fully exposed core; no huge surrounding aura"
+        ],
+        [
+          "nova-release",
+          "five poses: reactor at peak, explosive bodily extension, chest plates recoil, body braces, energy spent; no detached blast effect"
+        ],
+        [
+          "nova-recovery",
+          "five poses dimming exposed core and closing rib plates back to idle"
+        ],
+        [
+          "beam-counter-stagger",
+          "five poses choking beam: jaw snaps, head jolts backward, throat dims, head droops exposed, unsteady hunched punishable stance; distinct from global stun"
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: pixel-art gargoyle animation draft atlas for an artist; not a presentation board.\nReference image: the attached small orange-armored mechanical stone gargoyle, preserve its identity exactly: tan skull and claws, two cyan crystal horns, cyan ribcage reactor, charcoal joints, orange segmented folded bat wings with round mechanical hinges.\nCreate a square transparent PNG sprite atlas, exactly 1000 x 1000 pixels, precisely 5 columns by 5 rows of equal 200 x 200 pixel cells. No grid lines, labels, text, shadows, ground, decorative background or other creatures. EACH ROW is a distinct FIVE-FRAME animation, chronological LEFT TO RIGHT. Camera fixed, right-facing three-quarter view, same character scale and anatomy throughout. Crisp true pixel-art, hard pixel clusters, limited palette, no antialiasing, no smooth gradients. EVERY character fully fits within its own cell with margins, even extended attacks, absolutely no overlapping neighboring cells. Each character silhouette occupies at least 128 pixels in width and 128 pixels in height but stays under 184 x 164 pixels. Common ground/foot baseline 164 pixels from the top of each cell. No scaling between frames. No projectile, laser or nova effects beyond small attached core/throat glow; effects are separate. Keep armor proportions identical to reference. Wings stay grounded; no flight. Animation poses must actually change across five frames, readable anticipation, action and follow-through.\nCRITICAL SPACING: generous empty transparent margin inside EVERY cell. Keep each pose centered with at least 24 pixels margin on all four sides in a 200x200 cell. Extended limbs must fit by changing the pose angle, never by overflowing the cell. The entire body including raised claws and wings is visible. Minimum silhouette 128x128, target 144x144. Never touch any cell edge.\nRows TOP TO BOTTOM:\n1. beam-recovery: five poses closing mouth and lowering a heated throat back to idle.\n2. nova-charge: five poses opening rib plates to expose the blue reactor, wings spread slightly, crouched braced charge, growing attached core light, fully exposed core; no huge surrounding aura.\n3. nova-release: five poses: reactor at peak, explosive bodily extension, chest plates recoil, body braces, energy spent; no detached blast effect.\n4. nova-recovery: five poses dimming exposed core and closing rib plates back to idle.\n5. beam-counter-stagger: five poses choking beam: jaw snaps, head jolts backward, throat dims, head droops exposed, unsteady hunched punishable stance; distinct from global stun."
+    },
+    {
+      "file": "05-hit-stun-death",
+      "rows": [
+        [
+          "hurt",
+          "five brief nonlethal impact-recoil poses, core remains lit"
+        ],
+        [
+          "global-stun",
+          "five dazed hunched poses: knees dip, claws slump, head droops, wings sag, slight dazed sway; keep wings raised enough for silhouette 128 pixels tall"
+        ],
+        [
+          "stun-recovery",
+          "five poses regaining balance from hunch to alert idle"
+        ],
+        [
+          "death",
+          "five fatal poses: reactor flickers, knees buckle, claws collapse, head sinks, heavy folded-wing corpse; corpse wing peaks retain 128-pixel silhouette height, no disappearance"
+        ],
+        [
+          "dead-hold",
+          "five settled dead-body poses with diminishing residual cyan core flicker, final dark core; hunched grounded corpse with wing peaks raised, same full size"
+        ]
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: pixel-art gargoyle animation draft atlas for an artist; not a presentation board.\nReference image: the attached small orange-armored mechanical stone gargoyle, preserve its identity exactly: tan skull and claws, two cyan crystal horns, cyan ribcage reactor, charcoal joints, orange segmented folded bat wings with round mechanical hinges.\nCreate a square transparent PNG sprite atlas, exactly 1000 x 1000 pixels, precisely 5 columns by 5 rows of equal 200 x 200 pixel cells. No grid lines, labels, text, shadows, ground, decorative background or other creatures. EACH ROW is a distinct FIVE-FRAME animation, chronological LEFT TO RIGHT. Camera fixed, right-facing three-quarter view, same character scale and anatomy throughout. Crisp true pixel-art, hard pixel clusters, limited palette, no antialiasing, no smooth gradients. EVERY character fully fits within its own cell with margins, even extended attacks, absolutely no overlapping neighboring cells. Each character silhouette occupies at least 128 pixels in width and 128 pixels in height but stays under 184 x 164 pixels. Common ground/foot baseline 164 pixels from the top of each cell. No scaling between frames. No projectile, laser or nova effects beyond small attached core/throat glow; effects are separate. Keep armor proportions identical to reference. Wings stay grounded; no flight. Animation poses must actually change across five frames, readable anticipation, action and follow-through.\nCRITICAL SPACING: generous empty transparent margin inside EVERY cell. Keep each pose centered with at least 24 pixels margin on all four sides in a 200x200 cell. Extended limbs must fit by changing the pose angle, never by overflowing the cell. The entire body including raised claws and wings is visible. Minimum silhouette 128x128, target 144x144. Never touch any cell edge.\nOVERRIDE DEATH POSTURE: never lie flat. Death ends in a tall KNEELING statue-like corpse with its head bowed, forearms planted and both folded wing towers still upright. Wings retain full height in every dying and dead frame. The silhouette must be nearly square, at most width/height ratio 1.25. Keep the whole creature SMALLER with MORE TRANSPARENT SPACE BETWEEN CELLS. Exactly five rows, five frames each:\n1. hurt: five brief nonlethal impact-recoil poses, core remains lit.\n2. global-stun: five dazed hunched poses: knees dip, claws slump, head droops, wings sag, slight dazed sway; keep wings raised enough for silhouette 128 pixels tall.\n3. stun-recovery: five poses regaining balance from hunch to alert idle.\n4. death: neutral braced, reactor flickers, knees buckle, kneeling head bows, fully kneeling dead statue with upright wings.\n5. dead-hold: five subtly different settling kneeling dead-statue frames, upright folded wings, fading residual blue core until dark."
+    }
+  ],
+  "replacementClips": [
+    {
+      "name": "claw-sweep",
+      "prompt": "Use case: stylized-concept. Create ONE animation strip of FIVE distinct pixel-art gargoyle poses in one HORIZONTAL ROW, chronological left to right. Use the reference character exactly: orange ochre plate armor, charcoal hinges, tan skull/claws, two icy blue horns, cyan rib reactor, folded mechanical bat wings. Right-facing three-quarter grounded character. Transparent background. No words or labels, no grid or floor. Very generous CLEAR TRANSPARENT SPACE between the five separate figures; each figure INCLUDING claws and wings must be wholly isolated, never overlapping its neighbor. Each figure's overall silhouette is roughly SQUARE, maximum width/height ratio 1.35, target about 128x128 artwork inside an exact200x200 frame. Keep anatomy consistent. Pixel art with crisp clustered pixels, no smooth brushwork or antialiasing. Composition: five small isolated complete full-body characters arranged in ONE ROW across a wide canvas; NOT a 5x5 sheet. Required sequence for claw-sweep: front claw loads backward, crouches, sweeps forward diagonally upward, fully reaches with claw slightly above head, follows through. Each pose differs. Keep extended attack claws diagonally up rather than far horizontally, so the entire attack fits."
+    },
+    {
+      "name": "claw-backhand",
+      "prompt": "Use case: stylized-concept. ONE HORIZONTAL animation strip of exactly FIVE complete isolated pixel-art poses, chronological left to right. Reference is the orange mechanical gargoyle. Match its compact orange armor, tan skull/claws, two blue crystal horns, cyan reactor, black round joints, folded bat wings. Right-facing three-quarter grounded character. Transparent PNG, no text, no ground, no grid, no antialiasing. ALL FIVE FULL BODIES must be completely visible with transparent gaps between them AND wide empty margins on BOTH outside edges. Every figure fits a square: silhouette width/height ratio <=1.35. Keep the body quite small, do NOT fill the image width. Same armor anatomy, scale and feet baseline throughout. Required claw-backhand five poses: claw crosses chest, torso coils, wide DIAGONAL rising backhand, finishes with claws above head level, recoils. Extended arms stay bent or angled enough to keep all claws inside the square; never crop a claw, wing, horn or foot. No other poses or rows. Intended final frames each200x200, creature silhouette at least128x128."
+    },
+    {
+      "name": "wing-advance",
+      "prompt": "Use case: stylized-concept. ONE HORIZONTAL animation strip of exactly FIVE complete isolated pixel-art poses, chronological left to right. Reference is the orange mechanical gargoyle. Match its compact orange armor, tan skull/claws, two blue crystal horns, cyan reactor, black round joints, folded bat wings. Right-facing three-quarter grounded character. Transparent PNG, no text, no ground, no grid, no antialiasing. ALL FIVE FULL BODIES must be completely visible with transparent gaps between them AND wide empty margins on BOTH outside edges. Every figure fits a square: silhouette width/height ratio <=1.35. Keep the body quite small, do NOT fill the image width. Same armor anatomy, scale and feet baseline throughout. Required wing-advance five poses: folded wing begins opening, shoulder loads, wing thrusts forward while foreclaw stays bent close to body, weight braces, wing folds. Extended arms stay bent or angled enough to keep all claws inside the square; never crop a claw, wing, horn or foot. No other poses or rows. Intended final frames each200x200, creature silhouette at least128x128."
+    },
+    {
+      "name": "delayed-claw",
+      "prompt": "Use case: stylized-concept. ONE HORIZONTAL animation strip of exactly FIVE complete isolated pixel-art poses, chronological left to right. Reference is the orange mechanical gargoyle. Match its compact orange armor, tan skull/claws, two blue crystal horns, cyan reactor, black round joints, folded bat wings. Right-facing three-quarter grounded character. Transparent PNG, no text, no ground, no grid, no antialiasing. ALL FIVE FULL BODIES must be completely visible with transparent gaps between them AND wide empty margins on BOTH outside edges. Every figure fits a square: silhouette width/height ratio <=1.35. Keep the body quite small, do NOT fill the image width. Same armor anatomy, scale and feet baseline throughout. Required delayed-claw five poses: held claw coil, deep anticipation, sudden DIAGONAL rising strike, claw fully reaches slightly above head, follow-through. Extended arms stay bent or angled enough to keep all claws inside the square; never crop a claw, wing, horn or foot. No other poses or rows. Intended final frames each200x200, creature silhouette at least128x128."
+    }
+  ]
+}
