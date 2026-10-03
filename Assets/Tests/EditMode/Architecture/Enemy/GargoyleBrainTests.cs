@@ -215,19 +215,28 @@ namespace TicGame.Architecture.Tests
             brain.SetTarget(null); Assert.That(shots, Has.All.Matches<EnemyProjectile2D>(shot => !shot.IsLaunched));
         }
 
-        [Test]
-        public void ActualWardOpeningCounterEntersOneBeamStagger_AndExposesHead()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ActualWardOpeningCounterEntersOneBeamStagger_AndExposesHead(bool bodyMissesBeam)
         {
             JsonUtility.FromJsonOverwrite("{\"families\":[2,0]}", tuning); Set(tuning, "environmentLayer", (LayerMask)(1 << 8));
             var beamDefinition = tuning.GetAttackDefinition(GargoyleAttackFamily.Beam);
             JsonUtility.FromJsonOverwrite("{\"windupDuration\":0.8,\"activeDuration\":0.7,\"payload\":{\"kind\":2,\"lockedAimDuration\":0.3}}", beamDefinition.Steps[0]);
+            if (bodyMissesBeam) JsonUtility.FromJsonOverwrite("{\"payload\":{\"offset\":{\"x\":1,\"y\":0}}}", beamDefinition.Steps[0]);
             var emitter = actor.gameObject.AddComponent<EnemyBeamAttack2D>(); emitter.Initialize(actor, tuning, brain); Set(brain, "beam", emitter);
             brain.ResetEncounter(); StartBasic(); CompleteAttack();
-            target.transform.position = new Vector2(4, 1); target.AddComponent<BoxCollider2D>().size = new Vector2(1, 2);
-            var ward = target.AddComponent<PlayerWardRuntime>(); ward.Initialize(Track(ScriptableObject.CreateInstance<WardDefinitionSO>())); ward.Arm(-1);
+            target.transform.position = new Vector2(4, bodyMissesBeam ? 0 : 1); target.AddComponent<BoxCollider2D>().size = new Vector2(1, 2);
+            var wardDefinition = Track(ScriptableObject.CreateInstance<WardDefinitionSO>());
+            if (bodyMissesBeam) JsonUtility.FromJsonOverwrite("{\"height\":3}", wardDefinition);
+            var ward = target.AddComponent<PlayerWardRuntime>(); ward.Initialize(wardDefinition); ward.Arm(-1);
             Physics2D.SyncTransforms(); brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0);
             Assert.AreEqual(EnemyAttackPayloadKind.Beam, brain.CurrentAttack.Kind);
-            brain.Tick(.8f); brain.TickPhysics(.02f); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
+            if (bodyMissesBeam)
+            {
+                brain.Tick(.55f); target.transform.position = new Vector2(4, 1.3f); Physics2D.SyncTransforms(); brain.Tick(.25f);
+            }
+            else brain.Tick(.8f);
+            brain.TickPhysics(.02f); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
             Assert.IsTrue(policy.HeadExposed); Assert.AreEqual(5, target.GetComponent<SimpleHealth>().CurrentHealth);
             Assert.IsFalse(ward.IsActive); brain.Tick(0); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
         }
@@ -241,6 +250,81 @@ namespace TicGame.Architecture.Tests
         {
             for (var i = 0; i < 3; i++) { brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0); CompleteAttack(); }
             Assert.AreEqual(GargoyleState.PassRecovery, brain.CurrentState);
+        }
+
+        [TestCase(.5f, 8)]
+        [TestCase(.2f, 32)]
+        public void FullPassRefillsPreserveIndependentFeintRandomSequence(float probability, int passes)
+        {
+            Set(tuning, "feintAttack", Attack(basic.Steps[0].DamageProfile, "delayed-claw"));
+            JsonUtility.FromJsonOverwrite("{\"simulation\":{\"novaCooldown\":1000000000}}", tuning);
+            Set(tuning, "simulation", EditProbability(probability));
+            var random = new System.Random(0);
+            var actual = new List<bool>(); var expected = new List<bool>();
+            for (var pass = 0; pass < passes; pass++)
+            {
+                if (pass == 0) StartBasic();
+                else { brain.Tick(.8f); brain.TickPhysics(.02f); brain.Tick(0); }
+                expected.Add(random.NextDouble() < probability);
+                brain.Tick(.16f); actual.Add(brain.IsFeinting);
+                CompleteAttack(); CompleteFamilyBag();
+            }
+            Assert.That(expected.Contains(true) && expected.Contains(false), Is.True);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+        private GargoyleTuningValues EditProbability(float probability)
+        {
+            tuning.TryReadSimulationValues(out var values);
+            typeof(GargoyleTuningValues).GetField("feintProbability", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(values, probability);
+            return values;
+        }
+
+        [TestCase(1)]
+        [TestCase(-1)]
+        public void MeleeTelegraphMatchesRotatedAndMirroredPayload(int facing)
+        {
+            target.transform.position = new Vector2(facing * 1.5f, 1);
+            JsonUtility.FromJsonOverwrite("{\"payload\":{\"hitboxSize\":{\"x\":2,\"y\":1},\"offset\":{\"x\":1,\"y\":0.9},\"hitboxAngle\":35}}", basic.Steps[0]);
+            StartBasic();
+            var renderer = actor.gameObject.AddComponent<SpriteRenderer>();
+            var cue = actor.gameObject.AddComponent<LineRenderer>();
+            var presenter = actor.gameObject.AddComponent<GargoyleAnimationPresenter>();
+            presenter.Configure(brain, tuning.Presentation, renderer); Set(presenter, "attackCue", cue);
+            presenter.RefreshVisuals(0);
+            Assert.That(cue.positionCount, Is.EqualTo(4));
+            var corners = new[] { new Vector2(-1, -.5f), new Vector2(-1, .5f), new Vector2(1, .5f), new Vector2(1, -.5f) };
+            for (var index = 0; index < corners.Length; index++)
+            {
+                var expected = new Vector2(facing, .9f) + (Vector2)(Quaternion.Euler(0, 0, 35 * facing) * corners[index]);
+                Assert.That(Vector2.Distance(cue.GetPosition(index), expected), Is.LessThan(.0001f), "corner " + index);
+            }
+        }
+
+        [TestCase(1)]
+        [TestCase(-1)]
+        public void PointBlankMeleeKeepsTheBrainFacingEvenWhenAimOriginPassesThePlayer(int facing)
+        {
+            target.transform.position = new Vector2(facing * .5f, 1);
+            target.AddComponent<BoxCollider2D>().size = new Vector2(.2f, .2f);
+            Physics2D.SyncTransforms(); StartBasic(); brain.Tick(.35f); brain.TickPhysics(.02f);
+            Assert.That(brain.FacingDirection, Is.EqualTo(facing));
+            Assert.That(target.GetComponent<SimpleHealth>().CurrentHealth, Is.EqualTo(4));
+        }
+
+        [Test] public void FeintSeedEditAppliesAtRefillThenContinuesRatherThanRepeating()
+        {
+            Set(tuning, "feintAttack", Attack(basic.Steps[0].DamageProfile, "delayed-claw"));
+            Set(tuning, "simulation", EditProbability(.5f));
+            JsonUtility.FromJsonOverwrite("{\"simulation\":{\"novaCooldown\":1000000000}}", tuning);
+            StartBasic(); CompleteAttack(); CompleteFamilyBag();
+            JsonUtility.FromJsonOverwrite("{\"randomSeed\":1}", tuning);
+            var random = new System.Random(1);
+            for (var pass = 0; pass < 6; pass++)
+            {
+                brain.Tick(.8f); brain.TickPhysics(.02f); brain.Tick(0); brain.Tick(.16f);
+                Assert.That(brain.IsFeinting, Is.EqualTo(random.NextDouble() < .5f), "pass " + pass);
+                CompleteAttack(); CompleteFamilyBag();
+            }
         }
         [Test]
         public void NovaOccursOnlyAtBoundaryAfterTwoExhaustedBags_AndCounteredAttemptConsumesCadence()

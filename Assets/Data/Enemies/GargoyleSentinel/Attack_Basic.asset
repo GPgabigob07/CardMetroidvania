@@ -29,6 +29,7 @@ MonoBehaviour:
       lockedAimDuration: 0
       projectileSpeed: 6
       projectileLifetime: 3
+      projectileRadius: 0.1
       beamLength: 10
       beamThickness: 0.3
       beamOpeningDuration: 0.2
@@ -42,14 +43,15 @@ MonoBehaviour:
     payload:
       kind: 0
       acceptedHitLimit: 1
-      hitboxSize: {x: 1.5, y: 1}
-      offset: {x: 1, y: 1}
-      hitboxAngle: 0
+      hitboxSize: {x: 2.1, y: 0.8}
+      offset: {x: 1, y: 1.2}
+      hitboxAngle: -10
       advanceDistance: 0
       advanceSpeed: 4
       lockedAimDuration: 0
       projectileSpeed: 6
       projectileLifetime: 3
+      projectileRadius: 0.1
       beamLength: 10
       beamThickness: 0.3
       beamOpeningDuration: 0.2
@@ -63,14 +65,15 @@ MonoBehaviour:
     payload:
       kind: 0
       acceptedHitLimit: 1
-      hitboxSize: {x: 1.5, y: 1}
-      offset: {x: 1, y: 1}
-      hitboxAngle: 0
+      hitboxSize: {x: 1.1, y: 1.8}
+      offset: {x: 0.95, y: 0.7}
+      hitboxAngle: -15
       advanceDistance: 0
       advanceSpeed: 4
       lockedAimDuration: 0
       projectileSpeed: 6
       projectileLifetime: 3
+      projectileRadius: 0.1
       beamLength: 10
       beamThickness: 0.3
       beamOpeningDuration: 0.2

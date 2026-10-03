@@ -72,11 +72,9 @@ namespace TicGame.Architecture
                 new Vector2(length + payload.BeamThickness, payload.BeamThickness), CapsuleDirection2D.Horizontal,
                 Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg)
                 .Select(EnemyPlayerTargeting.CanonicalTarget).Where(target => target != null).Distinct().ToArray();
-            foreach (var target in targets)
+            foreach (var guard in FindGuards(targets))
             {
                 if (!CanSample()) return;
-                var guard = target.GetComponentInParent<PlayerWardRuntime>();
-                if (guard == null) continue;
                 var interception = guard.TryIntercept(new BeamGuardQuery(token, origin, EndPoint, payload.BeamThickness,
                     origin, activeElapsed < payload.BeamOpeningDuration));
                 if (!actor.IsOperational || !IsActive) return;
@@ -109,6 +107,24 @@ namespace TicGame.Architecture
                     attackExecutionId: $"gargoyle-beam-{token}", procPolicy: DamageProcPolicy.None), new[] { target }, origin, direction));
                 budget.Complete(target, report.EffectiveHitCount > 0);
             }
+        }
+        private IEnumerable<PlayerWardRuntime> FindGuards(IEnumerable<GameObject> healthTargets)
+        {
+            var guards = healthTargets.Select(target => target.GetComponentInParent<PlayerWardRuntime>());
+            if (brain != null)
+            {
+                // A tall/moving guard can cross the beam while its owner's health bounds miss it.
+                var targetGuard = brain.Target != null ? brain.Target.GetComponentInParent<PlayerWardRuntime>() : null;
+                guards = guards.Append(targetGuard);
+            }
+            else
+            {
+                // Standalone payloads have no bound player; discover guards separately from damage overlaps.
+                guards = guards.Concat(FindObjectsByType<PlayerWardRuntime>(FindObjectsSortMode.None)
+                    .Where(guard => guard.gameObject.scene == actor.gameObject.scene));
+            }
+            return guards.Where(guard => guard != null && guard.isActiveAndEnabled && EnemyPlayerTargeting.IsAvailable(guard.gameObject))
+                .Distinct().ToArray();
         }
         public void Cancel() => IsActive = false;
         private bool CanSample() => IsActive && isActiveAndEnabled && actor != null && actor.IsOperational

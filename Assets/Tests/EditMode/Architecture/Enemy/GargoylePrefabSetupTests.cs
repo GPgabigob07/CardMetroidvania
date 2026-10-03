@@ -37,6 +37,20 @@ namespace TicGame.Architecture.Tests
             Assert.That(occupied.Max(i => i % 200) - occupied.Min(i => i % 200) + 1, Is.LessThanOrEqualTo(128));
             Assert.That(occupied.Max(i => i / 200) - occupied.Min(i => i / 200) + 1, Is.LessThanOrEqualTo(128));
         }
+        [Test] public void AuthoredMeleeFootprintsDistinguishBackhandDownwardSlamAndUpwardClaw()
+        {
+            var tuning = AssetDatabase.LoadAssetAtPath<GargoyleTuningSO>(Folder + "GargoyleTuning.asset");
+            var sweep = tuning.BasicAttack.Steps[0].Payload;
+            var backhand = tuning.BasicAttack.Steps[1].Payload;
+            var slam = tuning.BasicAttack.Steps[2].Payload;
+            var wing = tuning.GetAttackDefinition(GargoyleAttackFamily.Wingbreaker).Steps[0].Payload;
+            var upward = tuning.GetAttackDefinition(GargoyleAttackFamily.Wingbreaker).Steps[1].Payload;
+            Assert.That(backhand.HitboxSize.x, Is.GreaterThan(sweep.HitboxSize.x));
+            Assert.That(slam.HitboxSize.y, Is.GreaterThan(sweep.HitboxSize.y));
+            Assert.That(slam.Offset.y, Is.LessThan(sweep.Offset.y));
+            Assert.That(upward.Offset.y, Is.GreaterThan(wing.Offset.y));
+            Assert.That(upward.HitboxSize.y, Is.GreaterThan(wing.HitboxSize.y));
+        }
         [Test] public void PrefabHasAllCapabilitiesAndNoContactDamage()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Enemies/GargoyleSentinel.prefab");

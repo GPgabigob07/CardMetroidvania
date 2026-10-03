@@ -54,6 +54,7 @@ namespace TicGame.Architecture
         private float lastNovaAttempt;
         private int feintsUsed;
         private System.Random feintRandom;
+        private int feintSeed;
         private bool feintPlanned;
         private bool isFeinting;
         private bool executingNova;
@@ -67,6 +68,7 @@ namespace TicGame.Architecture
         public int RemainingFamilies => selector?.RemainingFamilies ?? 0;
         public GargoyleAttackFamily QueuedFamily => queuedFamily;
         public bool IsInitialized { get; private set; }
+        public GameObject Target => target;
         public bool IsPoiseResistant => resistanceActive || CurrentState == GargoyleState.Stunned || CurrentState == GargoyleState.Staggered;
         public bool CanEmit => IsInitialized && isActiveAndEnabled && actor.IsOperational && pendingInterrupt == 0
             && CurrentState == GargoyleState.Attack && runner.Current.IsRunning && Time.timeScale > 0 && TargetAvailable();
@@ -194,7 +196,7 @@ namespace TicGame.Architecture
             selector.Reset(new System.Random(tuning.RandomSeed)); queuedFamily = selector.PeekFamily();
             completedBagsSinceNova = novaAttemptCount = feintsUsed = 0;
             gameplayElapsed = lastNovaAttempt = 0;
-            feintRandom = new System.Random(tuning.RandomSeed);
+            feintSeed = tuning.RandomSeed; feintRandom = new System.Random(feintSeed);
             feintPlanned = isFeinting = executingNova = refillBeforeBasic = false;
             basicPending = true; damagePolicy?.ResetDamageIdentity();
             Change(actor.IsDefeated ? GargoyleState.Dead : GargoyleState.Idle, true);
@@ -306,7 +308,11 @@ namespace TicGame.Architecture
         {
             executingBasic = basicPending;
             if (executingBasic && refillBeforeBasic)
-            { queuedFamily = selector.PeekFamily(); refillBeforeBasic = false; feintRandom = new System.Random(tuning.RandomSeed); }
+            {
+                queuedFamily = selector.PeekFamily(); refillBeforeBasic = false;
+                if (feintSeed != tuning.RandomSeed)
+                { feintSeed = tuning.RandomSeed; feintRandom = new System.Random(feintSeed); }
+            }
             var family = executingBasic ? queuedFamily : selector.PeekFamily();
             queuedFamily = family;
             var definition = executingBasic ? basicDefinition : familyDefinitions[family];

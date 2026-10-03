@@ -70,7 +70,8 @@ namespace TicGame.Architecture
                     }
                     else if (attack.Kind == EnemyAttackPayloadKind.Melee)
                     {
-                        Box(attackCue, origin, attack.Step.Payload.HitboxSize);
+                        var facing = brain != null ? brain.FacingDirection : attack.Aim.x < 0 ? -1 : 1;
+                        Box(attackCue, origin, attack.Step.Payload.HitboxSize, attack.Step.Payload.HitboxAngle * facing);
                     }
                     else
                     {
@@ -91,11 +92,12 @@ namespace TicGame.Architecture
         {
             line.useWorldSpace = true; line.startColor = line.endColor = color; line.startWidth = line.endWidth = values.TelegraphLineWidth;
         }
-        private static void Box(LineRenderer line, Vector2 center, Vector2 size)
+        private static void Box(LineRenderer line, Vector2 center, Vector2 size, float angle = 0)
         {
             line.loop = true; line.positionCount = 4;
-            line.SetPosition(0, center + new Vector2(-size.x, -size.y) * .5f); line.SetPosition(1, center + new Vector2(-size.x, size.y) * .5f);
-            line.SetPosition(2, center + new Vector2(size.x, size.y) * .5f); line.SetPosition(3, center + new Vector2(size.x, -size.y) * .5f);
+            var corners = new[] { new Vector2(-size.x, -size.y), new Vector2(-size.x, size.y), new Vector2(size.x, size.y), new Vector2(size.x, -size.y) };
+            var rotation = Quaternion.Euler(0, 0, angle);
+            for (var index = 0; index < corners.Length; index++) line.SetPosition(index, center + (Vector2)(rotation * (corners[index] * .5f)));
         }
     }
 }

@@ -61,6 +61,7 @@ namespace TicGame.Architecture.EditorTools
                     if (name == "Beam") JsonUtility.FromJsonOverwrite("{\"payload\":{\"lockedAimDuration\":0.3}}", step);
                     if (name == "Volley") JsonUtility.FromJsonOverwrite("{\"payload\":{\"lockedAimDuration\":0.15}}", step);
                     if (step.Id == "wing-advance") JsonUtility.FromJsonOverwrite("{\"payload\":{\"advanceDistance\":0.8}}", step);
+                    if (kind == 0) AuthorInitialMeleeGeometry(step);
                 }
                 definition.SetSteps(steps);
                 if (name == "Volley")
@@ -78,6 +79,37 @@ namespace TicGame.Architecture.EditorTools
             var definition = AssetDatabase.LoadAssetAtPath<EnemyAttackDefinitionSO>(DataFolder + "/Attack_Volley.asset");
             foreach (var step in definition.Steps) JsonUtility.FromJsonOverwrite("{\"payload\":{\"lockedAimDuration\":0.15}}", step);
             EditorUtility.SetDirty(definition); AssetDatabase.SaveAssets();
+        }
+
+        [MenuItem("TIC/Setup/Apply Initial Gargoyle Melee Footprints")]
+        public static void ApplyInitialMeleeGeometry()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Author defaults outside Play Mode.");
+            foreach (var name in new[] { "Basic", "Wingbreaker", "FeintClaw" })
+            {
+                var definition = AssetDatabase.LoadAssetAtPath<EnemyAttackDefinitionSO>(DataFolder + "/Attack_" + name + ".asset");
+                if (definition == null) throw new InvalidOperationException("Create the Gargoyle assets before applying initial melee footprints.");
+                Undo.RecordObject(definition, "Apply initial Gargoyle melee footprints");
+                foreach (var step in definition.Steps) AuthorInitialMeleeGeometry(step);
+                EditorUtility.SetDirty(definition);
+            }
+            AssetDatabase.SaveAssets();
+        }
+
+        private static void AuthorInitialMeleeGeometry(EnemyAttackStep step)
+        {
+            // Initial authoring only: all runtime geometry is subsequently owned by these SO payloads.
+            var geometry = step.Id switch
+            {
+                "claw-left" => "{\"hitboxSize\":{\"x\":1.5,\"y\":1},\"offset\":{\"x\":1,\"y\":1},\"hitboxAngle\":0}",
+                "claw-right" => "{\"hitboxSize\":{\"x\":2.1,\"y\":0.8},\"offset\":{\"x\":1,\"y\":1.2},\"hitboxAngle\":-10}",
+                "claw-heavy" => "{\"hitboxSize\":{\"x\":1.1,\"y\":1.8},\"offset\":{\"x\":0.95,\"y\":0.7},\"hitboxAngle\":-15}",
+                "wing-advance" => "{\"hitboxSize\":{\"x\":2,\"y\":1.2},\"offset\":{\"x\":1.05,\"y\":1.1},\"hitboxAngle\":0}",
+                "wing-slam" => "{\"hitboxSize\":{\"x\":1.2,\"y\":2},\"offset\":{\"x\":0.85,\"y\":1.65},\"hitboxAngle\":15}",
+                "delayed-claw" => "{\"hitboxSize\":{\"x\":1.2,\"y\":0.9},\"offset\":{\"x\":1,\"y\":1.05},\"hitboxAngle\":0}",
+                _ => null
+            };
+            if (geometry != null) JsonUtility.FromJsonOverwrite("{\"payload\":" + geometry + "}", step);
         }
 
         private static EnemyProjectile2D CreateProjectile()

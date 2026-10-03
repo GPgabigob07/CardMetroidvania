@@ -52,6 +52,21 @@ namespace TicGame.Architecture.Tests
             Fire(); beam.Sample(Vector2.zero, Vector2.right, .1f);
             Assert.AreEqual(5, health.CurrentHealth); Assert.IsFalse(ward.IsActive); Assert.IsFalse(beam.IsActive); Assert.AreEqual(1, counters);
         }
+        [TestCase(0f, true)]
+        [TestCase(.3f, false)]
+        public void WardInterceptionDoesNotRequireBodyOverlap(float elapsed, bool opening)
+        {
+            health.transform.position = new Vector2(4, 1.3f);
+            JsonUtility.FromJsonOverwrite("{\"height\":3}", wardDefinition);
+            Physics2D.SyncTransforms(); ward.Arm(-1);
+            var counters = 0; beam.Countered += _ => counters++;
+            Fire(elapsed);
+            Assert.That(health.CurrentHealth, Is.EqualTo(5));
+            Assert.That(beam.EndPoint.x, Is.LessThan(4));
+            Assert.That(ward.IsActive, Is.EqualTo(!opening));
+            Assert.That(beam.IsActive, Is.EqualTo(!opening));
+            Assert.That(counters, Is.EqualTo(opening ? 1 : 0));
+        }
         [Test]
         public void LateWardClipsWithoutConsumption_ThenExpiredGuardAllowsTheUnspentHit()
         {

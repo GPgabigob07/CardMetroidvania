@@ -21,14 +21,15 @@ MonoBehaviour:
     payload:
       kind: 0
       acceptedHitLimit: 1
-      hitboxSize: {x: 1.5, y: 1}
-      offset: {x: 1, y: 1}
+      hitboxSize: {x: 1.2, y: 0.9}
+      offset: {x: 1, y: 1.05}
       hitboxAngle: 0
       advanceDistance: 0
       advanceSpeed: 4
       lockedAimDuration: 0
       projectileSpeed: 6
       projectileLifetime: 3
+      projectileRadius: 0.1
       beamLength: 10
       beamThickness: 0.3
       beamOpeningDuration: 0.2

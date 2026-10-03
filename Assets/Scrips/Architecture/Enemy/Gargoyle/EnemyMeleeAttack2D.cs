@@ -37,7 +37,8 @@ namespace TicGame.Architecture
             }
             var revision = cancellationRevision;
             var payload = execution.Step.Payload;
-            var facing = execution.Aim.x < 0 ? -1 : 1;
+            // Aim is measured from the payload origin, which may pass a point-blank target.
+            var facing = brain != null ? brain.FacingDirection : execution.Aim.x < 0 ? -1 : 1;
             var center = (Vector2)transform.position + new Vector2(payload.Offset.x * facing, payload.Offset.y);
             foreach (var collider in Physics2D.OverlapBoxAll(center, payload.HitboxSize, payload.HitboxAngle * facing))
             {
