@@ -64,4 +64,3 @@ Keep detached projectile, beam and nova VFX separate from the gargoyle. These sh
 
 ## Integration status
 Stored entirely under gdd/art-references/, outside Assets/. No scenes, prefabs, ScriptableObjects, runtime code, animation bindings or import settings were changed for these drafts.
-
