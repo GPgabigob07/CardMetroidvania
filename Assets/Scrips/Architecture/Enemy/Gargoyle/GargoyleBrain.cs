@@ -18,6 +18,7 @@ namespace TicGame.Architecture
         [SerializeField] private EnemyMeleeAttack2D melee;
         [SerializeField] private EnemyProjectilePatternLauncher volley;
         [SerializeField] private EnemyBeamAttack2D beam;
+        [SerializeField] private EnemyNovaAttack2D nova;
         [SerializeField] private GargoyleDamagePolicy damagePolicy;
         [SerializeField, Tooltip("Optional player health root supplied by gameplay composition.")]
         private GameObject target;
@@ -47,6 +48,17 @@ namespace TicGame.Architecture
         private bool warnedBindings;
         private bool warnedHealth;
         private GargoyleAttackFamily queuedFamily;
+        private int completedBagsSinceNova;
+        private int novaAttemptCount;
+        private float gameplayElapsed;
+        private float lastNovaAttempt;
+        private int feintsUsed;
+        private System.Random feintRandom;
+        private bool feintPlanned;
+        private bool isFeinting;
+        private bool executingNova;
+        private bool refillBeforeBasic;
+        private string openingStepId;
         private int pendingInterrupt;
 
         public event Action OffenseCancelled;
@@ -59,6 +71,9 @@ namespace TicGame.Architecture
         public bool CanEmit => IsInitialized && isActiveAndEnabled && actor.IsOperational && pendingInterrupt == 0
             && CurrentState == GargoyleState.Attack && runner.Current.IsRunning && Time.timeScale > 0 && TargetAvailable();
         public int FacingDirection => motor?.FacingDirection ?? 1;
+        public int CompletedBagsSinceNova => completedBagsSinceNova;
+        public int NovaAttemptCount => novaAttemptCount;
+        public bool IsFeinting => isFeinting && CurrentState == GargoyleState.Attack;
         public bool CanSimulateProjectiles => IsInitialized && isActiveAndEnabled && actor.IsOperational
             && pendingInterrupt == 0 && Time.timeScale > 0 && TargetAvailable();
 
@@ -69,6 +84,7 @@ namespace TicGame.Architecture
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>();
             volley ??= GetComponent<EnemyProjectilePatternLauncher>();
             beam ??= GetComponent<EnemyBeamAttack2D>();
+            nova ??= GetComponent<EnemyNovaAttack2D>();
         }
         private void Start()
         {
@@ -94,6 +110,7 @@ namespace TicGame.Architecture
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>(); damagePolicy?.Initialize(actor, poise, tuning);
             volley ??= GetComponent<EnemyProjectilePatternLauncher>(); volley?.Initialize(actor, tuning, this);
             beam ??= GetComponent<EnemyBeamAttack2D>(); beam?.Initialize(actor, tuning, this);
+            nova ??= GetComponent<EnemyNovaAttack2D>(); nova?.Initialize(actor, this, damagePolicy);
             subscribedActor = actor; subscribedPoise = poise;
             actor.Defeated += OnDefeated; poise.Depleted += RequestStun;
             if (!statesRegistered)
@@ -130,6 +147,7 @@ namespace TicGame.Architecture
                 return;
             }
             if (Time.timeScale <= 0) { motor.Stop(); return; }
+            gameplayElapsed += scaledDelta;
             if (resistanceActive)
             {
                 resistanceElapsed += scaledDelta;
@@ -174,6 +192,10 @@ namespace TicGame.Architecture
             if (!IsInitialized) return;
             CancelOffense(); pendingInterrupt = 0; resistanceActive = false;
             selector.Reset(new System.Random(tuning.RandomSeed)); queuedFamily = selector.PeekFamily();
+            completedBagsSinceNova = novaAttemptCount = feintsUsed = 0;
+            gameplayElapsed = lastNovaAttempt = 0;
+            feintRandom = new System.Random(tuning.RandomSeed);
+            feintPlanned = isFeinting = executingNova = refillBeforeBasic = false;
             basicPending = true; damagePolicy?.ResetDamageIdentity();
             Change(actor.IsDefeated ? GargoyleState.Dead : GargoyleState.Idle, true);
         }
@@ -191,11 +213,23 @@ namespace TicGame.Architecture
                     else if (repositionReady) BeginNextAttack();
                     break;
                 case GargoyleState.Attack:
-                    TrackAim(); runner.Tick(delta);
+                    if (executingNova) nova?.Tick(delta);
+                    if (pendingInterrupt != 0 || !actor.IsOperational) return;
+                    TrackAim(); TickAttack(delta);
                     if (runner.Current.Phase != EnemyAttackPhase.Active) beam?.Cancel();
                     if (!runner.Current.IsRunning)
                     {
-                        if (executingBasic) { basicPending = false; Change(GargoyleState.FamilyRecovery); }
+                        if (executingNova)
+                        {
+                            executingNova = false; basicPending = true; refillBeforeBasic = selector.RemainingFamilies == 0;
+                            feintsUsed = 0; nova?.Cancel(); Change(GargoyleState.Reposition);
+                        }
+                        else if (executingBasic)
+                        {
+                            basicPending = false; isFeinting = false;
+                            if (selector.RemainingFamilies == 0) { basicPending = true; Change(GargoyleState.PassRecovery); }
+                            else Change(GargoyleState.FamilyRecovery);
+                        }
                         else if (selector.RemainingFamilies == 0) { basicPending = true; Change(GargoyleState.PassRecovery); }
                         else Change(GargoyleState.FamilyRecovery);
                     }
@@ -204,7 +238,12 @@ namespace TicGame.Architecture
                     if (stateElapsed >= live.Values.FamilyRecovery) Change(GargoyleState.Reposition);
                     break;
                 case GargoyleState.PassRecovery:
-                    if (stateElapsed >= live.Values.PassRecovery) Change(GargoyleState.Reposition);
+                    if (stateElapsed >= live.Values.PassRecovery)
+                    {
+                        if (TryBeginNova()) break;
+                        refillBeforeBasic = selector.RemainingFamilies == 0; feintsUsed = 0;
+                        Change(GargoyleState.Reposition);
+                    }
                     break;
                 case GargoyleState.Stunned:
                 case GargoyleState.Staggered:
@@ -258,13 +297,17 @@ namespace TicGame.Architecture
                 if (runner.TryConsumeRelease(execution.ExecutionToken, execution.StepId)) beam?.Begin(execution);
                 beam?.Sample(motor.Position + new Vector2(payload.Offset.x * FacingDirection, payload.Offset.y), execution.Aim, execution.Elapsed);
             }
+            else if (execution.Kind == EnemyAttackPayloadKind.Nova && runner.TryConsumeRelease(execution.ExecutionToken, execution.StepId))
+                nova?.Release(motor.Position);
             if (CanEmit) runner.ConfirmPhysicsSample(execution.ExecutionToken, execution.StepId);
         }
 
         private void BeginNextAttack()
         {
             executingBasic = basicPending;
-            var family = selector.PeekFamily();
+            if (executingBasic && refillBeforeBasic)
+            { queuedFamily = selector.PeekFamily(); refillBeforeBasic = false; feintRandom = new System.Random(tuning.RandomSeed); }
+            var family = executingBasic ? queuedFamily : selector.PeekFamily();
             queuedFamily = family;
             var definition = executingBasic ? basicDefinition : familyDefinitions[family];
             if (definition == null || !definition.TryCaptureSteps(out var captured)) return;
@@ -273,10 +316,56 @@ namespace TicGame.Architecture
             if (!executingBasic)
             {
                 selector.CommitFamily();
+                if (selector.RemainingFamilies == 0) completedBagsSinceNova++;
                 if (selector.RemainingFamilies > 0) queuedFamily = selector.PeekFamily();
             }
             offenseCancelled = false; advanceStep = null;
+            executingNova = isFeinting = false; openingStepId = captured[0].Id;
+            feintPlanned = executingBasic && feintsUsed < live.Values.FeintBudget && tuning.FeintAttack != null
+                && feintRandom.NextDouble() < live.Values.FeintProbability;
+            if (feintPlanned) feintsUsed++;
             Change(GargoyleState.Attack); TrackAim();
+        }
+
+        private void TickAttack(float delta)
+        {
+            if (isFeinting) runner.SetMinimumWindup(live.Values.FeintResponseDuration);
+            if (feintPlanned && runner.Current.StepId == openingStepId && runner.Current.Phase == EnemyAttackPhase.Windup
+                && !runner.Current.IsAimLocked)
+            {
+                var untilCue = Mathf.Max(0, live.Values.FeintCueDelay - runner.Current.Elapsed);
+                if (delta >= untilCue || Mathf.Approximately(delta, untilCue))
+                {
+                    var beforeCue = Mathf.Min(delta, untilCue);
+                    runner.Tick(beforeCue); feintPlanned = false;
+                    if (runner.Current.Phase == EnemyAttackPhase.Windup && !runner.Current.IsAimLocked
+                        && tuning.FeintAttack.TryCaptureSteps(out _))
+                    {
+                        melee?.Cancel(); runner.Cancel();
+                        if (runner.Begin(tuning.FeintAttack, Interlocked.Increment(ref nextExecutionToken)))
+                        {
+                            isFeinting = true; advanceStep = null;
+                            runner.SetMinimumWindup(live.Values.FeintResponseDuration); TrackAim();
+                        }
+                    }
+                    runner.Tick(delta - beforeCue); return;
+                }
+            }
+            runner.Tick(delta);
+        }
+
+        private bool TryBeginNova()
+        {
+            if (nova == null || completedBagsSinceNova < live.Values.NovaBagCadence
+                || gameplayElapsed - lastNovaAttempt < live.Values.NovaCooldown || tuning.NovaAttack == null
+                || !tuning.NovaAttack.TryCaptureSteps(out var captured)
+                || captured[0].Payload.Kind != EnemyAttackPayloadKind.Nova) return false;
+            if (!runner.Begin(tuning.NovaAttack, Interlocked.Increment(ref nextExecutionToken))) return false;
+            completedBagsSinceNova = 0; lastNovaAttempt = gameplayElapsed; novaAttemptCount++;
+            executingNova = true; executingBasic = feintPlanned = isFeinting = false;
+            offenseCancelled = false; advanceStep = null;
+            Change(GargoyleState.Attack); nova.Begin(runner.Current); TrackAim(); UpdatePolicy();
+            return true;
         }
 
         private void TrackAim()
@@ -327,6 +416,12 @@ namespace TicGame.Architecture
             if (actor.IsDefeated) pendingInterrupt = 3;
             if (pendingInterrupt == 0) return false;
             var priority = pendingInterrupt; pendingInterrupt = 0;
+            if (priority != 3)
+            {
+                refillBeforeBasic = executingNova && selector.RemainingFamilies == 0;
+                if (executingNova) feintsUsed = 0;
+            }
+            executingNova = feintPlanned = isFeinting = false;
             CancelOffense();
             Change(priority == 3 ? GargoyleState.Dead : priority == 2 ? GargoyleState.Stunned : GargoyleState.Staggered);
             UpdatePolicy();
@@ -346,7 +441,8 @@ namespace TicGame.Architecture
             CancelOffense(); basicPending = true;
             Change(actor.IsDefeated ? GargoyleState.Dead : GargoyleState.Idle);
         }
-        private void UpdatePolicy() => damagePolicy?.SetResponseState(false, CurrentState == GargoyleState.Staggered, IsPoiseResistant, FacingDirection);
+        private void UpdatePolicy() => damagePolicy?.SetResponseState(executingNova && nova != null && nova.IsTelegraphing
+            && runner.Current.Phase == EnemyAttackPhase.Windup, CurrentState == GargoyleState.Staggered, IsPoiseResistant, FacingDirection);
         private void Change(GargoyleState state, bool restart = false) => stateMachine.TryChangeState(state, restart);
         private void EnterState() { stateElapsed = blockedElapsed = 0; repositionReady = movementBlocked = false; motor.Stop(); }
         private void Unsubscribe()

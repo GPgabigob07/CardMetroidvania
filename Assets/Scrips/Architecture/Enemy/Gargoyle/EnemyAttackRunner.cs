@@ -17,6 +17,7 @@ namespace TicGame.Architecture
         private long token;
         private float elapsed;
         private float surplus;
+        private float minimumWindup;
         private Vector2 aim = Vector2.right;
         private bool aimLocked;
         private bool sampled;
@@ -30,7 +31,8 @@ namespace TicGame.Architecture
         private bool Running => phase != EnemyAttackPhase.Completed;
         private float Duration => !Running ? 0 : phase switch
         {
-            EnemyAttackPhase.Windup => step.Payload.Kind == EnemyAttackPayloadKind.Volley ? pattern.WindupDuration : step.WindupDuration,
+            EnemyAttackPhase.Windup => Mathf.Max(minimumWindup,
+                step.Payload.Kind == EnemyAttackPayloadKind.Volley ? pattern.WindupDuration : step.WindupDuration),
             EnemyAttackPhase.Active => step.ActiveDuration,
             _ => step.RecoveryDuration
         };
@@ -54,6 +56,7 @@ namespace TicGame.Architecture
             step = steps[0];
             phase = EnemyAttackPhase.Windup;
             elapsed = surplus = 0;
+            minimumWindup = 0;
             aimLocked = sampled = released = warnedInvalid = false;
             return true;
         }
@@ -63,6 +66,12 @@ namespace TicGame.Architecture
             if (!Running || aimLocked || !float.IsFinite(direction.x) || !float.IsFinite(direction.y)
                 || direction.sqrMagnitude == 0) return;
             aim = direction.normalized;
+        }
+
+        public void SetMinimumWindup(float duration)
+        {
+            if (!float.IsFinite(duration) || duration < 0) throw new ArgumentOutOfRangeException(nameof(duration));
+            minimumWindup = duration;
         }
 
         public void Tick(float scaledDelta)

@@ -232,6 +232,64 @@ namespace TicGame.Architecture.Tests
             Assert.IsFalse(ward.IsActive); brain.Tick(0); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
         }
 
+        private void ConfigureNova()
+        {
+            JsonUtility.FromJsonOverwrite("{\"windupDuration\":2.4,\"activeDuration\":0.15,\"recoveryDuration\":0.9,\"payload\":{\"kind\":3}}", tuning.NovaAttack.Steps[0]);
+            var nova = actor.gameObject.AddComponent<EnemyNovaAttack2D>(); nova.Initialize(actor, brain, policy); Set(brain, "nova", nova);
+        }
+        private void CompleteFamilyBag()
+        {
+            for (var i = 0; i < 3; i++) { brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0); CompleteAttack(); }
+            Assert.AreEqual(GargoyleState.PassRecovery, brain.CurrentState);
+        }
+        [Test]
+        public void NovaOccursOnlyAtBoundaryAfterTwoExhaustedBags_AndCounteredAttemptConsumesCadence()
+        {
+            ConfigureNova(); StartBasic(); CompleteAttack(); CompleteFamilyBag();
+            Assert.AreEqual(1, brain.CompletedBagsSinceNova); Assert.AreEqual(0, brain.NovaAttemptCount);
+            brain.Tick(.8f); brain.TickPhysics(.02f); brain.Tick(0); CompleteAttack(); CompleteFamilyBag();
+            Assert.AreEqual(0, brain.NovaAttemptCount); brain.Tick(.8f);
+            Assert.AreSame(tuning.NovaAttack, brain.CurrentAttack.Definition); Assert.AreEqual(1, brain.NovaAttemptCount);
+            Assert.IsTrue(policy.CoreOpen); Assert.AreEqual(0, brain.CompletedBagsSinceNova);
+            for (var i = 0; i < 2; i++) policy.ApplyDamage(GargoyleRegionKind.Core, new DamageContext(target, actor.gameObject, null, 1,
+                Vector2.zero, Vector2.right, poiseDamage: 2.4f, isCardEnhancedMelee: true,
+                provenance: new DamageProvenance(DamageOriginKind.Primary, null, "root", null, 0), attackExecutionId: $"core{i}"));
+            brain.Tick(0); Assert.AreEqual(GargoyleState.Stunned, brain.CurrentState); Assert.IsFalse(policy.CoreOpen);
+            brain.Tick(1.25f); brain.TickPhysics(.02f); brain.Tick(0);
+            Assert.AreSame(basic, brain.CurrentAttack.Definition); Assert.AreEqual(1, brain.NovaAttemptCount);
+        }
+        [Test]
+        public void InterruptedPartialBagDoesNotCountAsCompleted_OrForceNovaAfterStun()
+        {
+            ConfigureNova(); StartBasic(); CompleteAttack(); brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0);
+            brain.RequestStun(); brain.Tick(0); Assert.AreEqual(0, brain.CompletedBagsSinceNova);
+            brain.Tick(1.25f); brain.TickPhysics(.02f); brain.Tick(0);
+            Assert.AreSame(basic, brain.CurrentAttack.Definition); Assert.AreEqual(2, brain.RemainingFamilies); Assert.AreEqual(0, brain.NovaAttemptCount);
+        }
+        [Test]
+        public void BoundedFeintCuesBeforeAimLock_PreservesMinimumResponse_AndDoesNotRepeatAfterStun()
+        {
+            var delayed = Attack(basic.Steps[0].DamageProfile, "delayed-claw"); Set(tuning, "feintAttack", delayed);
+            JsonUtility.FromJsonOverwrite("{\"windupDuration\":0.1}", delayed.Steps[0]);
+            JsonUtility.FromJsonOverwrite("{\"simulation\":{\"feintProbability\":1}}", tuning);
+            StartBasic(); brain.Tick(.14f); Assert.AreSame(basic, brain.CurrentAttack.Definition);
+            brain.Tick(.02f); Assert.IsTrue(brain.IsFeinting); Assert.AreSame(delayed, brain.CurrentAttack.Definition);
+            brain.Tick(.33f); Assert.AreEqual(EnemyAttackPhase.Windup, brain.CurrentAttack.Phase);
+            brain.Tick(.02f); Assert.AreEqual(EnemyAttackPhase.Active, brain.CurrentAttack.Phase);
+            brain.RequestStun(); brain.Tick(0); brain.Tick(1.25f); brain.TickPhysics(.02f); brain.Tick(0); brain.Tick(.2f);
+            Assert.IsFalse(brain.IsFeinting); Assert.AreSame(basic, brain.CurrentAttack.Definition);
+        }
+        [Test]
+        public void NovaCooldownCannotBeBypassedByTwoCompletedBagsOrAnUnrelatedTick()
+        {
+            ConfigureNova(); JsonUtility.FromJsonOverwrite("{\"simulation\":{\"novaCooldown\":100000}}", tuning);
+            StartBasic(); CompleteAttack(); CompleteFamilyBag(); brain.Tick(.8f); brain.TickPhysics(.02f); brain.Tick(0); CompleteAttack(); CompleteFamilyBag();
+            brain.Tick(.8f); Assert.AreEqual(0, brain.NovaAttemptCount); Assert.AreEqual(GargoyleState.Reposition, brain.CurrentState);
+            brain.Tick(100000); Assert.AreEqual(0, brain.NovaAttemptCount);
+            brain.TickPhysics(.02f); brain.Tick(0); CompleteAttack(); CompleteFamilyBag(); brain.Tick(.8f);
+            Assert.AreEqual(1, brain.NovaAttemptCount); Assert.AreSame(tuning.NovaAttack, brain.CurrentAttack.Definition);
+        }
+
         private sealed class FakeMotor : IEnemyPatrolMotor2D
         {
             public Vector2 Position => Vector2.zero;
