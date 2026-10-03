@@ -215,6 +215,23 @@ namespace TicGame.Architecture.Tests
             brain.SetTarget(null); Assert.That(shots, Has.All.Matches<EnemyProjectile2D>(shot => !shot.IsLaunched));
         }
 
+        [Test]
+        public void ActualWardOpeningCounterEntersOneBeamStagger_AndExposesHead()
+        {
+            JsonUtility.FromJsonOverwrite("{\"families\":[2,0]}", tuning); Set(tuning, "environmentLayer", (LayerMask)(1 << 8));
+            var beamDefinition = tuning.GetAttackDefinition(GargoyleAttackFamily.Beam);
+            JsonUtility.FromJsonOverwrite("{\"windupDuration\":0.8,\"activeDuration\":0.7,\"payload\":{\"kind\":2,\"lockedAimDuration\":0.3}}", beamDefinition.Steps[0]);
+            var emitter = actor.gameObject.AddComponent<EnemyBeamAttack2D>(); emitter.Initialize(actor, tuning, brain); Set(brain, "beam", emitter);
+            brain.ResetEncounter(); StartBasic(); CompleteAttack();
+            target.transform.position = new Vector2(4, 1); target.AddComponent<BoxCollider2D>().size = new Vector2(1, 2);
+            var ward = target.AddComponent<PlayerWardRuntime>(); ward.Initialize(Track(ScriptableObject.CreateInstance<WardDefinitionSO>())); ward.Arm(-1);
+            Physics2D.SyncTransforms(); brain.Tick(.25f); brain.TickPhysics(.02f); brain.Tick(0);
+            Assert.AreEqual(EnemyAttackPayloadKind.Beam, brain.CurrentAttack.Kind);
+            brain.Tick(.8f); brain.TickPhysics(.02f); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
+            Assert.IsTrue(policy.HeadExposed); Assert.AreEqual(5, target.GetComponent<SimpleHealth>().CurrentHealth);
+            Assert.IsFalse(ward.IsActive); brain.Tick(0); Assert.AreEqual(GargoyleState.Staggered, brain.CurrentState);
+        }
+
         private sealed class FakeMotor : IEnemyPatrolMotor2D
         {
             public Vector2 Position => Vector2.zero;

@@ -17,6 +17,7 @@ namespace TicGame.Architecture
         [SerializeField] private GroundedEnemyPatrolMotor2D groundedMotor;
         [SerializeField] private EnemyMeleeAttack2D melee;
         [SerializeField] private EnemyProjectilePatternLauncher volley;
+        [SerializeField] private EnemyBeamAttack2D beam;
         [SerializeField] private GargoyleDamagePolicy damagePolicy;
         [SerializeField, Tooltip("Optional player health root supplied by gameplay composition.")]
         private GameObject target;
@@ -67,6 +68,7 @@ namespace TicGame.Architecture
             groundedMotor ??= GetComponent<GroundedEnemyPatrolMotor2D>(); melee ??= GetComponent<EnemyMeleeAttack2D>();
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>();
             volley ??= GetComponent<EnemyProjectilePatternLauncher>();
+            beam ??= GetComponent<EnemyBeamAttack2D>();
         }
         private void Start()
         {
@@ -91,6 +93,7 @@ namespace TicGame.Architecture
             melee ??= GetComponent<EnemyMeleeAttack2D>(); melee?.Initialize(actor, this);
             damagePolicy ??= GetComponent<GargoyleDamagePolicy>(); damagePolicy?.Initialize(actor, poise, tuning);
             volley ??= GetComponent<EnemyProjectilePatternLauncher>(); volley?.Initialize(actor, tuning, this);
+            beam ??= GetComponent<EnemyBeamAttack2D>(); beam?.Initialize(actor, tuning, this);
             subscribedActor = actor; subscribedPoise = poise;
             actor.Defeated += OnDefeated; poise.Depleted += RequestStun;
             if (!statesRegistered)
@@ -189,6 +192,7 @@ namespace TicGame.Architecture
                     break;
                 case GargoyleState.Attack:
                     TrackAim(); runner.Tick(delta);
+                    if (runner.Current.Phase != EnemyAttackPhase.Active) beam?.Cancel();
                     if (!runner.Current.IsRunning)
                     {
                         if (executingBasic) { basicPending = false; Change(GargoyleState.FamilyRecovery); }
@@ -249,6 +253,11 @@ namespace TicGame.Architecture
             if (execution.Kind == EnemyAttackPayloadKind.Melee) melee?.Sample(execution);
             else if (execution.Kind == EnemyAttackPayloadKind.Volley && runner.TryConsumeRelease(execution.ExecutionToken, execution.StepId))
                 volley?.Release(execution, motor.Position + new Vector2(payload.Offset.x * FacingDirection, payload.Offset.y));
+            else if (execution.Kind == EnemyAttackPayloadKind.Beam)
+            {
+                if (runner.TryConsumeRelease(execution.ExecutionToken, execution.StepId)) beam?.Begin(execution);
+                beam?.Sample(motor.Position + new Vector2(payload.Offset.x * FacingDirection, payload.Offset.y), execution.Aim, execution.Elapsed);
+            }
             if (CanEmit) runner.ConfirmPhysicsSample(execution.ExecutionToken, execution.StepId);
         }
 
