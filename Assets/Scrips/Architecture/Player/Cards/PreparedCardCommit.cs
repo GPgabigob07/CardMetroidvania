@@ -17,7 +17,8 @@ namespace TicGame.Architecture
             IReadOnlyList<ResourceAmount> costs,
             PlayerCardCommitSnapshot snapshot,
             RecoveryCardQuote? recoveryQuote = null,
-            PreparedWardQuote wardQuote = null)
+            PreparedWardQuote wardQuote = null,
+            PreparedRepelQuote repelQuote = null)
         {
             this.owner = owner;
             Card = card;
@@ -27,6 +28,7 @@ namespace TicGame.Architecture
             this.snapshot = snapshot;
             RecoveryQuote = recoveryQuote;
             WardQuote = wardQuote;
+            RepelQuote = repelQuote;
         }
 
         public CardDefinitionSO Card { get; }
@@ -36,6 +38,7 @@ namespace TicGame.Architecture
         public PlayerCardCommitSnapshot Snapshot => snapshot;
         public RecoveryCardQuote? RecoveryQuote { get; }
         public PreparedWardQuote WardQuote { get; }
+        public PreparedRepelQuote RepelQuote { get; }
         public bool IsApplied { get; private set; }
         public CardCommitFailure Failure { get; private set; }
 

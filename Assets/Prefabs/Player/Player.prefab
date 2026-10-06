@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 7839087103476644820}
   - component: {fileID: 6863152883008667092}
   - component: {fileID: 739535287382128567}
+  - component: {fileID: 1398606369656348710}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -271,6 +272,7 @@ MonoBehaviour:
   groundedJumpBoost: {fileID: 7896860679630138069}
   dashPermission: {fileID: 7839087103476644820}
   sensors: {fileID: 1352026579056141999}
+  ward: {fileID: 0}
   neutralCardDefinition: {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
   chainCardDefinition: {fileID: 11400000, guid: 69b7538b5530f7243bc8c6af5b981d83, type: 2}
   finisherCardDefinition: {fileID: 11400000, guid: d3498f7b2cab6574db03a47f7d7ec218, type: 2}
@@ -429,6 +431,19 @@ MonoBehaviour:
   wallet: {fileID: 7988086486144116433}
   health: {fileID: 4741787736900105630}
   inventory: {fileID: 6863152883008667092}
+--- !u!114 &1398606369656348710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f7fd1879a2e469795d6ddd61531859e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerRepelRuntime
+  health: {fileID: 0}
 --- !u!1 &2405205695851386503
 GameObject:
   m_ObjectHideFlags: 0

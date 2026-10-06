@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bf6f1368d8e47b1beb4a9e858f70832, type: 3}
-  m_Name: TestCardInventory
+  m_Name: RepelTestCardInventory
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerCardInventoryProfileSO
   ownedCards:
   - card: {fileID: 11400000, guid: 01ba78d46cc266941aafac33309638e3, type: 2}
@@ -55,7 +55,6 @@ MonoBehaviour:
     capacity: 6
     equippedCards:
     - {fileID: 11400000, guid: aa394aa5fde14cd4f9a7eaed79ca156c, type: 2}
-    - {fileID: 11400000, guid: 8215251cb2aba0645bdaf42288cebc1f, type: 2}
     - {fileID: 11400000, guid: e155c091b4b57ab478eb22b815defd09, type: 2}
   - category: 30
     capacity: 4

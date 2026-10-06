@@ -29,6 +29,8 @@ namespace TicGame.Architecture
         [SerializeField] private float baseKnockbackForce = 1f;
 
         private readonly HashSet<MonoBehaviour> hitTargets = new();
+        private readonly List<Collider2D> projectileHits = new();
+        private PlayerRepelRuntime repel;
         private PlayerController playerController;
         private PlayerCombatEffects combatEffects;
         private PlayerActionState trackedAttack;
@@ -47,9 +49,12 @@ namespace TicGame.Architecture
             hitStopRequests = services?.HitStopRequests;
         }
 
-        private void Update()
+        private void Update() => ResolveActiveAttackHits();
+
+        public void ResolveActiveAttackHits()
         {
-            if (PlaytestPauseController.IsGamePaused || playerController?.ActionRunner == null)
+            if (Time.timeScale <= 0f || PlaytestPauseController.IsGamePaused || playerController?.ActionRunner == null
+                || playerController.GetComponentInParent<PlayerWorldHold>()?.IsHeld == true)
             {
                 return;
             }
@@ -76,6 +81,16 @@ namespace TicGame.Architecture
         {
             var facing = playerController.Context.FacingDirection;
             GetHitBoxGeometry(facing, out var center, out var querySize);
+            repel ??= playerController.GetComponent<PlayerRepelRuntime>();
+            if (repel != null && repel.IsActive)
+            {
+                var projectileFilter = new ContactFilter2D { useTriggers = true };
+                // Projectile prefabs use both Enemy and Default; this query never supplies normal damage recipients.
+                projectileFilter.SetLayerMask(~0);
+                Physics2D.OverlapBox(center, querySize, 0f, projectileFilter, projectileHits);
+                foreach (var hit in projectileHits)
+                    repel.TryRepel(hit.GetComponentInParent<EnemyProjectile2D>());
+            }
             var colliders = Physics2D.OverlapBoxAll(
                 point: center,
                 size: querySize,

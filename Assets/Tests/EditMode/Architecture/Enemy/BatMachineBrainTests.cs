@@ -247,6 +247,68 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(0f, rig.Body.gravityScale);
         }
 
+        [Test]
+        public void Patrol_PlayerEntersDetectionRadius_AcquiresWithoutSceneAssignment()
+        {
+            var rig = CreateBat(withTarget: false);
+            var player = CreateDetectablePlayer(new Vector2(9f, 0f));
+            Physics2D.SyncTransforms();
+            rig.Brain.Tick(0f);
+            Assert.AreEqual(BatMachineState.PatrolRandom, rig.Brain.CurrentState);
+
+            player.transform.position = new Vector2(5f, 0f);
+            Physics2D.SyncTransforms();
+            rig.Brain.Tick(0f);
+
+            Assert.AreEqual(BatMachineState.Engage, rig.Brain.CurrentState);
+        }
+
+        [Test]
+        public void Engage_PlayerLeavesRadius_ReleasesAndReacquiresOnReturn()
+        {
+            var rig = CreateBat(withTarget: false);
+            var player = CreateDetectablePlayer(new Vector2(5f, 0f));
+            Physics2D.SyncTransforms();
+            EnterEngage(rig);
+
+            player.transform.position = new Vector2(9f, 0f);
+            Physics2D.SyncTransforms();
+            rig.Brain.Tick(0f);
+            Assert.AreEqual(BatMachineState.PatrolRandom, rig.Brain.CurrentState);
+            var targetField = typeof(BatMachineBrain).GetField("target", BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.IsNull(targetField.GetValue(rig.Brain));
+
+            player.transform.position = new Vector2(5f, 0f);
+            Physics2D.SyncTransforms();
+            EnterEngage(rig);
+        }
+
+        [Test]
+        public void Patrol_NonPlayerColliderInsideRadius_DoesNotAcquire()
+        {
+            var rig = CreateBat(withTarget: false);
+            var obstacle = CreateObject("Not a player");
+            obstacle.layer = LayerMask.NameToLayer("PlayerHitbox");
+            obstacle.transform.position = Vector2.right;
+            obstacle.AddComponent<BoxCollider2D>();
+            Physics2D.SyncTransforms();
+
+            rig.Brain.Tick(0f);
+
+            Assert.AreEqual(BatMachineState.PatrolRandom, rig.Brain.CurrentState);
+        }
+
+        private GameObject CreateDetectablePlayer(Vector2 position)
+        {
+            var player = CreateObject("Detectable Player");
+            player.layer = LayerMask.NameToLayer("PlayerHitbox");
+            player.transform.position = position;
+            player.AddComponent<SimpleHealth>().Initialize();
+            player.AddComponent<Rigidbody2D>().gravityScale = 0f;
+            player.AddComponent<BoxCollider2D>();
+            return player;
+        }
+
         private BatRig CreateBat(bool withTarget = true, System.Action<BatMachineBrain> configureBrain = null)
         {
             var root = CreateObject("Bat Machine");

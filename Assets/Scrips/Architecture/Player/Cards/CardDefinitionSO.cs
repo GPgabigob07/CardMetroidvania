@@ -38,7 +38,10 @@ namespace TicGame.Architecture
 
         public string Id => string.IsNullOrWhiteSpace(id) ? name : id;
         public string DisplayName => string.IsNullOrWhiteSpace(displayName) ? Id : displayName;
-        public string Description => description;
+        public string Description => effect != null && effect.CommitOperations.Count == 1
+            && effect.CommitOperations[0].Kind == CardOperationKind.ArmProjectileRepel
+            ? $"For {effect.CommitOperations[0].Amount:0.##} seconds, melee strikes repel enemy projectiles."
+            : description;
         public Sprite Icon => icon;
         public PlayerCardTimeState Category => category;
         public IReadOnlyList<ResourceAmount> FixedCosts => fixedCosts;
@@ -108,10 +111,16 @@ namespace TicGame.Architecture
             if (effect != null)
             {
                 foreach (var operation in effect.CommitOperations)
+                {
                     if (operation.Kind == CardOperationKind.ArmDirectionalWard
                         && (category != PlayerCardTimeState.Neutral || consumptionPolicy != CardConsumptionPolicy.Reusable
                             || effect.CommitOperations.Count != 1 || effect.ReactiveRules.Count != 0))
                         errors.Add("Ward requires one reusable Neutral guard operation and no reactive rules.");
+                    if (operation.Kind == CardOperationKind.ArmProjectileRepel
+                        && (category != PlayerCardTimeState.Chain || consumptionPolicy != CardConsumptionPolicy.Reusable
+                            || effect.CommitOperations.Count != 1 || effect.ReactiveRules.Count != 0))
+                        errors.Add("Repel requires one reusable Chain operation and no reactive rules.");
+                }
             }
 
             return errors;

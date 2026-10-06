@@ -49,6 +49,7 @@ namespace TicGame.Architecture.EditorTools
             EquipById(profile, cards, "card.neutral.jump-boost");
             EquipById(profile, cards, "card.chain.poise-damage");
             EquipById(profile, cards, "card.chain.growing-reach");
+            EquipById(profile, cards, "repel");
 
             var finishers = existingFinishers.Length > 0
                 ? existingFinishers

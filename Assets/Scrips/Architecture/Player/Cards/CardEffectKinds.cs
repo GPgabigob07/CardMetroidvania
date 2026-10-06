@@ -44,7 +44,8 @@ namespace TicGame.Architecture
         SacrificeHealthForEnergy = 140,
         ConvertEnergyToHealth = 150,
         Heal = 160,
-        ArmDirectionalWard = 170
+        ArmDirectionalWard = 170,
+        ArmProjectileRepel = 180
     }
 
     public enum CardLifetimeKind

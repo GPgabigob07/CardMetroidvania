@@ -87,6 +87,7 @@ namespace TicGame.Architecture
                 CardOperationKind.ConvertEnergyToHealth => true,
                 CardOperationKind.Heal => true,
                 CardOperationKind.ArmDirectionalWard => ward != null && ward.TryRead(out _),
+                CardOperationKind.ArmProjectileRepel => amount > 0f,
                 CardOperationKind.AddStatusCharges => status != null,
                 CardOperationKind.AddStatusCapacity => status != null,
                 CardOperationKind.AddStatusStacks => status != null,

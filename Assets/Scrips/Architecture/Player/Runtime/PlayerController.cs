@@ -254,6 +254,7 @@ namespace TicGame.Architecture
 
         private void OnDisable() {
             GetComponent<PlayerWardRuntime>()?.Clear();
+            GetComponent<PlayerRepelRuntime>()?.Clear();
             UnsubscribeCardTimeTransitions();
             DisableAction(reference: moveAction);
             DisableAction(reference: jumpAction);
@@ -419,8 +420,9 @@ namespace TicGame.Architecture
             ApplyAnimationFrame(frame: frame);
         }
 
-        public void ResetTransientState() {
+        public void ResetTransientState(bool clearTransientCardDefenses = true) {
             GetComponent<PlayerWardRuntime>()?.Clear();
+            if (clearTransientCardDefenses) GetComponent<PlayerRepelRuntime>()?.Clear();
             if (ActionRunner?.CurrentAction is IPlayerAttackExecution attackExecution) {
                 combatEffects?.CancelAttack(attackExecution.ExecutionId);
             }
@@ -438,6 +440,7 @@ namespace TicGame.Architecture
         public void ResetCardTimeForFullRun()
         {
             GetComponent<PlayerWardRuntime>()?.Clear();
+            GetComponent<PlayerRepelRuntime>()?.Clear();
             cardTimeSource?.Cancel();
             cardTimeSource?.PublishAvailability(CardTimeOpportunity.None);
             DisposeActiveCardSelection();
@@ -458,7 +461,7 @@ namespace TicGame.Architecture
             worldHeld = held;
             if (worldHeld)
             {
-                ResetTransientState();
+                ResetTransientState(clearTransientCardDefenses: false);
                 DisablePlayerActions();
                 return;
             }

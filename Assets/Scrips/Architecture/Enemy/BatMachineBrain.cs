@@ -517,6 +517,13 @@ namespace TicGame.Architecture
 
         private BatThreatFacts EvaluateThreat()
         {
+            if (!threatMonitor.IsInRange(target)
+                || (target.GetComponent<SimpleHealth>() != null
+                    && !EnemyPlayerTargeting.IsAvailable(target.gameObject)))
+            {
+                target = threatMonitor.AcquirePlayer(out targetBody);
+            }
+
             return threatMonitor.Evaluate(
                 target,
                 targetBody != null ? targetBody.linearVelocity : Vector2.zero,

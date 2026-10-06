@@ -20,6 +20,8 @@ namespace TicGame.Architecture
         [SerializeField] private PlayerSensors2D sensors;
         [SerializeField] private PlayerWardRuntime ward;
         private bool applyingWard;
+        private PlayerRepelRuntime repel;
+        private bool applyingRepel;
 
         [Header("Equipped Cards")] [SerializeField]
         private CardDefinitionSO neutralCardDefinition;
@@ -80,6 +82,8 @@ namespace TicGame.Architecture
                 return recovery != null && recovery.TryQuote(card, null, out var quote) && recovery.TryApply(card, quote);
             }
             var costs = BuildCosts(card);
+            if (IsRepelCard(card))
+                return TryApplyRepel(card, costs, new PreparedRepelQuote(card, null));
             if (IsWardCard(card))
                 return TryApplyWard(card, costs, new PreparedWardQuote(card, null));
             if (!wallet.TrySpend(costs)) {
@@ -172,7 +176,8 @@ namespace TicGame.Architecture
                 selection.SessionId,
                 costs,
                 snapshot,
-                wardQuote: IsWardCard(card) ? new PreparedWardQuote(card, selection) : null);
+                wardQuote: IsWardCard(card) ? new PreparedWardQuote(card, selection) : null,
+                repelQuote: IsRepelCard(card) ? new PreparedRepelQuote(card, selection) : null);
             return CardReadinessResult.Success(card, costs, commit);
         }
 
@@ -235,6 +240,7 @@ namespace TicGame.Architecture
             combatEffects?.ClearPoiseHits();
             combatEffects?.ClearGrowingReach();
             GetComponent<PlayerWardRuntime>()?.Clear();
+            GetComponent<PlayerRepelRuntime>()?.Clear();
         }
 
         public void ConfigureCardDefinitions(
@@ -266,6 +272,14 @@ namespace TicGame.Architecture
             var context = new ExecutionContext(
                 commit.Snapshot.AttackExecutionId,
                 commit.Snapshot.IsAirborne);
+            if (commit.RepelQuote != null)
+            {
+                if (!IsRepelCard(commit.Card) || commit.Card.GetValidationErrors().Count != 0)
+                { commit.SetFailure(CardCommitFailure.StaleRepelQuote); return false; }
+                var currentCosts = commit.Snapshot.BuildAdjustedCosts(BuildCosts(commit.Card));
+                if (!commit.RepelQuote.IsCurrent(commit.Card, commit.SessionId, commit.Costs, currentCosts))
+                { commit.SetFailure(CardCommitFailure.StaleRepelQuote); return false; }
+            }
             if (commit.WardQuote != null)
             {
                 if (!IsWardCard(commit.Card) || commit.Card.GetValidationErrors().Count != 0)
@@ -289,6 +303,14 @@ namespace TicGame.Architecture
                 var recovery = GetComponent<PlayerRecoveryController>();
                 var success = recovery != null && recovery.TryApply(commit.Card, commit.RecoveryQuote.Value);
                 if (!success) commit.SetFailure(recovery != null ? recovery.Failure : CardCommitFailure.MissingDependency);
+                PublishCommitFeedback(commit.Card, success ? CardFeedbackKind.Activated : CardFeedbackKind.Failed);
+                return success;
+            }
+            if (commit.RepelQuote != null)
+            {
+                var success = TryApplyRepel(commit.Card, commit.Costs, commit.RepelQuote);
+                if (!success) commit.SetFailure(wallet.CanSpend(commit.Costs)
+                    ? CardCommitFailure.UnmetCondition : CardCommitFailure.InsufficientLiveResources);
                 PublishCommitFeedback(commit.Card, success ? CardFeedbackKind.Activated : CardFeedbackKind.Failed);
                 return success;
             }
@@ -410,6 +432,10 @@ namespace TicGame.Architecture
                         ward ??= GetComponent<PlayerWardRuntime>();
                         if (applyingWard || ward == null || !ward.CanArmDefinition(operation.Ward)) return false;
                         break;
+                    case CardOperationKind.ArmProjectileRepel:
+                        repel ??= GetComponent<PlayerRepelRuntime>();
+                        if (applyingRepel || repel == null || !repel.CanArm(operation.Amount)) return false;
+                        break;
                     case CardOperationKind.GainResource:
                     case CardOperationKind.AddStatusCharges:
                     case CardOperationKind.AddStatusCapacity:
@@ -466,6 +492,7 @@ namespace TicGame.Architecture
                     or CardOperationKind.ConvertEnergyToHealth
                     or CardOperationKind.Heal
                     or CardOperationKind.ArmDirectionalWard
+                    or CardOperationKind.ArmProjectileRepel
                     or CardOperationKind.GainResource
                     or CardOperationKind.ArmSupplementalDamage
                     or CardOperationKind.InvokeAbility
@@ -547,6 +574,34 @@ namespace TicGame.Architecture
 
         private static bool IsWardCard(CardDefinitionSO card) => card?.Effect != null
             && card.Effect.CommitOperations.Count == 1 && card.Effect.CommitOperations[0].Kind == CardOperationKind.ArmDirectionalWard;
+
+        private static bool IsRepelCard(CardDefinitionSO card) => card?.Effect != null
+            && card.Effect.CommitOperations.Count == 1 && card.Effect.CommitOperations[0].Kind == CardOperationKind.ArmProjectileRepel;
+
+        private bool TryApplyRepel(CardDefinitionSO card, IReadOnlyList<ResourceAmount> costs, PreparedRepelQuote quote)
+        {
+            repel ??= GetComponent<PlayerRepelRuntime>();
+            if (applyingRepel || repel == null || !wallet.CanSpend(costs)
+                || !repel.TryReserve(quote.Duration, out var lease)) return false;
+            applyingRepel = true;
+            var amounts = costs.GroupBy(cost => cost.Resource)
+                .Select(group => new ResourceAmount(group.Key, group.Sum(cost => cost.Amount))).ToArray();
+            var notifications = new List<Action>();
+            try
+            {
+                foreach (var amount in amounts) notifications.Add(wallet.ChangeRecoveryDeferred(amount.Resource, -amount.Amount));
+                if (!repel.CommitReserved(lease, card))
+                {
+                    foreach (var amount in amounts) wallet.ChangeRecoveryDeferred(amount.Resource, amount.Amount);
+                    return false;
+                }
+                // The balance and effect are coherent before callbacks can reenter.
+                repel.PublishArmed();
+                foreach (var notification in notifications) notification?.Invoke();
+                return true;
+            }
+            finally { repel.ReleaseReservation(lease); applyingRepel = false; }
+        }
 
         private bool TryApplyWard(CardDefinitionSO card, IReadOnlyList<ResourceAmount> costs, PreparedWardQuote quote)
         {

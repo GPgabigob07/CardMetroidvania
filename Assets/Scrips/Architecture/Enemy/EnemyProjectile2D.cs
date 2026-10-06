@@ -104,6 +104,9 @@ namespace TicGame.Architecture
             healthFormula = CreateHealthFormula(profile);
             lifetimeRemaining = Mathf.Max(0f, lifetime);
             IsLaunched = true;
+            // Enemy bodies ignore players/enemies globally; projectiles must reach their damage targets.
+            foreach (var collider in GetComponentsInChildren<Collider2D>(includeInactive: true))
+                collider.includeLayers |= targetLayers;
             gameObject.SetActive(true);
         }
 
@@ -114,7 +117,23 @@ namespace TicGame.Architecture
                 return;
             }
 
-            Direction *= -1f;
+            ConvertToPlayer(playerSource, -Direction);
+        }
+
+        public bool TryDeflect(GameObject playerSource, Vector2 direction)
+        {
+            if (!IsLaunched || playerSource == null || SourceObject == playerSource
+                || Provenance.OriginKind == DamageOriginKind.Converted
+                || !float.IsFinite(direction.x) || !float.IsFinite(direction.y) || direction.sqrMagnitude <= 0f)
+                return false;
+            ConvertToPlayer(playerSource, direction.normalized);
+            return true;
+        }
+
+        private void ConvertToPlayer(GameObject playerSource, Vector2 direction)
+        {
+            Direction = direction;
+            if (body != null) body.linearVelocity = Direction * Speed;
             SourceObject = playerSource;
             PoiseDamage = 10f;
             Provenance = DamageProvenance.Converted(
@@ -173,6 +192,10 @@ namespace TicGame.Architecture
             {
                 return false;
             }
+
+            if (SourceObject != null && target.transform.IsChildOf(SourceObject.transform)) return false;
+            if (Provenance.OriginKind != DamageOriginKind.Converted && target.GetComponentInParent<EnemyActor>() != null)
+                return false;
 
             if (authoredLaunch && Provenance.OriginKind != DamageOriginKind.Converted)
             {
@@ -255,6 +278,12 @@ namespace TicGame.Architecture
             if (target == null)
             {
                 return null;
+            }
+
+            if (target.GetComponentInParent<EnemyActor>() != null)
+            {
+                var region = EnemyDamageRegionSelection.ResolveTargets(target.GetComponents<Collider2D>()).FirstOrDefault();
+                return region.Recipient != null ? region.Recipient.gameObject : null;
             }
 
             if (target.GetComponents<MonoBehaviour>().Any(component => component is IDamageable))

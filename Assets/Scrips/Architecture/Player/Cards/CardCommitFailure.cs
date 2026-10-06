@@ -18,6 +18,7 @@ namespace TicGame.Architecture
         InsufficientEnergyCapacity = 130,
         DepletedStock = 140,
         StaleRecoveryQuote = 150,
-        StaleWardQuote = 160
+        StaleWardQuote = 160,
+        StaleRepelQuote = 170
     }
 }
