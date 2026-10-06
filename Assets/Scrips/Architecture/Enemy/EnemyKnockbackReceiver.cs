@@ -33,7 +33,12 @@ namespace TicGame.Architecture
 
         public void ApplyKnockback(Vector2 direction, float force)
         {
-            if (body == null || force <= 0f)
+            if (body == null)
+            {
+                body = GetComponent<Rigidbody2D>();
+            }
+
+            if (body == null || force <= 0f || resistanceMultiplier <= 0f)
             {
                 return;
             }
@@ -42,6 +47,8 @@ namespace TicGame.Architecture
                 ? direction.normalized
                 : Vector2.right;
             patrolBrain?.SuppressMovement(movementSuppressionDuration);
+            GetComponent<BatMachineBrain>()?.SuppressMovement(movementSuppressionDuration);
+            GetComponent<GolemChargerBrain>()?.SuppressMovement(movementSuppressionDuration);
             body.AddForce(
                 force: normalizedDirection * force * resistanceMultiplier,
                 mode: ForceMode2D.Impulse);

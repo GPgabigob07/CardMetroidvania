@@ -359,6 +359,9 @@ namespace TicGame.Architecture.Tests
 
         private sealed class TestGameplayServices : IGameplayServices
         {
+            public IUserSettingsService Settings => null;
+            public IAudioService Audio => null;
+            public IAudioSettingsService AudioSettings => null;
             public IGameplayTimeService Time => null;
             public IHitStopService HitStop => null;
             public HitStopRequestEventChannelSO HitStopRequests => null;
@@ -381,3 +384,5 @@ namespace TicGame.Architecture.Tests
         }
     }
 }
+
+

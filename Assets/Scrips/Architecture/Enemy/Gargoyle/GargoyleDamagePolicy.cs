@@ -88,18 +88,21 @@ namespace TicGame.Architecture
 
         public DamageResult ApplyDamage(GargoyleRegionKind region, in DamageContext context)
         {
-            if (!IsRegionEnabled(region)) return Reject();
+            if (!IsRegionEnabled(region)) return Reject(actor == null || !actor.IsInitialized ? DamageRejectionReason.InvalidTarget
+                : actor.IsDefeated ? DamageRejectionReason.AlreadyDefeated
+                : context.Amount <= 0 && (context.Profile == null || context.Profile.BaseDamage <= 0)
+                    ? DamageRejectionReason.NonPositiveDamage : DamageRejectionReason.GameplayBlocked);
             RefreshConfiguration();
             var multiplier = region == GargoyleRegionKind.Head && headExposed
                 ? liveTuning.Values.ExposedHeadMultiplier : liveTuning.Values.BodyDamageMultiplier;
             var amount = context.Amount > 0 ? context.Amount : context.Profile != null ? context.Profile.BaseDamage : 0;
             amount *= multiplier;
-            if (!float.IsFinite(amount) || amount <= 0) return Reject();
+            if (!float.IsFinite(amount) || amount <= 0) return Reject(DamageRejectionReason.NonPositiveDamage);
 
             var hasPrimaryIdentity = context.Provenance?.OriginKind == DamageOriginKind.Primary
                 && !string.IsNullOrWhiteSpace(context.AttackExecutionId);
             var identity = (context.Source, context.AttackExecutionId);
-            if (hasPrimaryIdentity && !acceptedExecutions.Add(identity)) return Reject();
+            if (hasPrimaryIdentity && !acceptedExecutions.Add(identity)) return Reject(DamageRejectionReason.DuplicateExecution);
 
             var adjusted = new DamageContext(context.Source, context.Target, context.Profile, amount,
                 context.HitPoint, context.Direction, context.Tags, context.PoiseDamage,
@@ -120,8 +123,8 @@ namespace TicGame.Architecture
                 actor.Health.CurrentHealth, result.HitStopSeconds);
         }
 
-        private DamageResult Reject() => new DamageResult(false, actor != null && actor.IsDefeated, 0,
-            actor != null && actor.Health != null ? actor.Health.CurrentHealth : 0, 0);
+        private DamageResult Reject(DamageRejectionReason reason) => new DamageResult(false, actor != null && actor.IsDefeated, 0,
+            actor != null && actor.Health != null ? actor.Health.CurrentHealth : 0, 0, reason);
         private void OnDefeated(EnemyDamageEvent _) { coreOpen = false; headExposed = false; RegionsChanged?.Invoke(); }
         private void Unsubscribe()
         {

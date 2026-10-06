@@ -8,6 +8,17 @@ namespace TicGame.Architecture
         private const string AirDummyName = "Review Dummy - Air";
 
         private EnemyDefinitionSO runtimeDefinition;
+        private Sprite runtimeSprite;
+        private Texture2D runtimeTexture;
+        [Header("Hit Feedback")]
+        [SerializeField] private HitRippleProfileSO hitRippleProfile;
+        [SerializeField] private Material hitRippleMaterial;
+
+        public bool ConfigureFeedback(HitRippleProfileSO profile, Material material)
+        {
+            if (hitRippleProfile == profile && hitRippleMaterial == material) return false;
+            hitRippleProfile = profile; hitRippleMaterial = material; return true;
+        }
 
         private void Start()
         {
@@ -26,6 +37,8 @@ namespace TicGame.Architecture
 
         private void OnDestroy()
         {
+            if (runtimeSprite != null) Destroy(runtimeSprite);
+            if (runtimeTexture != null) Destroy(runtimeTexture);
             if (runtimeDefinition != null)
             {
                 Destroy(obj: runtimeDefinition);
@@ -59,16 +72,31 @@ namespace TicGame.Architecture
             actor.Initialize();
 
             dummyObject.AddComponent<TrainingDummy>();
-            dummyObject.AddComponent<EnemyDebugPresentation>();
+            var debug = dummyObject.AddComponent<EnemyDebugPresentation>();
+            if (hitRippleProfile != null && hitRippleMaterial != null)
+            {
+                renderer.sharedMaterial = hitRippleMaterial;
+                var presenter = dummyObject.AddComponent<EnemyHitRipplePresenter>();
+                presenter.Configure(actor, hitRippleProfile, new[] { renderer });
+                dummyObject.AddComponent<EnemyHitRippleDamageListener>().Configure(presenter);
+                debug.SetHitFlashEnabled(false);
+            }
         }
 
-        private static Sprite CreateSquareSprite()
+        private Sprite CreateSquareSprite()
         {
-            return Sprite.Create(
-                texture: Texture2D.whiteTexture,
-                rect: new Rect(x: 0f, y: 0f, width: 1f, height: 1f),
+            if (runtimeSprite != null) return runtimeSprite;
+            // Same unit square as the original dummy, with enough source pixels to review the band.
+            runtimeTexture = new Texture2D(32, 32) { filterMode = FilterMode.Point };
+            var pixels = new Color32[32 * 32];
+            System.Array.Fill(pixels, new Color32(255, 255, 255, 255));
+            runtimeTexture.SetPixels32(pixels); runtimeTexture.Apply();
+            runtimeSprite = Sprite.Create(
+                texture: runtimeTexture,
+                rect: new Rect(x: 0f, y: 0f, width: 32f, height: 32f),
                 pivot: new Vector2(x: 0.5f, y: 0.5f),
-                pixelsPerUnit: 1f);
+                pixelsPerUnit: 32f);
+            return runtimeSprite;
         }
     }
 }

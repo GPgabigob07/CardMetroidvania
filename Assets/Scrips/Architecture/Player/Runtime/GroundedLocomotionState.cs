@@ -46,6 +46,7 @@ namespace TicGame.Architecture
                     ? context.GroundedJumpBoostRuntime.ConsumeGroundedLaunch(config.JumpVelocity)
                     : config.JumpVelocity;
                 context.Locomotion.ConsumeJumpBuffer();
+                context.Locomotion.NotifyJumpStarted(context.Motor.transform.position);
                 context.Locomotion.ForceState(context: context, stateId: PlayerLocomotionState.Airborne);
             }
 

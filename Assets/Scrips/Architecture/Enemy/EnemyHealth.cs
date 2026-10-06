@@ -47,7 +47,8 @@ namespace TicGame.Architecture
                     killed: true,
                     appliedAmount: 0f,
                     remainingHealth: CurrentHealth,
-                    hitStopSeconds: 0f);
+                    hitStopSeconds: 0f,
+                    rejectionReason: DamageRejectionReason.AlreadyDefeated);
             }
 
             var requestedAmount = ResolveDamageAmount(context);
@@ -58,7 +59,8 @@ namespace TicGame.Architecture
                     killed: false,
                     appliedAmount: 0f,
                     remainingHealth: CurrentHealth,
-                    hitStopSeconds: 0f);
+                    hitStopSeconds: 0f,
+                    rejectionReason: DamageRejectionReason.NonPositiveDamage);
             }
 
             var previousHealth = CurrentHealth;

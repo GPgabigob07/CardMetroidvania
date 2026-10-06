@@ -92,19 +92,22 @@ namespace TicGame.Architecture
         [SerializeField] private float appliedAmount;
         [SerializeField] private float remainingHealth;
         [SerializeField] private float hitStopSeconds;
+        [SerializeField] private DamageRejectionReason rejectionReason;
 
         public DamageResult(
             bool accepted,
             bool killed,
             float appliedAmount,
             float remainingHealth,
-            float hitStopSeconds = 0.033f)
+            float hitStopSeconds = 0.033f,
+            DamageRejectionReason rejectionReason = DamageRejectionReason.Unspecified)
         {
             this.accepted = accepted;
             this.killed = killed;
             this.appliedAmount = appliedAmount;
             this.remainingHealth = remainingHealth;
             this.hitStopSeconds = Mathf.Max(a: 0f, b: hitStopSeconds);
+            this.rejectionReason = rejectionReason;
         }
 
         public bool Accepted => accepted;
@@ -112,5 +115,6 @@ namespace TicGame.Architecture
         public float AppliedAmount => appliedAmount;
         public float RemainingHealth => remainingHealth;
         public float HitStopSeconds => hitStopSeconds;
+        public DamageRejectionReason RejectionReason => rejectionReason;
     }
 }

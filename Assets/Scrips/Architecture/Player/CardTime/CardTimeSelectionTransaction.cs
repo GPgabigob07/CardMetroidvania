@@ -7,6 +7,7 @@ namespace TicGame.Architecture
         private readonly List<CardDefinitionSO> candidates = new();
         private bool disposed;
         private int selectedIndex;
+        public event System.Action SelectionChanged;
 
         private CardTimeSelectionTransaction(
             PlayerCardTimeState category,
@@ -80,7 +81,9 @@ namespace TicGame.Architecture
                 selectedIndex + direction,
                 0,
                 candidates.Count - 1);
-            return selectedIndex != previous;
+            if (selectedIndex == previous) return false;
+            SelectionChanged?.Invoke();
+            return true;
         }
 
         public bool SelectIndex(int index)
@@ -90,7 +93,9 @@ namespace TicGame.Architecture
                 return false;
             }
 
+            var changed = selectedIndex != index;
             selectedIndex = index;
+            if (changed) SelectionChanged?.Invoke();
             return true;
         }
 

@@ -36,6 +36,7 @@ namespace TicGame.Architecture
             {
                 velocity.y = config.JumpVelocity;
                 context.Locomotion.ConsumeJumpBuffer();
+                context.Locomotion.NotifyJumpStarted(context.Motor.transform.position);
             }
             else if (context.Locomotion.HasBufferedJump
                 && context.ExtraJumpRuntime != null
@@ -43,6 +44,7 @@ namespace TicGame.Architecture
             {
                 velocity.y = config.JumpVelocity;
                 context.Locomotion.ConsumeJumpBuffer();
+                context.Locomotion.NotifyJumpStarted(context.Motor.transform.position);
             }
 
             var gravityScale = ResolveGravityScale(context: context, velocity: velocity);

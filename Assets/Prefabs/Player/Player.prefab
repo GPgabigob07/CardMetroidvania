@@ -30,6 +30,11 @@ GameObject:
   - component: {fileID: 6863152883008667092}
   - component: {fileID: 739535287382128567}
   - component: {fileID: 1398606369656348710}
+  - component: {fileID: 9212981768717937719}
+  - component: {fileID: 5548458574023408650}
+  - component: {fileID: 3814016358696189333}
+  - component: {fileID: 9150675860514740751}
+  - component: {fileID: 6173842424547665403}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -444,6 +449,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerRepelRuntime
   health: {fileID: 0}
+--- !u!114 &9212981768717937719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59b7a78877a045b4aa7a77f108ca9744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerAudioPresenter
+  swing: {fileID: 11400000, guid: f58fd1693292c6945a79aff37496f0bd, type: 2}
+  dash: {fileID: 11400000, guid: 45399bacb5492b94fad70c1e09f4101e, type: 2}
+  jump: {fileID: 11400000, guid: 20d79d67254962d4ea32d79cc7812187, type: 2}
+  landing: {fileID: 11400000, guid: 08f3e00714f6bde47a217fef50d67913, type: 2}
+--- !u!114 &5548458574023408650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d20b41aa6241b4e96bb99c67d5d213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeAudioPresenter
+  enter: {fileID: 11400000, guid: c4cebf8edcd6c2742a2f77351ec72681, type: 2}
+  exit: {fileID: 11400000, guid: c0187fc61ee1bd24c9caa5d0ae261312, type: 2}
+--- !u!114 &3814016358696189333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52fa10e089cac044a64682337607a92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.UiAudioPresenter
+  selection: {fileID: 11400000, guid: 5d6f43269bcc0ee418c624c2c40c24ce, type: 2}
+  confirmation: {fileID: 11400000, guid: 37f511ba219c17b41a1b2e72a1f4e95f, type: 2}
+--- !u!114 &9150675860514740751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b39c7ce62b5c4a82166b9998c0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageAudioPresenter
+  hit: {fileID: 11400000, guid: 87fb00a2b8768f44bb755923c05523f8, type: 2}
+--- !u!114 &6173842424547665403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751150544501751020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a47310b103bff8d4da40783bd568ea3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.PlayerHitRipplePresenter
+  owner: {fileID: 4741787736900105630}
+  profile: {fileID: 11400000, guid: 0f64b6c5bcc1fa54597a7c8df77d2e3d, type: 2}
+  visuals:
+  - {fileID: 1680961593428970795}
+  manualPlayback: 0
 --- !u!1 &2405205695851386503
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +614,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 7d564111dedc320479e6864eb572da90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

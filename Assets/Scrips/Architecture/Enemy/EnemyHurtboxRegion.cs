@@ -28,7 +28,8 @@ namespace TicGame.Architecture
                     killed: false,
                     appliedAmount: 0f,
                     remainingHealth: 0f,
-                    hitStopSeconds: 0f);
+                    hitStopSeconds: 0f,
+                    rejectionReason: DamageRejectionReason.InvalidTarget);
         }
 
         public void Configure(GolemChargerDamagePolicy policy, EnemyHurtboxRegionType hitRegion)

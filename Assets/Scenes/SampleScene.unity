@@ -11132,6 +11132,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7990fcff9747ae9acbf7fde107da8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.TrainingDummyReviewBootstrap
+  hitRippleProfile: {fileID: 11400000, guid: 82a47b0f1cfbc8b4daddd68318e196aa, type: 2}
+  hitRippleMaterial: {fileID: 2100000, guid: 7d564111dedc320479e6864eb572da90, type: 2}
 --- !u!4 &1833839990
 Transform:
   m_ObjectHideFlags: 0

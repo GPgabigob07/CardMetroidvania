@@ -33,6 +33,7 @@ namespace TicGame.Architecture
             lease = new PlaytestPauseLease(session.Services.Time);
             session.Gameplay.Player.SetMenuInputSuppressed(true);
             session.Services.GameState.RequestState(GameState.Pause);
+            session.Services.Audio?.SetWorldPaused(true);
             PauseChanged?.Invoke(true);
             return true;
         }
@@ -44,6 +45,7 @@ namespace TicGame.Architecture
             lease = null;
             session.RequireInputRelease();
             session.Services?.GameState?.RequestState(GameState.Gameplay);
+            session.Services?.Audio?.SetWorldPaused(false);
             PauseChanged?.Invoke(false);
         }
 
@@ -61,6 +63,6 @@ namespace TicGame.Architecture
         }
 
         private void OnApplicationFocus(bool focused) { if (!focused) TryPause(); }
-        private void OnDestroy() { lease?.Dispose(); lease = null; }
+        private void OnDestroy() { lease?.Dispose(); lease = null; session?.Services?.Audio?.SetWorldPaused(false); }
     }
 }

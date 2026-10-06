@@ -33,7 +33,7 @@ namespace TicGame.Architecture
             shape.offset = new Vector2(settings.Offset.x * policy.FacingDirection, settings.Offset.y);
         }
         public DamageResult ApplyDamage(in DamageContext context) => policy != null
-            ? policy.ApplyDamage(region, context) : new DamageResult(false, false, 0, 0, 0);
+            ? policy.ApplyDamage(region, context) : new DamageResult(false, false, 0, 0, 0, DamageRejectionReason.InvalidTarget);
         private void Subscribe()
         {
             if (subscribedPolicy == policy) return;

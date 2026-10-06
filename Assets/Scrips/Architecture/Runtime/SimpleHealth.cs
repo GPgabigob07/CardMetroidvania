@@ -18,6 +18,8 @@ namespace TicGame.Architecture
         [SerializeField] private VoidEventChannelSO deathEvent;
 
         public event Action<SimpleHealthChanged> Changed;
+        public event Action<DamageContext, DamageResult> Damaged;
+        public event Action ResetPerformed;
 
         public float CurrentHealth { get; private set; }
         public float MaximumHealth => maxHealth;
@@ -32,6 +34,7 @@ namespace TicGame.Architecture
         {
             var previousHealth = CurrentHealth;
             CurrentHealth = maxHealth;
+            ResetPerformed?.Invoke();
             Changed?.Invoke(new SimpleHealthChanged(
                 previous: previousHealth,
                 current: CurrentHealth,
@@ -75,6 +78,16 @@ namespace TicGame.Architecture
             CurrentHealth = Mathf.Max(a: 0f, b: CurrentHealth - amount);
             bool killed = CurrentHealth <= 0f;
 
+            var result = new DamageResult(
+                accepted: true,
+                killed: killed,
+                appliedAmount: amount,
+                remainingHealth: CurrentHealth,
+                hitStopSeconds: context.Profile != null
+                    ? context.Profile.HitStopSeconds
+                    : 0.1f);
+            if (float.IsFinite(amount) && amount > 0f) Damaged?.Invoke(context, result);
+
             damageTakenEvent?.Raise(payload: context);
             Changed?.Invoke(new SimpleHealthChanged(
                 previous: previousHealth,
@@ -86,14 +99,7 @@ namespace TicGame.Architecture
                 deathEvent?.Raise();
             }
 
-            return new DamageResult(
-                accepted: true,
-                killed: killed,
-                appliedAmount: amount,
-                remainingHealth: CurrentHealth,
-                hitStopSeconds: context.Profile != null
-                    ? context.Profile.HitStopSeconds
-                    : 0.1f);
+            return result;
         }
     }
 }

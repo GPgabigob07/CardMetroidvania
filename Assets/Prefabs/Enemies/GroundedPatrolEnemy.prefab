@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 387669119669762552}
   - component: {fileID: 232640696203512712}
   - component: {fileID: 4628432747394900403}
+  - component: {fileID: 5428807178311226693}
   m_Layer: 8
   m_Name: GroundedPatrolEnemy
   m_TagString: Untagged
@@ -218,6 +219,19 @@ MonoBehaviour:
   spriteRenderer: {fileID: 1301552041862957702}
   attackFlashColor: {r: 1, g: 0, b: 0, a: 1}
   attackFlashDuration: 0.15
+--- !u!114 &5428807178311226693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076834456552454980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b39c7ce62b5c4a82166b9998c0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageAudioPresenter
+  hit: {fileID: 11400000, guid: 504daecefc4cecc4f93700e94381f7fd, type: 2}
 --- !u!1 &1568165950012342817
 GameObject:
   m_ObjectHideFlags: 0

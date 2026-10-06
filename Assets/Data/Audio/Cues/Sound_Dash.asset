@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 814a41c7c25b48e49ac894cbf16f8a15, type: 3}
+  m_Name: Sound_Dash
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.SoundCueSO
+  resource: {fileID: 6418180475301049370, guid: 552afff6e97cc3544829bc4460995036, type: 2}
+  mixerGroup: {fileID: -5953614651841044961, guid: 08b4af2aeed7a34438b20659e2aaa460, type: 2}
+  gain: 0.45
+  priority: 128
+  maximumInstances: 4
+  cooldown: 0
+  minimumDistance: 12
+  maximumDistance: 40
+  rolloff: 1

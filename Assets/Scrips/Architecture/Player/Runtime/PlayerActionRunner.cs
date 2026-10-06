@@ -8,6 +8,7 @@ namespace TicGame.Architecture
         public PlayerActionState CurrentState => CurrentAction?.State ?? PlayerActionState.None;
         public ILocomotionOverride CurrentLocomotionOverride => CurrentAction as ILocomotionOverride;
         public bool HasAction => CurrentAction != null;
+        public event Action<PlayerActionState, UnityEngine.Vector3> ActionStarted;
 
         public bool TryStartAction(PlayerContext context, IPlayerAction action, bool replaceCurrent = false)
         {
@@ -25,6 +26,7 @@ namespace TicGame.Architecture
             CurrentAction = action;
             context.ClearAnimatorActionFrame();
             CurrentAction.Enter(context: context);
+            ActionStarted?.Invoke(action.State, context.Motor.transform.position);
             return true;
         }
 

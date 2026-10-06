@@ -15,6 +15,7 @@ namespace TicGame.Architecture
         public int TargetLimit;
         public TargetPriorityMode TargetPriorityMode;
         public bool AllowPartialResolution;
+        public IReadOnlyDictionary<GameObject, Vector2> TargetHitPoints;
 
         public DamageRequest(
             DamageInstance instance,
@@ -24,7 +25,8 @@ namespace TicGame.Architecture
             GameplayTagSet requestTags = null,
             int targetLimit = 1,
             TargetPriorityMode targetPriorityMode = TargetPriorityMode.ExplicitOrder,
-            bool allowPartialResolution = true)
+            bool allowPartialResolution = true,
+            IReadOnlyDictionary<GameObject, Vector2> targetHitPoints = null)
         {
             Instance = instance;
             CandidateTargets = candidateTargets ?? Array.Empty<GameObject>();
@@ -34,7 +36,10 @@ namespace TicGame.Architecture
             TargetLimit = Mathf.Max(a: 1, b: targetLimit);
             TargetPriorityMode = targetPriorityMode;
             AllowPartialResolution = allowPartialResolution;
+            TargetHitPoints = targetHitPoints;
         }
+
+        public Vector2 GetHitPoint(GameObject target) => target != null && TargetHitPoints != null
+            && TargetHitPoints.TryGetValue(target, out var point) ? point : HitPoint;
     }
 }
-

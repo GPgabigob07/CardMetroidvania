@@ -298,6 +298,25 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(BatMachineState.PatrolRandom, rig.Brain.CurrentState);
         }
 
+        [Test]
+        public void Patrol_KnockbackSurvivesSteeringUntilSuppressionExpires()
+        {
+            var rig = CreateBat(withTarget: false);
+            var receiver = rig.Root.AddComponent<EnemyKnockbackReceiver>();
+            receiver.SetBody(rig.Body);
+            rig.Body.linearVelocity = Vector2.zero;
+            receiver.ApplyKnockback(Vector2.right, 4f);
+            var impulseVelocity = rig.Body.linearVelocity;
+
+            rig.Brain.FixedTick(0.02f);
+
+            Assert.Greater(impulseVelocity.x, 0f);
+            Assert.AreEqual(impulseVelocity, rig.Body.linearVelocity);
+            rig.Brain.Tick(0.16f);
+            rig.Brain.FixedTick(0.02f);
+            Assert.AreNotEqual(impulseVelocity, rig.Body.linearVelocity);
+        }
+
         private GameObject CreateDetectablePlayer(Vector2 position)
         {
             var player = CreateObject("Detectable Player");

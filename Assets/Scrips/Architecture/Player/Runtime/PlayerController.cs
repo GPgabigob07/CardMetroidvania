@@ -153,6 +153,8 @@ namespace TicGame.Architecture
         public bool IsGameplayServicesReady => gameplayServices != null && cardTimeSource != null;
         public bool CanRecoverEnergy => IsGameplayServicesReady && !worldHeld && !menuInputSuppressed;
         public event Action GameplayServicesReady;
+        public event Action CardSelectionChanged;
+        public event Action CardCommitted;
 
         private void Awake() {
             if (motor == null) {
@@ -651,6 +653,7 @@ namespace TicGame.Architecture
             cardSelectionHud?.PlaySlotAnimation(
                 feedbackSlotIndex,
                 CardTimeSelectionSlotAnimation.Committed);
+            CardCommitted?.Invoke();
             DisposeActiveCardSelection();
             attackCombo.NotifyCardCommitted(
                 snapshot.SessionCardTime,
@@ -770,6 +773,7 @@ namespace TicGame.Architecture
 
         private void DisposeActiveCardSelection()
         {
+            if (activeCardSelection != null) activeCardSelection.SelectionChanged -= NotifyCardSelectionChanged;
             cardSelectionHud?.ClearSelection(activeCardSelection);
             cardSelectionInput?.ClearSelection(activeCardSelection);
             activeCardSelection?.Dispose();
@@ -778,10 +782,13 @@ namespace TicGame.Architecture
 
         private bool BindActiveSelectionHud()
         {
+            activeCardSelection.SelectionChanged += NotifyCardSelectionChanged;
             cardSelectionHud?.BindSelection(activeCardSelection);
             cardSelectionInput?.BindSelection(activeCardSelection);
             return true;
         }
+
+        private void NotifyCardSelectionChanged() => CardSelectionChanged?.Invoke();
 
         private void CompleteCurrentAttack() {
             if (ActionRunner?.CurrentAction is IPlayerAttackExecution attackExecution) {

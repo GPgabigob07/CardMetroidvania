@@ -42,6 +42,9 @@ namespace TicGame.Architecture.Tests
 
         private sealed class FakeGameplayServices : IGameplayServices
         {
+            public IUserSettingsService Settings => null;
+            public IAudioService Audio => null;
+            public IAudioSettingsService AudioSettings => null;
             public FakeGameplayServices(CardTimeSessionEventChannelSO transitions)
             {
                 CardTimeTransitions = transitions;
@@ -63,3 +66,5 @@ namespace TicGame.Architecture.Tests
         }
     }
 }
+
+

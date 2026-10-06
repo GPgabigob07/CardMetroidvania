@@ -2,6 +2,14 @@ namespace TicGame.Architecture
 {
     public interface IGameplayServices
     {
+        /// <summary>Gets persistent user preferences, separate from gameplay progress.</summary>
+        IUserSettingsService Settings { get; }
+        /// <summary>Gets centralized positional and UI audio playback.</summary>
+        IAudioService Audio { get; }
+
+        /// <summary>Gets independently adjustable mixer volume categories.</summary>
+        IAudioSettingsService AudioSettings { get; }
+
         /// <summary>
         /// Gets the persistent global gameplay-time service.
         /// </summary>

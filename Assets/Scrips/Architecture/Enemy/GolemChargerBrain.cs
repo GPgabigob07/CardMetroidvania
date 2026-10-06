@@ -60,6 +60,7 @@ namespace TicGame.Architecture
         private readonly StateMachine<GolemChargerState> stateMachine = new StateMachine<GolemChargerState>();
 
         private float stateTimeRemaining;
+        private float movementSuppressionRemaining;
         private Vector2 patrolAnchor;
         private float patrolDirection = -1f;
         private bool statesRegistered;
@@ -109,6 +110,7 @@ namespace TicGame.Architecture
             SubscribeToPoise();
             RegisterStates();
             stateTimeRemaining = 0f;
+            movementSuppressionRemaining = 0f;
             patrolAnchor = body.position;
             patrolDirection = -1f;
             IsInitialized = true;
@@ -130,7 +132,11 @@ namespace TicGame.Architecture
                 poise?.Tick(gameplayDeltaTime);
             }
 
-            stateMachine.Tick(gameplayDeltaTime);
+            movementSuppressionRemaining = Mathf.Max(0f, movementSuppressionRemaining - gameplayDeltaTime);
+            if (movementSuppressionRemaining <= 0f || CurrentState == GolemChargerState.Dead)
+            {
+                stateMachine.Tick(gameplayDeltaTime);
+            }
         }
 
         public void FixedTick(float fixedDeltaTime)
@@ -140,7 +146,15 @@ namespace TicGame.Architecture
                 return;
             }
 
-            stateMachine.FixedTick(Mathf.Max(0f, fixedDeltaTime));
+            if (movementSuppressionRemaining <= 0f)
+            {
+                stateMachine.FixedTick(Mathf.Max(0f, fixedDeltaTime));
+            }
+        }
+
+        public void SuppressMovement(float duration)
+        {
+            movementSuppressionRemaining = Mathf.Max(movementSuppressionRemaining, Mathf.Max(0f, duration));
         }
 
         public bool TryInterrupt(in DamageContext context)

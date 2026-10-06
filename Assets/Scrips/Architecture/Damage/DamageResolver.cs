@@ -55,7 +55,7 @@ namespace TicGame.Architecture
                     target: target,
                     profile: instance.Profile,
                     amount: finalAmount,
-                    hitPoint: request.HitPoint,
+                    hitPoint: request.GetHitPoint(target),
                     direction: request.Direction,
                     tags: instance.Tags,
                     poiseDamage: poiseDamage,

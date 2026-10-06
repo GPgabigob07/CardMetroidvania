@@ -110,6 +110,9 @@ namespace TicGame.Architecture.Tests
 
         private sealed class FakeGameplayServices : IGameplayServices
         {
+            public IUserSettingsService Settings => null;
+            public IAudioService Audio => null;
+            public IAudioSettingsService AudioSettings => null;
             public FakeGameplayServices(ICardFeedbackService cardFeedback)
             {
                 CardFeedback = cardFeedback;
@@ -125,3 +128,5 @@ namespace TicGame.Architecture.Tests
         }
     }
 }
+
+

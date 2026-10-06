@@ -288,6 +288,7 @@ namespace TicGame.Architecture.EditorTools
                 root.name = "BatMachine";
                 root.layer = enemyLayer;
                 var body = GetOrAddComponent<Rigidbody2D>(root);
+                GetOrAddComponent<EnemyKnockbackReceiver>(root).SetBody(body);
                 body.bodyType = RigidbodyType2D.Dynamic;
                 body.gravityScale = 1f;
                 body.freezeRotation = true;

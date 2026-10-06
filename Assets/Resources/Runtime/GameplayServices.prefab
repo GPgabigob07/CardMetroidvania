@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 1810290883672526694}
   - component: {fileID: 8356156578515658041}
   - component: {fileID: 1373901591649446191}
+  - component: {fileID: 1810397292660360536}
+  - component: {fileID: 4018306443597666032}
   m_Layer: 0
   m_Name: GameplayServices
   m_TagString: Untagged
@@ -53,6 +55,8 @@ MonoBehaviour:
   - {fileID: 1373901591649446191}
   - {fileID: 8356156578515658041}
   - {fileID: 4973312440651410884}
+  - {fileID: 1810397292660360536}
+  - {fileID: 4018306443597666032}
 --- !u!114 &4973312440651410884
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,3 +110,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.CardTimeSessionController
   configuration: {fileID: 11400000, guid: 61668e995fd546b18928a0e30e88239b, type: 2}
   transitionEvent: {fileID: 11400000, guid: 02b860fe4618bea4eb4360027c7f524c, type: 2}
+--- !u!114 &1810397292660360536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955166416360897126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97dfaebd0ad9f5a42880e02ef147f8b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.AudioService
+  mixer: {fileID: 24100000, guid: 08b4af2aeed7a34438b20659e2aaa460, type: 2}
+  capacity: 24
+--- !u!114 &4018306443597666032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955166416360897126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642d9611f41702049bb6519eb7e9bc24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.UserSettingsService
+  audioSettingsSource: {fileID: 1810397292660360536}

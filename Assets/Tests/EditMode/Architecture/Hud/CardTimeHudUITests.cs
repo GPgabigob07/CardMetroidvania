@@ -126,6 +126,9 @@ namespace TicGame.Architecture.Tests
 
         private sealed class FakeGameplayServices : IGameplayServices
         {
+            public IUserSettingsService Settings => null;
+            public IAudioService Audio => null;
+            public IAudioSettingsService AudioSettings => null;
             private readonly ICardTimeSession session;
 
             public FakeGameplayServices(CardTimeSessionSnapshot snapshot)
@@ -153,3 +156,5 @@ namespace TicGame.Architecture.Tests
         }
     }
 }
+
+

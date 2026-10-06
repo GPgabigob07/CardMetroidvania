@@ -90,6 +90,7 @@ namespace TicGame.Architecture.EditorTools
                 events.transform.SetParent(root.transform, false);
                 events.GetComponent<InputSystemUIInputModule>().AssignDefaultActions();
                 view.Configure(canvas, eyebrow, heading, body, footer, buttons, art.gameObject, events.GetComponent<EventSystem>(), ReadControls());
+                SettingsFrontendSetup.ConfigureFrontend(root);
                 Directory.CreateDirectory(Path.GetDirectoryName(PrefabPath));
                 PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
                 Object.DestroyImmediate(root);

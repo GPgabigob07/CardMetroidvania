@@ -96,6 +96,8 @@ namespace TicGame.Architecture.Tests
                     includeCard ? rig.CardTag : null)));
 
             Assert.IsFalse(result.Accepted);
+            Assert.That(result.RejectionReason, Is.EqualTo(DamageRejectionReason.GameplayBlocked));
+            Assert.That(HitRippleOutcome.Classify(result), Is.EqualTo(HitRippleKind.Rejected));
             Assert.AreEqual(12f, rig.Health.CurrentHealth);
             Assert.AreEqual(GolemChargerState.Charge, rig.Brain.CurrentState);
         }
@@ -116,6 +118,15 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(10f, rig.Health.CurrentHealth);
             Assert.AreEqual(GolemChargerState.Interrupted, rig.Brain.CurrentState);
             Assert.IsFalse(rig.Attack.IsCharging);
+        }
+
+        [Test]
+        public void ZeroDamageDuringCharge_DoesNotShowArmorRejectionFeedback()
+        {
+            var rig = CreateGolem(); EnterCharge(rig);
+            var result = rig.Policy.ApplyDamage(CreateContext(rig.Root, amount: 0));
+            Assert.That(result.RejectionReason, Is.EqualTo(DamageRejectionReason.NonPositiveDamage));
+            Assert.That(HitRippleOutcome.Classify(result), Is.EqualTo(HitRippleKind.None));
         }
 
         [Test]
@@ -212,6 +223,27 @@ namespace TicGame.Architecture.Tests
             Assert.IsTrue(rig.Health.IsDefeated);
             Assert.AreEqual(GolemChargerState.Dead, rig.Brain.CurrentState);
             Assert.IsFalse(rig.Attack.IsCharging);
+        }
+
+        [Test]
+        public void Patrol_KnockbackSurvivesMovementUntilSuppressionExpires()
+        {
+            var rig = CreateGolem();
+            rig.Brain.Tick(0f);
+            Assert.AreEqual(GolemChargerState.Patrol, rig.Brain.CurrentState);
+            var receiver = rig.Root.AddComponent<EnemyKnockbackReceiver>();
+            receiver.SetBody(rig.Body);
+            rig.Body.linearVelocity = Vector2.zero;
+            receiver.ApplyKnockback(Vector2.right, 4f);
+            var impulseVelocity = rig.Body.linearVelocity;
+
+            rig.Brain.FixedTick(0.02f);
+
+            Assert.Greater(impulseVelocity.x, 0f);
+            Assert.AreEqual(impulseVelocity, rig.Body.linearVelocity);
+            rig.Brain.Tick(0.16f);
+            rig.Brain.FixedTick(0.02f);
+            Assert.AreNotEqual(impulseVelocity, rig.Body.linearVelocity);
         }
 
         private GolemRig CreateGolem()

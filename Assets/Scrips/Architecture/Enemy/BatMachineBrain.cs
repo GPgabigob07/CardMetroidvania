@@ -125,6 +125,7 @@ namespace TicGame.Architecture
         private bool statesRegistered;
         private bool subscribed;
         private float stateTimeRemaining;
+        private float movementSuppressionRemaining;
         private float fireCooldownRemaining;
         private float evadeCooldownRemaining;
         private float recordedDescendingSpeed;
@@ -168,6 +169,11 @@ namespace TicGame.Architecture
             Unsubscribe();
         }
 
+        public void SuppressMovement(float duration)
+        {
+            movementSuppressionRemaining = Mathf.Max(movementSuppressionRemaining, Mathf.Max(0f, duration));
+        }
+
         public void Initialize()
         {
             ResolveDependencies();
@@ -181,6 +187,7 @@ namespace TicGame.Architecture
             Subscribe();
             shotPredictor.Configure(fireWindupSeconds, leadTime: 0.2f, maximumLeadDistance: 2f);
             fireCooldownRemaining = 0f;
+            movementSuppressionRemaining = 0f;
             evadeCooldownRemaining = 0f;
             patrolAnchor = body.position;
             patrolRandom = new System.Random(patrolSeed);
@@ -209,12 +216,16 @@ namespace TicGame.Architecture
                 launcher.Tick(clampedDeltaTime);
             }
 
-            stateMachine.Tick(clampedDeltaTime);
+            movementSuppressionRemaining = Mathf.Max(0f, movementSuppressionRemaining - clampedDeltaTime);
+            if (movementSuppressionRemaining <= 0f || !IsActiveAirborneState())
+            {
+                stateMachine.Tick(clampedDeltaTime);
+            }
         }
 
         public void FixedTick(float fixedDeltaTime)
         {
-            if (IsInitialized)
+            if (IsInitialized && (movementSuppressionRemaining <= 0f || !IsActiveAirborneState()))
             {
                 stateMachine.FixedTick(Mathf.Max(0f, fixedDeltaTime));
             }

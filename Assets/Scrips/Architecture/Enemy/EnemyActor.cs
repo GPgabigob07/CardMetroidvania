@@ -17,6 +17,7 @@ namespace TicGame.Architecture
         public event Action<EnemyDamageEvent> Damaged;
         public event Action<EnemyDamageEvent> Defeated;
         public event Action<EnemyHealthChanged> Restored;
+        public event Action ResetPerformed;
 
         public EnemyDefinitionSO Definition => definition;
         public EnemyHealth Health => health;
@@ -67,6 +68,7 @@ namespace TicGame.Architecture
             health.Initialize(maximumHealth: definition.MaxHealth);
             SubscribeToHealth();
             IsInitialized = true;
+            ResetPerformed?.Invoke();
         }
 
         public void ResetActor()
@@ -78,6 +80,7 @@ namespace TicGame.Architecture
             }
 
             health.RestoreToFull();
+            ResetPerformed?.Invoke();
         }
 
         public void SetDefinition(EnemyDefinitionSO value)

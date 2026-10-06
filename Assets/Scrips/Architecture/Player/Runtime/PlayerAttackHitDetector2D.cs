@@ -102,16 +102,22 @@ namespace TicGame.Architecture
                 .ToList();
 
             var newTargets = new List<MonoBehaviour>(candidates.Count);
+            var targetHitPoints = new Dictionary<GameObject, Vector2>(candidates.Count);
             var firstHitPoint = center;
+            // The overlap center is often inside a large enemy. ClosestPoint would then
+            // return that interior point, making the ripple appear to start near its pivot.
+            var contactOrigin = (Vector2)transform.position + Vector2.up * localOffset.y;
             foreach (var candidate in candidates)
             {
+                var contactPoint = candidate.Collider.ClosestPoint(contactOrigin);
                 if (newTargets.Count == 0)
                 {
-                    firstHitPoint = candidate.Collider.ClosestPoint(center);
+                    firstHitPoint = contactPoint;
                 }
 
                 hitTargets.Add(candidate.Owner);
                 newTargets.Add(candidate.Recipient);
+                targetHitPoints[candidate.Recipient.gameObject] = contactPoint;
             }
 
             if (newTargets.Count == 0)
@@ -150,7 +156,8 @@ namespace TicGame.Architecture
                 candidateTargets: newTargets.Select(target => target.gameObject).ToArray(),
                 hitPoint: firstHitPoint,
                 direction: Vector2.right * facing,
-                targetLimit: newTargets.Count);
+                targetLimit: newTargets.Count,
+                targetHitPoints: targetHitPoints);
 
             var report = DamageResolver.Resolve(request: request);
             if (report.EffectiveHitCount <= 0)

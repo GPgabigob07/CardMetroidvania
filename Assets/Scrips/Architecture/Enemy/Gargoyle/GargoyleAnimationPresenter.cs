@@ -10,6 +10,9 @@ namespace TicGame.Architecture
         [SerializeField] private SpriteRenderer sprite;
         [SerializeField] private LineRenderer attackCue;
         [SerializeField] private LineRenderer coreCue;
+        [Header("Hit Feedback")]
+        [Tooltip("Disable when the sprite ripple presenter owns hit feedback; state tints and cues remain active.")]
+        [SerializeField] private bool hitFlashEnabled = true;
         private GargoylePresentationValues values;
         private bool valid;
         private EnemyActor actor;
@@ -28,7 +31,8 @@ namespace TicGame.Architecture
             if (attackCue != null) attackCue.enabled = false;
             if (coreCue != null) coreCue.enabled = false;
         }
-        private void OnHit(EnemyDamageEvent hit) { if (hit.Result.Accepted) flashRemaining = values.FlashDuration; }
+        private void OnHit(EnemyDamageEvent hit) { if (hitFlashEnabled && hit.Result.Accepted) flashRemaining = values.FlashDuration; }
+        public void SetHitFlashEnabled(bool enabled) { hitFlashEnabled = enabled; if (!enabled) flashRemaining = 0; }
         private void LateUpdate() => RefreshVisuals(Time.deltaTime);
         public void RefreshVisuals(float deltaTime)
         {
@@ -44,7 +48,7 @@ namespace TicGame.Architecture
             var color = state == GargoyleState.Stunned || state == GargoyleState.Staggered || state == GargoyleState.Dead ? values.StunColor
                 : brain != null && brain.IsFeinting ? values.FeintColor : attack.IsRunning && attack.Phase == EnemyAttackPhase.Windup ? values.WindupColor
                 : attack.IsRunning && attack.Phase == EnemyAttackPhase.Active ? values.ActiveColor : values.NormalColor;
-            sprite.color = flashRemaining > 0 ? values.HitColor : color;
+            sprite.color = hitFlashEnabled && flashRemaining > 0 ? values.HitColor : color;
             sprite.flipX = brain != null && brain.FacingDirection < 0;
             DrawCues(attack);
         }

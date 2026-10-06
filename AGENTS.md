@@ -14,6 +14,12 @@ The main knowledge sources currently live in:
 
 Prefer creating new timestamped versions of memory documents instead of overwriting existing ones.
 
+Exception: the build schedule is a single living document at
+`gdd/cronograma-build-novembro.md`. Whenever changing the cronograma, edit
+that file in place, including semantic changes. Do not create timestamped
+versions or duplicate cronograma files; use Git history for prior versions.
+This exception takes precedence over the documentation versioning rules below.
+
 Use this pattern for new GDD or design-memory files:
 
 - `gdd/<document-purpose>-YYYYMMDD-HHMM.md`

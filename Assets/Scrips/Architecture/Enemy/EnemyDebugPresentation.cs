@@ -7,6 +7,10 @@ namespace TicGame.Architecture
     {
         private const float FlashDuration = 0.12f;
 
+        [Header("Hit Feedback")]
+        [Tooltip("Disable when the sprite ripple presenter owns hit feedback. Health debug display remains active.")]
+        [SerializeField] private bool hitFlashEnabled = true;
+
         private EnemyHealth health;
         private SpriteRenderer spriteRenderer;
         private Color baseColor;
@@ -85,12 +89,19 @@ namespace TicGame.Architecture
 
         private void HandleDamaged(EnemyDamageEvent payload)
         {
+            if (!hitFlashEnabled) return;
             flashRemaining = FlashDuration;
 
             if (spriteRenderer != null)
             {
                 spriteRenderer.color = Color.white;
             }
+        }
+
+        public void SetHitFlashEnabled(bool enabled)
+        {
+            hitFlashEnabled = enabled;
+            if (!enabled) flashRemaining = 0;
         }
     }
 }

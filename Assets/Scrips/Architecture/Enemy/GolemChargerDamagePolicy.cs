@@ -64,12 +64,14 @@ namespace TicGame.Architecture
             ResolveDependencies();
             if (health == null || brain == null || brain.CurrentState == GolemChargerState.Dead)
             {
-                return CreateRejectedResult();
+                return CreateRejectedResult(health != null && (health.IsDefeated || brain != null && brain.CurrentState == GolemChargerState.Dead)
+                    ? DamageRejectionReason.AlreadyDefeated : DamageRejectionReason.InvalidTarget);
             }
 
             if (!TryResolveMultiplier(context, hitRegion, out var multiplier))
             {
-                return CreateRejectedResult();
+                var attemptedAmount = context.Amount > 0 ? context.Amount : context.Profile != null ? context.Profile.BaseDamage : 0;
+                return CreateRejectedResult(attemptedAmount > 0 ? DamageRejectionReason.GameplayBlocked : DamageRejectionReason.NonPositiveDamage);
             }
 
             var requestedAmount = context.Amount > 0f
@@ -175,14 +177,15 @@ namespace TicGame.Architecture
             return cardTag != null && context.Tags != null && context.Tags.Contains(cardTag);
         }
 
-        private DamageResult CreateRejectedResult()
+        private DamageResult CreateRejectedResult(DamageRejectionReason reason)
         {
             return new DamageResult(
                 accepted: false,
                 killed: health != null && health.IsDefeated,
                 appliedAmount: 0f,
                 remainingHealth: health != null ? health.CurrentHealth : 0f,
-                hitStopSeconds: 0f);
+                hitStopSeconds: 0f,
+                rejectionReason: reason);
         }
 
         private void ResolveDependencies()

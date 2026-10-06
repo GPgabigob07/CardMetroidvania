@@ -52,7 +52,8 @@ namespace TicGame.Architecture
                 killed: health != null && health.IsDefeated,
                 appliedAmount: 0f,
                 remainingHealth: health != null ? health.CurrentHealth : 0f,
-                hitStopSeconds: 0f);
+                hitStopSeconds: 0f,
+                rejectionReason: health == null ? DamageRejectionReason.InvalidTarget : DamageRejectionReason.AlreadyDefeated);
         }
 
         private void ResolveDependencies()

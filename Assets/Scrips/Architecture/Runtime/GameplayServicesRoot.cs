@@ -17,6 +17,9 @@ namespace TicGame.Architecture
         private bool ownsAuthority;
 
         public bool IsInitialized { get; private set; }
+        public IAudioService Audio { get; private set; }
+        public IAudioSettingsService AudioSettings { get; private set; }
+        public IUserSettingsService Settings { get; private set; }
         public IGameplayTimeService Time { get; private set; }
         public IHitStopService HitStop { get; private set; }
         public HitStopRequestEventChannelSO HitStopRequests { get; private set; }
@@ -168,6 +171,9 @@ namespace TicGame.Architecture
         private bool TryResolveModules()
         {
             modules.Clear();
+            Audio = null;
+            AudioSettings = null;
+            Settings = null;
             Time = null;
             HitStop = null;
             HitStopRequests = null;
@@ -195,6 +201,9 @@ namespace TicGame.Architecture
                 }
 
                 modules.Add(module);
+                if (component is IAudioService audio) Audio = audio;
+                if (component is IAudioSettingsService audioSettings) AudioSettings = audioSettings;
+                if (component is IUserSettingsService settings) Settings = settings;
                 if (component is IGameplayTimeService gameplayTime)
                 {
                     Time = gameplayTime;

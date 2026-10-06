@@ -25,6 +25,9 @@ namespace TicGame.Architecture
         public PlayerLocomotionState CurrentStateId => CurrentState.Id;
         public float JumpBufferTimer => jumpBufferTimer;
         public float CoyoteTimer => coyoteTimer;
+        public event Action<Vector3> JumpStarted;
+        public event Action<Vector3> Landed;
+        public void NotifyJumpStarted(Vector3 position) => JumpStarted?.Invoke(position);
         public void EnterInitialState(PlayerContext context)
         {
             CurrentState.Enter(context: context);
@@ -100,9 +103,11 @@ namespace TicGame.Architecture
                 return;
             }
 
+            var wasAirborne = CurrentState.Id == PlayerLocomotionState.Airborne;
             CurrentState.Exit(context: context);
             CurrentState = nextState;
             CurrentState.Enter(context: context);
+            if (wasAirborne && nextState.Id == PlayerLocomotionState.Grounded) Landed?.Invoke(context.Motor.transform.position);
         }
     }
 }

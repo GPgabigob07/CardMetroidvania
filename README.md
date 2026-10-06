@@ -38,7 +38,7 @@ Versoes anteriores em `gdd/` devem ser tratadas como memoria do projeto, nao com
 
 O plano de producao vigente para a build de 24/11/2026, incluindo o estado
 avaliado do repositorio, checklists e marcos semanais, esta em
-[`gdd/cronograma-build-novembro-20260828-1401.md`](gdd/cronograma-build-novembro-20260828-1401.md).
+[`gdd/cronograma-build-novembro.md`](gdd/cronograma-build-novembro.md).
 
 ## Estrutura De Memoria
 
@@ -95,6 +95,10 @@ Formato recomendado:
 
 - `gdd/<documento>-YYYYMMDD-HHMM.md`
 - `specs/<documento>-YYYYMMDD-HHMM.md`
+
+Excecao: o cronograma em `gdd/cronograma-build-novembro.md` e um documento
+unico e vivo. Toda alteracao deve ser feita no proprio arquivo, sem criar
+versoes timestampadas ou copias; o historico fica no Git.
 
 Correcoes pequenas de typo podem ser feitas no proprio arquivo quando nao alterarem o significado.
 

@@ -19,6 +19,8 @@ namespace TicGame.Architecture
         [SerializeField] private EventSystem inputSystem;
         [Header("Verified Controls")]
         [SerializeField, TextArea(8, 24)] private string controls;
+        [Header("Settings")]
+        [SerializeField] private AudioSettingsPresenter audioSettings;
 
         private PlaytestSessionController session;
         private PlaytestPauseController pause;
@@ -29,6 +31,12 @@ namespace TicGame.Architecture
         private int nextFocusFrame;
         private int focusIndex;
         private bool guideSeen;
+        private Selectable pendingSelection;
+        private int lastBackFrame = -1;
+        public bool IsSettingsOpen => panel == "settings";
+
+        public void ConfigureSettings(AudioSettingsPresenter presenter, Button[] choices)
+        { audioSettings = presenter; buttons = choices; }
 
         public void Configure(GameObject canvas, Text overline, Text title, Text content, Text version,
             Button[] choices, GameObject decoration, EventSystem events, string controlsText)
@@ -43,11 +51,12 @@ namespace TicGame.Architecture
             pause = GetComponent<PlaytestPauseController>();
             session.Changed += Invalidate;
             pause.PauseChanged += PauseChanged;
+            if (audioSettings != null) audioSettings.BackRequested += Back;
             Invalidate();
         }
 
         private void Invalidate() => lastState = null;
-        private void PauseChanged(bool value) { panel = ""; Invalidate(); }
+        private void PauseChanged(bool value) { audioSettings?.Close(); panel = ""; Invalidate(); }
 
         private void Update()
         {
@@ -74,14 +83,16 @@ namespace TicGame.Architecture
             if (nextFocusFrame > 0 && Time.frameCount >= nextFocusFrame)
             {
                 nextFocusFrame = 0;
-                if (buttons[focusIndex].gameObject.activeInHierarchy)
-                    inputSystem.SetSelectedGameObject(buttons[focusIndex].gameObject);
+                if (pendingSelection != null && pendingSelection.gameObject.activeInHierarchy)
+                    inputSystem.SetSelectedGameObject(pendingSelection.gameObject);
             }
             if (state == "loading") body.text = "Preparing the area" + new string('.', 1 + (int)(Time.unscaledTime * 2) % 3);
         }
 
         private void Render(string state)
         {
+            if (panel == "settings" && state != "title" && state != "pause")
+            { audioSettings?.Close(); panel = ""; }
             var visible = state != "hidden";
             canvasRoot.SetActive(visible);
             inputSystem.gameObject.SetActive(visible);
@@ -89,6 +100,8 @@ namespace TicGame.Architecture
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
             artwork.SetActive(state == "title" && panel == "");
+            var settingsVisible = panel == "settings";
+            body.gameObject.SetActive(!settingsVisible);
             foreach (var button in buttons) { button.onClick.RemoveAllListeners(); button.gameObject.SetActive(false); }
             eyebrow.text = "PLAYTEST 01  /  WORK IN PROGRESS";
             footer.text = $"{Application.version}   •   Progress is not saved";
@@ -104,6 +117,13 @@ namespace TicGame.Architecture
             {
                 heading.text = "A moment between worlds.";
                 body.text = "Preparing the area…";
+            }
+            else if (settingsVisible)
+            {
+                eyebrow.text = "SETTINGS  /  AUDIO";
+                heading.text = "Audio settings";
+                footer.text = "Audio preferences are saved  •  Playtest progress is not saved";
+                audioSettings.Open();
             }
             else if (panel == "controls")
             {
@@ -136,19 +156,22 @@ namespace TicGame.Architecture
                 heading.text = "CARD\nMETROIDVANIA";
                 body.text = "A traveller out of time.\nA castle that remembers.\n\nAn exploratory combat & traversal playtest.";
                 Choice(0, "Start playtest", () => { _ = session.StartPlaytestAsync(); });
-                Choice(1, "Controls", OpenControls);
-                Choice(2, "Quit", Quit);
+                Choice(1, "Settings", OpenSettings);
+                Choice(2, "Controls", OpenControls);
+                Choice(3, "Quit", Quit);
             }
             else
             {
                 heading.text = "Take a breath.";
                 body.text = "PAUSED\nThe world will wait.";
                 Choice(0, "Resume", pause.Resume);
-                Choice(1, "Controls / Card Time guide", OpenControls);
-                Choice(2, "Return to title", () => Confirm(false));
-                Choice(3, "Quit", () => Confirm(true));
+                Choice(1, "Settings", OpenSettings);
+                Choice(2, "Controls / Card Time guide", OpenControls);
+                Choice(3, "Return to title", () => Confirm(false));
+                Choice(4, "Quit", () => Confirm(true));
             }
-            Focus(panel == "" ? restoreSelection : 0);
+            if (settingsVisible) { pendingSelection = audioSettings.FirstSelectable; nextFocusFrame = Time.frameCount + 1; }
+            else Focus(panel == "" ? restoreSelection : 0);
             if (panel == "") restoreSelection = 0;
         }
 
@@ -160,7 +183,7 @@ namespace TicGame.Architecture
             button.onClick.AddListener(() => action());
         }
 
-        private void Focus(int index) { focusIndex = index; nextFocusFrame = Time.frameCount + 1; }
+        private void Focus(int index) { focusIndex = index; pendingSelection = buttons[index]; nextFocusFrame = Time.frameCount + 1; }
         private void RememberSelection()
         {
             for (var i = 0; i < buttons.Length; i++)
@@ -168,11 +191,22 @@ namespace TicGame.Architecture
         }
 
         private void OpenControls() { RememberSelection(); panel = "controls"; Invalidate(); }
+        public void OpenSettings()
+        {
+            if (session == null || session.IsTransitioning || session.LastError != null || audioSettings == null || session.Services?.Settings == null) return;
+            RememberSelection();
+            audioSettings.Bind(session.Services.Settings);
+            panel = "settings";
+            Invalidate();
+        }
         private void Confirm(bool quit) { RememberSelection(); quitting = quit; panel = "confirm"; Invalidate(); }
 
         public void Back()
         {
             if (session == null || session.IsTransitioning || session.LastError != null) return;
+            if (lastBackFrame == Time.frameCount) return;
+            lastBackFrame = Time.frameCount;
+            if (panel == "settings") audioSettings?.Close();
             if (panel == "guide") { panel = "controls"; Invalidate(); }
             else if (panel != "") { panel = ""; Invalidate(); }
             else if (pause.IsPaused) pause.Resume();
@@ -189,8 +223,11 @@ namespace TicGame.Architecture
 
         private void OnDestroy()
         {
+            audioSettings?.Close();
+            if (audioSettings != null) audioSettings.BackRequested -= Back;
             if (session != null) session.Changed -= Invalidate;
             if (pause != null) pause.PauseChanged -= PauseChanged;
         }
+        private void OnDisable() => audioSettings?.Close();
     }
 }

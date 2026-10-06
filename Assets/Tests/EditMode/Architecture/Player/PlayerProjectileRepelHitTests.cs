@@ -110,6 +110,27 @@ namespace TicGame.Architecture.Tests
             Assert.AreEqual(player, shot.SourceObject); Assert.AreEqual(4, health.CurrentHealth); Assert.IsTrue(action.HasConfirmedHit);
         }
 
+        [Test]
+        public void MultiEnemySwing_ReportsEachColliderContact_AndConfirmsOnce()
+        {
+            var first = Track(new GameObject("First enemy")); first.transform.position = new Vector2(.5f, -.3f);
+            var second = Track(new GameObject("Second enemy")); second.transform.position = new Vector2(1.7f, .4f);
+            var firstCollider = first.AddComponent<BoxCollider2D>(); firstCollider.size = new Vector2(.2f, .2f);
+            var secondCollider = second.AddComponent<BoxCollider2D>(); secondCollider.size = new Vector2(.2f, .2f);
+            var firstHealth = first.AddComponent<EnemyHealth>(); firstHealth.Initialize(10);
+            var secondHealth = second.AddComponent<EnemyHealth>(); secondHealth.Initialize(10);
+            Vector2? firstPoint = null, secondPoint = null;
+            firstHealth.Damaged += hit => firstPoint = hit.Context.HitPoint;
+            secondHealth.Damaged += hit => secondPoint = hit.Context.HitPoint;
+            Physics2D.SyncTransforms(); Resolve();
+            Assert.That(firstPoint.HasValue && secondPoint.HasValue, Is.True);
+            Assert.That(firstPoint.Value, Is.EqualTo(firstCollider.ClosestPoint(new Vector2(0, .15f))), "Melee contact must be on the attacker-facing boundary, not at an overlap-query center inside the body.");
+            Assert.That(secondPoint.Value, Is.EqualTo(secondCollider.ClosestPoint(new Vector2(0, .15f))));
+            Assert.That(firstPoint.Value, Is.Not.EqualTo(secondPoint.Value));
+            Assert.That(action.HasConfirmedHit, Is.True);
+            Resolve(); Assert.That(firstHealth.CurrentHealth, Is.EqualTo(9)); Assert.That(secondHealth.CurrentHealth, Is.EqualTo(9));
+        }
+
         private sealed class MeleeAction : IPlayerAction, IPlayerActionAnimationSource, IPlayerAttackHitConfirmation
         {
             public PlayerActionPhase Phase = PlayerActionPhase.Execution;

@@ -20,6 +20,10 @@ GameObject:
   - component: {fileID: 8657949537195792202}
   - component: {fileID: 637487402272466343}
   - component: {fileID: 5357305490095725602}
+  - component: {fileID: 1258251493396507827}
+  - component: {fileID: 2877615285965596345}
+  - component: {fileID: 910006202610060001}
+  - component: {fileID: 1266141004105658873}
   m_Layer: 8
   m_Name: GolemCharger
   m_TagString: Untagged
@@ -267,7 +271,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ee7f798ab8e29f49bc6516f89ffb74d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyPoise
   fallbackMaximumPoise: 10
   fallbackRegenerationPerSecond: 0.33
@@ -281,8 +285,67 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61442252d5cd4b04ad34e0a3043294fb, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyPoiseDebugPresentation
+--- !u!114 &1258251493396507827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 517adf7d16ffd1d468b934cee2701baf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHitRipplePresenter
+  owner: {fileID: 7234678410213884168}
+  profile: {fileID: 11400000, guid: 82a47b0f1cfbc8b4daddd68318e196aa, type: 2}
+  visuals:
+  - {fileID: 4958708693564972772}
+  manualPlayback: 0
+--- !u!114 &2877615285965596345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181697ddcfd177a4ba44990493acf435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHitRippleDamageListener
+  presenter: {fileID: 1258251493396507827}
+--- !u!114 &910006202610060001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ca8f28886cb9954aaa945922557267d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  body: {fileID: 6508310254988638894}
+  patrolBrain: {fileID: 0}
+  resistanceMultiplier: 1
+  movementSuppressionDuration: 0.15
+--- !u!114 &1266141004105658873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438014315967047088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b39c7ce62b5c4a82166b9998c0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageAudioPresenter
+  hit: {fileID: 11400000, guid: 504daecefc4cecc4f93700e94381f7fd, type: 2}
 --- !u!1 &1217232361589571127
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +357,8 @@ GameObject:
   - component: {fileID: 2783367449731296091}
   - component: {fileID: 7753559465362333762}
   - component: {fileID: 5712678795281493272}
+  - component: {fileID: 6102394738730494191}
+  - component: {fileID: 2375298387273573714}
   m_Layer: 8
   m_Name: HeadWeakPointHurtbox
   m_TagString: Untagged
@@ -366,6 +431,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHurtboxRegion
   rootDamageable: {fileID: 8880678255514840275}
   region: 10
+--- !u!114 &6102394738730494191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217232361589571127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181697ddcfd177a4ba44990493acf435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHitRippleDamageListener
+  presenter: {fileID: 1258251493396507827}
+--- !u!114 &2375298387273573714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217232361589571127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b39c7ce62b5c4a82166b9998c0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageAudioPresenter
+  hit: {fileID: 11400000, guid: 504daecefc4cecc4f93700e94381f7fd, type: 2}
 --- !u!1 &6801047729512828766
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +593,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 7d564111dedc320479e6864eb572da90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -546,6 +637,8 @@ GameObject:
   - component: {fileID: 6534338537085228085}
   - component: {fileID: 1030959772193506469}
   - component: {fileID: 8673062693679314515}
+  - component: {fileID: 1785890639275937997}
+  - component: {fileID: 7254210666263797672}
   m_Layer: 8
   m_Name: BodyHurtbox
   m_TagString: Untagged
@@ -628,3 +721,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHurtboxRegion
   rootDamageable: {fileID: 8880678255514840275}
   region: 0
+--- !u!114 &1785890639275937997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8696718778325637430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181697ddcfd177a4ba44990493acf435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.EnemyHitRippleDamageListener
+  presenter: {fileID: 1258251493396507827}
+--- !u!114 &7254210666263797672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8696718778325637430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c87b39c7ce62b5c4a82166b9998c0918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicGame.Architecture::TicGame.Architecture.DamageAudioPresenter
+  hit: {fileID: 11400000, guid: 504daecefc4cecc4f93700e94381f7fd, type: 2}
